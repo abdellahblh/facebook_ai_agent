@@ -20,7 +20,6 @@ from app.schemas import InboundMessage
 logger = logging.getLogger(__name__)
 
 
-
 async def process_event(inbound: InboundMessage) -> None:
     """One inbound event, end to end.
 
@@ -67,7 +66,9 @@ async def process_event(inbound: InboundMessage) -> None:
 
     if inbound.attachment_urls and not inbound.text:
         if http_client:
-            await messenger_api.send_text(http_client, inbound.psid, "I received your attachment. A teammate will review it soon.")
+            await messenger_api.send_text(
+                http_client, inbound.psid, "I received your attachment. A teammate will review it soon."
+            )
         return
 
     # 4. DEBOUNCE
@@ -101,7 +102,7 @@ async def process_event(inbound: InboundMessage) -> None:
         # 8. AGENT TURN
         reply_text = "I'm sorry, I couldn't process your request right now."
         if llm and session_factory:
-            tools = make_tools(inbound.psid,inbound.page_id, session_factory)
+            tools = make_tools(inbound.psid, inbound.page_id, session_factory)
             agent_graph = build_graph(llm, tools, SYSTEM_PROMPT, checkpointer=saver)
             reply_text = await run_turn(agent_graph, merged_text, psid=inbound.psid)
 
@@ -126,5 +127,3 @@ async def process_event(inbound: InboundMessage) -> None:
     finally:
         if redis:
             await redis_ops.release_user_lock(redis, inbound.psid)
-
-

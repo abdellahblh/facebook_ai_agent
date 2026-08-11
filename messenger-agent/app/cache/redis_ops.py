@@ -26,7 +26,9 @@ async def is_duplicate(r: aioredis.Redis, mid: str) -> bool:
     return not bool(was_set)
 
 
-async def buffer_and_wait(r: aioredis.Redis, psid: str, text: str, debounce_seconds: int | float) -> str | None:
+async def buffer_and_wait(
+    r: aioredis.Redis, psid: str, text: str, debounce_seconds: int | float
+) -> str | None:
     """The debounce — buffer rapid messages, wait for silence, answer ONCE with merged text."""
     await r.rpush(f"buf:{psid}", text)
     my_token = str(time.time_ns())
@@ -56,4 +58,3 @@ async def acquire_user_lock(r: aioredis.Redis, psid: str) -> bool:
 async def release_user_lock(r: aioredis.Redis, psid: str) -> None:
     """Delete the lock key."""
     await r.delete(f"lock:{psid}")
-

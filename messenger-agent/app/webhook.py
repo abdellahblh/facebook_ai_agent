@@ -67,7 +67,9 @@ def normalize(page_id: str, event: MessagingEvent) -> InboundMessage | None:
     attachments = event.message.attachments if (event.message and event.message.attachments) else []
     attachment_types = [a.type for a in attachments]
     attachment_urls = [a.payload.get("url") for a in attachments if a.payload]
-    quick_reply_payload = event.message.quick_reply.payload if (event.message and event.message.quick_reply) else None
+    quick_reply_payload = (
+        event.message.quick_reply.payload if (event.message and event.message.quick_reply) else None
+    )
     postback_payload = event.postback.payload if (event.postback and event.kind == "postback") else None
     mid = event.message.mid if event.message else None
 
@@ -82,4 +84,3 @@ def normalize(page_id: str, event: MessagingEvent) -> InboundMessage | None:
         postback_payload=postback_payload,
         mid=mid,
     )
-

@@ -11,6 +11,7 @@ import re
 import httpx
 
 from app.config import get_settings  # noqa: F401  (pre-imported for your implementation)
+
 logger = logging.getLogger(__name__)
 
 MAX_MESSAGE_CHARS = 2000  # Messenger's hard limit per message
@@ -28,11 +29,15 @@ async def send_typing(client: httpx.AsyncClient, psid: str) -> None:
       3. Fire-and-forget: log failures (resp.status_code != 200) but never
          raise — a failed typing indicator must not kill the reply.
     """
-    settings = get_settings(); url =f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
-    response = await client.post(url, json={"recipient": {"id": psid}, "sender_action": "typing_on"}, params={"access_token": settings.page_access_token})
+    settings = get_settings()
+    url = f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
+    response = await client.post(
+        url,
+        json={"recipient": {"id": psid}, "sender_action": "typing_on"},
+        params={"access_token": settings.page_access_token},
+    )
     if response.status_code != 200:
         logger.warning("Failed to send typing indicator: %s", response.text)
-
 
 
 async def send_text(client: httpx.AsyncClient, psid: str, text: str) -> None:
@@ -47,13 +52,17 @@ async def send_text(client: httpx.AsyncClient, psid: str, text: str) -> None:
          what's wrong (expired token, out-of-window, ...). Raise on hard
          failure so the worker can decide.
     """
-    settings = get_settings(); url =f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
+    settings = get_settings()
+    url = f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
     chunks = split_message(text)
     for chunk in chunks:
-        response = await client.post(url, json={"recipient": {"id": psid}, "message": {"text": chunk}}, params={"access_token": settings.page_access_token})
+        response = await client.post(
+            url,
+            json={"recipient": {"id": psid}, "message": {"text": chunk}},
+            params={"access_token": settings.page_access_token},
+        )
         if response.status_code != 200:
             logger.warning("Failed to send message: %s", response.text)
-
 
 
 def split_message(text: str, limit: int = MAX_MESSAGE_CHARS) -> list[str]:
@@ -62,8 +71,8 @@ def split_message(text: str, limit: int = MAX_MESSAGE_CHARS) -> list[str]:
 
     # Split into lines, then sentences — smallest units we're allowed to break at
     units = []
-    for line in text.split('\n'):
-        units.extend(re.split(r'(?<=[.!?])\s+', line) if len(line) > limit else [line])
+    for line in text.split("\n"):
+        units.extend(re.split(r"(?<=[.!?])\s+", line) if len(line) > limit else [line])
 
     result, current = [], ""
     for unit in units:

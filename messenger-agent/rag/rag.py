@@ -1,11 +1,15 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter,MarkdownHeaderTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
 import asyncio
 from dotenv import load_dotenv
+
 load_dotenv()
 import os
 from pinecone import AsyncPinecone
+
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 INDEX_NAME = "facebook"  # Choose your Pinecone index name
+
+
 async def ingest_docs():
     # Open and read the markdown file content
     with open("politiques_boutique.md", "r", encoding="utf-8") as file:
@@ -31,24 +35,23 @@ async def ingest_docs():
         embeddings_response = await pc.inference.embed(
             model="llama-text-embed-v2",
             inputs=chunk_texts,
-            parameters={
-                "input_type": "passage",
-                "dimension": 384
-            }
+            parameters={"input_type": "passage", "dimension": 384},
         )
 
         # Format vectors for Pinecone
         vectors = []
         for i, (item, chunk) in enumerate(zip(embeddings_response.data, final_chunks)):
-            vectors.append((
-                f"faq-chunk-{i}",
-                item.values,  # 384 floats
-                {
-                    "text": chunk.page_content,
-                    "section": chunk.metadata.get("section_title", "General"),
-                    "source": "facebook"
-                }
-            ))
+            vectors.append(
+                (
+                    f"faq-chunk-{i}",
+                    item.values,  # 384 floats
+                    {
+                        "text": chunk.page_content,
+                        "section": chunk.metadata.get("section_title", "General"),
+                        "source": "facebook",
+                    },
+                )
+            )
         print(f"Upserting {len(vectors)} vectors to Pinecone...")
         await index.upsert(vectors=vectors, namespace="faq")
         print("Success! Your vectors are now stored in Pinecone.")

@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 
+
 def verify_signature(app_secret: str, raw_body: bytes, header_value: str | None) -> bool:
     """Return True only if header_value is a valid signature of raw_body.
 
@@ -38,4 +39,3 @@ def verify_signature(app_secret: str, raw_body: bytes, header_value: str | None)
     their_sig = header_value[7:]
     our_sig = hmac.new(app_secret.encode(), raw_body, hashlib.sha256).hexdigest()
     return hmac.compare_digest(their_sig, our_sig)
-

@@ -38,7 +38,7 @@ async def test_handoff_flag_roundtrip(sqlite_session_factory):
         assert customer.handoff_active is False
         await set_handoff(s, "PSID", True)
     async with sqlite_session_factory() as s:
-        customer = await get_or_create_customer(s, "PAGE1", "PSID")
+        customer = await get_or_create_customer(s, "PAGE1", "PSID", True)
         assert customer.handoff_active is True
 
 

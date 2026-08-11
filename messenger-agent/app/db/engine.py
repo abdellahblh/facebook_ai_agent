@@ -18,25 +18,17 @@ engine: AsyncEngine | None = None
 SessionFactory: async_sessionmaker[AsyncSession] | None = None
 
 
-
 async def init_engine(async_database_url: str) -> None:
     global engine, SessionFactory
 
-    engine = create_async_engine(
-        async_database_url,
-        echo=True,
-        pool_size=5,
-        max_overflow=10
-    )
+    engine = create_async_engine(async_database_url, echo=True, pool_size=5, max_overflow=10)
 
-    SessionFactory = async_sessionmaker(
-        engine,
-        expire_on_commit=False
-    )
+    SessionFactory = async_sessionmaker(engine, expire_on_commit=False)
 
     # Create tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
 
 async def dispose_engine() -> None:
     """TODO(you): if engine is not None → await engine.dispose(). Called at shutdown."""
