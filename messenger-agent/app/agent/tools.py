@@ -17,20 +17,14 @@ from langchain_core.tools import BaseTool, tool
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from app.db import repo
 
-def make_tools(psid: str, session_factory: async_sessionmaker) -> list[BaseTool]:
+def make_tools(psid: str,page_id: str, session_factory: async_sessionmaker) -> list[BaseTool]:
     """Build the per-conversation toolset."""
 
     @tool
     async def product_lookup(query: str) -> str:
         """Look up a product by name to get its EXACT price and stock.
         Use for any question about price, availability, or delivery of a product."""
-        # TODO(you) — steps:
-        #   1. async with session_factory() as session:
-        #   2.     products = await repo.find_products(session, query)
-        #   3. If empty → return "No product found matching '<query>'."
-        #      (The prompt's RULE 1 turns that into an honest answer + handoff.)
-        #   4. Format one line per product: "Name — price — in stock: N".
-        #      Return the joined string. Tools return STRINGS to the model.
+
         async with session_factory() as session:
             products = await repo.find_products(session, query)
         if not products:
@@ -40,26 +34,50 @@ def make_tools(psid: str, session_factory: async_sessionmaker) -> list[BaseTool]
     @tool
     async def policy_search(question: str) -> str:
         """Search company policies (returns, delivery, warranty, payment)."""
-        # TODO(you) — v1 steps:
-        #   1. Store policies as rows (title, body) in a `policies` table you
-        #      add to models.py — or even a dict in config for day one.
-        #   2. Naive search: ILIKE on title/body with the question's keywords,
-        #      return the best chunk's text.
-        #   v2 (later): pgvector — embed chunks, cosine search, same Postgres.
-        #   The tool's INTERFACE doesn't change when you upgrade — that's the
-        #   point of hiding retrieval behind a tool.
+
+        async with AsyncPinecone(api_key=os.getenv("PINECONE_API_KEY")) as pc:
+        # Await the Index object
+            index = await pc.Index("facebook")
+
+            # Generate query embedding asynchronously (384 dimensions)
+            query_embed_res = await pc.inference.embed(
+                model="llama-text-embed-v2",
+                inputs=[question],
+                parameters={
+                    "input_type": "query",  # Use "query" for search queries
+                    "dimension": 384
+                }
+            )
+            query_vector = query_embed_res.data[0].values
+
+            # Search Pinecone asynchronously
+            results = await index.query(
+                vector=query_vector,
+                top_k=3,
+                namespace="faq",
+                include_metadata=True
+            )
+
+            # If no results found
+            if not results.matches:
+                return "No matching store policies found."
+
+            # Format retrieved matches into a clean string for the LLM
+            context_chunks = []
+            for i, match in enumerate(results.matches, 1):
+                text = match.metadata.get("text", "No text content available")
+                section = match.metadata.get("section", "General")
+                context_chunks.append(f"--- Result {i} (Section: {section}) ---\n{text}")
+
+            return "\n\n".join(context_chunks)
 
     @tool
     async def handoff_to_human(reason: str) -> str:
         """Escalate this conversation to a human teammate. Use when the
         customer is angry, stuck, or explicitly asks for a person."""
-        # TODO(you) — steps:
-        #   1. async with session_factory() as session:
-        #          await repo.set_handoff(session, psid, True)
-        #   2. (later) notify the owner: email / their own Messenger / dashboard.
-        #   3. Return "Handoff activated." — the model needs a string back.
+
         async with session_factory() as session:            
-            await repo.set_handoff(session, psid, True)
+            await repo.set_handoff(session,page_id, psid, True)
             return "Handoff activated."
 
     return [product_lookup, policy_search, handoff_to_human]

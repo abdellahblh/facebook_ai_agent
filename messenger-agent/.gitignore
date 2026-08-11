@@ -1,0 +1,12 @@
+.env
+tests/__pycache__
+app/__pycache__
+app/db/__pycache__
+app/worker/__pycache__
+app/agent/__pycache__
+app/main/__pycache__
+app/webhook/__pycache__
+app/config/__pycache__
+app/schemas/__pycache__
+app/cache/__pycache__
+app/tests

@@ -101,7 +101,7 @@ async def process_event(inbound: InboundMessage) -> None:
         # 8. AGENT TURN
         reply_text = "I'm sorry, I couldn't process your request right now."
         if llm and session_factory:
-            tools = make_tools(inbound.psid, session_factory)
+            tools = make_tools(inbound.psid,inbound.page_id, session_factory)
             agent_graph = build_graph(llm, tools, SYSTEM_PROMPT, checkpointer=saver)
             reply_text = await run_turn(agent_graph, merged_text, psid=inbound.psid)
 

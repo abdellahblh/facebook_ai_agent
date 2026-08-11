@@ -11,7 +11,6 @@ import re
 import httpx
 
 from app.config import get_settings  # noqa: F401  (pre-imported for your implementation)
-
 logger = logging.getLogger(__name__)
 
 MAX_MESSAGE_CHARS = 2000  # Messenger's hard limit per message
