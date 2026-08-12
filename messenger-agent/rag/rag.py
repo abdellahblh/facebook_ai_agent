@@ -1,4 +1,43 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter,MarkdownHeaderTextSplitter
+fastapi>=0.115
+uvicorn[standard]>=0.30
+
+# ---- Config & validation (app/config.py, app/schemas.py) ----
+pydantic>=2.8
+pydantic-settings>=2.4
+python-dotenv>=1.0
+
+# ---- HTTP client (Send API calls in app/messenger_api.py) ----
+httpx>=0.27
+
+# ---- Redis (dedupe / debounce / locks) ----
+redis>=5.0
+
+# ---- Database (app/db/*) ----
+SQLAlchemy==2.0.52
+asyncpg>=0.29              # async driver behind postgresql+asyncpg://
+psycopg[binary,pool]>=3.2  # sync/async driver used by AsyncPostgresSaver
+greenlet>=3.0              # required by SQLAlchemy asyncio
+
+# ---- Agent (app/agent/*) ----
+langgraph==1.2.11
+langgraph-checkpoint-postgres>=2.0
+langchain-core>=0.3
+langchain-google-genai>=2.0
+
+# ---- RAG / vector store (rag/rag.py, tools.policy_search) ----
+pinecone==9.1.0
+pinecone[asyncio]==9.1.0   # AsyncPinecone needs the aiohttp extra
+PyYAML>=6.0                # front-matter parsing in rag/
+
+# ---- Tests (tests/*) ----
+pytest>=8.0
+pytest-asyncio>=0.23
+aiosqlite>=0.20            # in-memory async SQLite used by tests/conftest.py
+
+# ---- Tooling (check.sh) ----
+ruff>=0.6
+mypy>=1.11
 import asyncio
 from dotenv import load_dotenv
 load_dotenv()
