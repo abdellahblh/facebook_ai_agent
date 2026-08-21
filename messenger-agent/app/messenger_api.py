@@ -20,13 +20,6 @@ async def send_typing(client: httpx.AsyncClient, psid: str) -> None:
     """Show the typing indicator while the LLM thinks — the difference
     between a bot that feels broken and one that feels alive.
 
-    TODO(you) — steps:
-      1. settings = get_settings(); url =
-         f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
-      2. POST json={"recipient": {"id": psid}, "sender_action": "typing_on"},
-         params={"access_token": settings.page_access_token}
-      3. Fire-and-forget: log failures (resp.status_code != 200) but never
-         raise — a failed typing indicator must not kill the reply.
     """
     settings = get_settings(); url =f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
     response = await client.post(url, json={"recipient": {"id": psid}, "sender_action": "typing_on"}, params={"access_token": settings.page_access_token})
@@ -38,14 +31,6 @@ async def send_typing(client: httpx.AsyncClient, psid: str) -> None:
 async def send_text(client: httpx.AsyncClient, psid: str, text: str) -> None:
     """Deliver the reply.
 
-    TODO(you) — steps:
-      1. Split text into chunks of MAX_MESSAGE_CHARS (prefer splitting on
-         newlines/sentence ends — read the tests for the expected behavior).
-      2. POST each chunk in order to the same url as send_typing, body
-         {"recipient": {"id": psid}, "message": {"text": chunk}}.
-      3. On non-200: log resp.text — Meta's error body tells you exactly
-         what's wrong (expired token, out-of-window, ...). Raise on hard
-         failure so the worker can decide.
     """
     settings = get_settings(); url =f"https://graph.facebook.com/{settings.graph_api_version}/me/messages"
     chunks = split_message(text)

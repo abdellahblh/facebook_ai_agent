@@ -9,7 +9,7 @@ from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from app.db.models import (  # noqa: F401  (all used by your implementations)
+from app.db.models import (  
     Customer,
     DeadLetter,
     MessageLog,
