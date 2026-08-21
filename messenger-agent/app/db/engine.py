@@ -39,6 +39,5 @@ async def init_engine(async_database_url: str) -> None:
         await conn.run_sync(Base.metadata.create_all)
 
 async def dispose_engine() -> None:
-    """TODO(you): if engine is not None → await engine.dispose(). Called at shutdown."""
     if engine is not None:
         await engine.dispose()
