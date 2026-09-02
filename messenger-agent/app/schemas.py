@@ -93,8 +93,29 @@ class InboundMessage(BaseModel):
     psid: str
     kind: str  # "message" | "postback"
     text: str | None = None
+    # ALL attachment types Meta/Chatwoot sent — used for logging and for deciding
+    # whether to tell the customer "I can't read that file type".
     attachment_types: list[str] = Field(default_factory=list)
-    attachment_urls: list[str] = Field(default_factory=list)
+
+    # Only attachments that actually HAVE a url, as (type, url) PAIRS.
+    # Two parallel lists could drift out of sync (they did: a sticker has a
+    # payload but no url, an unknown attachment can have an empty payload —
+    # filtering one list and not the other silently mispaired them and dropped
+    # a customer's photo). One list of pairs makes that impossible.
+    media: list[tuple[str, str]] = Field(default_factory=list)
+
+    # Kept for backwards compatibility with existing tests/callers.
+    @property
+    def attachment_urls(self) -> list[str]:
+        return [url for _, url in self.media]
+
     quick_reply_payload: str | None = None
     postback_payload: str | None = None
+    # Channel source: "messenger" | "chatwoot"
+    channel: str = "messenger"
+    # Chatwoot account ID for API calls
+    account_id: int | None = None
+    # Chatwoot: the conversation is the natural memory scope (thread_id).
+    # None for the Meta adapter, which keys memory by psid.
+    conversation_id: str | None = None
     mid: str | None = None

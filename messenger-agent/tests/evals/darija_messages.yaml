@@ -1,0 +1,332 @@
+# Algerian customer messages — evaluation set
+#
+# ⚠️  WRITTEN BY A NON-NATIVE SPEAKER. Correct freely; that is the point.
+#     The `confidence` field is MY confidence that a real Algerian customer
+#     would write it this way. Anything below `high` deserves your eye first.
+#
+# Every row is one message the bot must handle. Fields:
+#   text        what the customer sends
+#   script      arabizi | arabic | french | mixed
+#   intent      what they want (the thing to get right)
+#   product     product they mean, or null
+#   policy      policy that should be retrieved, or null
+#   trap        why this one is hard — the reason it's in the set
+#   confidence  high | medium | low  (my confidence in the phrasing)
+#
+# Store context for these examples: Nova Threads, clothing, Algiers.
+# Products: Veste Rouge Classic (3500 DA), Botte Cuir Noir (7200 DA),
+#           Sac Toile Beige (2100 DA), Chemise Lin Blanche (2800 DA)
+
+messages:
+  # ── price: the single most common question ──────────────────────────────
+  - id: price_01
+    text: "chhal taman ta3 la veste rouge?"
+    script: mixed
+    intent: price_query
+    product: Veste Rouge Classic
+    policy: null
+    trap: "French product name inside a darija sentence — normalising must not touch 'la veste rouge'"
+    confidence: high
+
+  - id: price_02
+    text: "بشحال الفيست الحمرا"
+    script: arabic
+    intent: price_query
+    product: Veste Rouge Classic
+    policy: null
+    trap: "Arabic script, product name transliterated INTO Arabic — 'الفيست' is French 'veste'"
+    confidence: medium
+
+  - id: price_03
+    text: "cv? bghit na3ref prix ta3 les bottes noir"
+    script: mixed
+    intent: price_query
+    product: Botte Cuir Noir
+    policy: null
+    trap: "'cv' = ça va (French SMS shorthand). French 'prix' and 'les bottes noir' with darija 'bghit na3ref'"
+    confidence: high
+
+  - id: price_04
+    text: "3andek sac beige? chhal?"
+    script: arabizi
+    intent: price_query
+    product: Sac Toile Beige
+    policy: null
+    trap: "Two intents in one message: stock then price. '3' = ع in '3andek'"
+    confidence: high
+
+  - id: price_05
+    text: "salam, 7abit na3ref 9adach taman chemise lin"
+    script: arabizi
+    intent: price_query
+    product: Chemise Lin Blanche
+    policy: null
+    trap: "Three arabizi digits: 7=ح, 9=ق. '9adach' is a Tunisian-leaning variant some Algerians use"
+    confidence: low
+
+  # ── stock ───────────────────────────────────────────────────────────────
+  - id: stock_01
+    text: "kayen taille L fi la veste?"
+    script: mixed
+    intent: size_query
+    product: Veste Rouge Classic
+    policy: sizing
+    trap: "'taille' is French for size. Needs both stock AND sizing policy"
+    confidence: high
+
+  - id: stock_02
+    text: "واش كاين بوط نمرة 42"
+    script: arabic
+    intent: stock_query
+    product: Botte Cuir Noir
+    policy: sizing
+    trap: "Arabic script with a numeric shoe size — '42' must NOT be treated as arabizi"
+    confidence: medium
+
+  - id: stock_03
+    text: "rani nchouf la chemise, mazal 3andkom?"
+    script: mixed
+    intent: stock_query
+    product: Chemise Lin Blanche
+    policy: null
+    trap: "'mazal' = still. Polite indirect phrasing rather than a direct question"
+    confidence: medium
+
+  - id: stock_04
+    text: "les bottes rah trje3 wela khlas?"
+    script: mixed
+    intent: stock_query
+    product: Botte Cuir Noir
+    policy: null
+    trap: "Asking about restock, not current stock. 'khlas' here means finished/gone, not 'pay'"
+    confidence: medium
+
+  # ── shipping — where Algerian specifics matter most ──────────────────────
+  - id: ship_01
+    text: "wach t livri l Oran?"
+    script: arabizi
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "'t livri' is French 'livrer' conjugated in darija. Oran is a wilaya"
+    confidence: high
+
+  - id: ship_02
+    text: "chhal livraison l Setif w wqtach tousel?"
+    script: mixed
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "Two questions: cost and time. 'w' = and"
+    confidence: high
+
+  - id: ship_03
+    text: "الليفريزون بشحال لبجاية"
+    script: arabic
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "French 'livraison' written in Arabic script — normalisation must not mangle it back"
+    confidence: medium
+
+  - id: ship_04
+    text: "3andkom Yalidine wela bureau?"
+    script: arabizi
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "Yalidine is a real Algerian courier. 'bureau' = pickup point. Needs local knowledge"
+    confidence: high
+
+  - id: ship_05
+    text: "ana f Tizi Ouzou, rah tosel 3andi?"
+    script: arabizi
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "City name is two words with a space — easy to split wrongly"
+    confidence: high
+
+  - id: ship_06
+    text: "livraison gratuite men chhal?"
+    script: mixed
+    intent: shipping_query
+    product: null
+    policy: shipping
+    trap: "Asking the free-shipping threshold. Answer is a number from the policy, must be exact"
+    confidence: high
+
+  # ── returns ─────────────────────────────────────────────────────────────
+  - id: return_01
+    text: "ida ma3jebnich nadir retour?"
+    script: mixed
+    intent: return_query
+    product: null
+    policy: returns
+    trap: "'ma3jebnich' = I don't like it. Long agglutinated negation, hard to tokenise"
+    confidence: medium
+
+  - id: return_02
+    text: "3andi 3 semaines, mazal najem nbadel?"
+    script: arabizi
+    intent: return_query
+    product: null
+    policy: returns
+    trap: "3 weeks EXCEEDS the 14-day window — the bot must say no, not yes. The '3' here is a NUMBER not ع"
+    confidence: high
+
+  - id: return_03
+    text: "واش نقدر نبدل التاي إذا ماجاتنيش"
+    script: arabic
+    intent: return_query
+    product: null
+    policy: returns
+    trap: "Exchange for size, not refund. 'ماجاتنيش' = it didn't fit me"
+    confidence: medium
+
+  - id: return_04
+    text: "labsstha marra wahda, najem nrodha?"
+    script: arabizi
+    intent: return_query
+    product: null
+    policy: returns
+    trap: "Worn once — policy says UNWORN only. Bot must catch the disqualifier, not just match 'return'"
+    confidence: medium
+
+  # ── mixed / messy — closest to real inbox traffic ────────────────────────
+  - id: mixed_01
+    text: "bonjour, chhal taman ta3 la veste rouge? w kayen size L? w t livrou l Blida?"
+    script: mixed
+    intent: multi_query
+    product: Veste Rouge Classic
+    policy: shipping
+    trap: "THREE intents in one message: price, stock, shipping. French + darija + English 'size'"
+    confidence: high
+
+  - id: mixed_02
+    text: "slm 3aslama kifach nchri men 3andkom"
+    script: arabizi
+    intent: how_to_order
+    product: null
+    policy: null
+    trap: "'slm' = salam abbreviated. Process question, no product"
+    confidence: high
+
+  - id: mixed_03
+    text: "SVP je veux la veste mais chhal le prix final avec livraison"
+    script: mixed
+    intent: price_query
+    product: Veste Rouge Classic
+    policy: shipping
+    trap: "Mostly French with darija 'chhal' dropped in. Needs price + shipping combined"
+    confidence: high
+
+  - id: mixed_04
+    text: "3aychek ghi goulili wach 3andkom des chemises blanches"
+    script: mixed
+    intent: stock_query
+    product: Chemise Lin Blanche
+    policy: null
+    trap: "'3aychek' = thanks/please (very Algerian). 'ghi' = just. Polite register"
+    confidence: medium
+
+  - id: mixed_05
+    text: "3andi probleme fel commande ta3i"
+    script: mixed
+    intent: complaint
+    product: null
+    policy: null
+    trap: "Complaint, not a question. Should likely escalate to a human, not answer from the KB"
+    confidence: high
+
+  # ── voice transcript style — no punctuation, run-on ──────────────────────
+  - id: voice_01
+    text: "aslema hbibi ana bghit nchri veste rouge hadik li rakom dayrinha f facebook chhal taman ta3ha w wach t livrou l Constantine"
+    script: mixed
+    intent: multi_query
+    product: Veste Rouge Classic
+    policy: shipping
+    trap: "Voice-note style: no punctuation, filler words, references a Facebook post. Long"
+    confidence: medium
+
+  - id: voice_02
+    text: "salam 3andkom botte cuir noir taille 43 wela la"
+    script: arabizi
+    intent: size_query
+    product: Botte Cuir Noir
+    policy: sizing
+    trap: "No punctuation. '43' is a size not arabizi. 'wela la' = or not"
+    confidence: high
+
+  # ── handoff and edge cases ──────────────────────────────────────────────
+  - id: handoff_01
+    text: "bghit nahder m3a wahed insan machi robot"
+    script: arabizi
+    intent: handoff_request
+    product: null
+    policy: null
+    trap: "Explicit human request. MUST escalate — the assignee check should silence the bot after"
+    confidence: high
+
+  - id: handoff_02
+    text: "3tini numero telephone ta3kom"
+    script: arabizi
+    intent: handoff_request
+    product: null
+    policy: null
+    trap: "Asking for a phone number — arguably handoff. Ambiguous on purpose"
+    confidence: high
+
+  - id: edge_01
+    text: "3500 DA bezzaf, ma3andi ghir 3000, tnazel?"
+    script: arabizi
+    intent: negotiation
+    product: Veste Rouge Classic
+    policy: null
+    trap: "PRICE HAGGLING — very common in Algeria. '3500' and '3000' are NUMBERS. Bot must not invent a discount"
+    confidence: high
+
+  - id: edge_02
+    text: "wach 3andkom promo?"
+    script: arabizi
+    intent: discount_query
+    product: null
+    policy: null
+    trap: "If no promo policy exists, the bot must say so rather than invent one"
+    confidence: high
+
+  - id: edge_03
+    text: "👍"
+    script: other
+    intent: acknowledgement
+    product: null
+    policy: null
+    trap: "Emoji only. Should not trigger a full RAG lookup or a long reply"
+    confidence: high
+
+  - id: edge_04
+    text: "?"
+    script: other
+    intent: unclear
+    product: null
+    policy: null
+    trap: "Single character. Bot should ask for clarification, not guess"
+    confidence: high
+
+  - id: edge_05
+    text: "kayen chi taille 38 fel veste? ana 3andi 38 f zara"
+    script: mixed
+    intent: size_query
+    product: Veste Rouge Classic
+    policy: sizing
+    trap: "Two '38's, both NUMBERS. References another brand's sizing — needs the sizing policy"
+    confidence: medium
+
+  - id: edge_06
+    text: "makanch réponse, rani nestenna men lbareh"
+    script: mixed
+    intent: complaint
+    product: null
+    policy: null
+    trap: "Complaining about slow response. 'lbareh' = yesterday. Should escalate, not answer"
+    confidence: medium
