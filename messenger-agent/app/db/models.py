@@ -35,7 +35,7 @@ class Base(DeclarativeBase):
 
 
 class MessageLog(Base):
-    __tablename__ = "messages"
+    __tablename__ = "messages_chatwoot"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     page_id: Mapped[str] = mapped_column(String(64), index=True)  # tenant key
@@ -77,7 +77,29 @@ class Product(Base):
     __tablename__ = "products"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    page_id: Mapped[str] = mapped_column(String(64), index=True)
     name: Mapped[str] = mapped_column(String(255), index=True)
     price: Mapped[str] = mapped_column(String(64))  # string: currency formatting is presentation
     stock: Mapped[int] = mapped_column(default=0)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class Policy(Base):
+    """Prose the client maintains: shipping, returns, sizing, warranty.
+
+    Separate from Product on purpose. Policies are PROSE — the right input for
+    retrieval. Prices are FACTS — they go through a SQL tool so the agent can
+    never paraphrase 3500 DA into 3000 DA.
+    """
+
+    __tablename__ = "policies"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    page_id: Mapped[str] = mapped_column(String(64), index=True, default="default")
+    title: Mapped[str] = mapped_column(String(255))
+    body: Mapped[str] = mapped_column(Text)
+    published: Mapped[bool] = mapped_column(Boolean, default=True)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+    )

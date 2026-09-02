@@ -12,10 +12,13 @@ from __future__ import annotations
 
 import logging
 
+import httpx
+
 from app import messenger_api
 from app.agent.graph import build_graph, run_turn
 from app.agent.prompts import SYSTEM_PROMPT
 from app.agent.tools import make_tools
+from app.chatwoot import send_reply, send_typing, escalate_to_human
 from app.cache import redis_ops
 from app.config import get_settings
 from app.db import repo
@@ -33,10 +36,48 @@ UNSUPPORTED_REPLY = (
 )
 
 
+async def _send_text(
+    http_client: httpx.AsyncClient,
+    inbound: InboundMessage,
+    text: str,
+) -> None:
+    """Route outgoing reply to Chatwoot or Meta Graph API depending on channel."""
+    if inbound.channel == "chatwoot":
+        from app import chatwoot
+
+        account_id = inbound.account_id if inbound.account_id is not None else 1
+        conversation_id = inbound.conversation_id or inbound.psid
+        logger.info("Sending Chatwoot reply to account=%s conv=%s: %s", account_id, conversation_id, text[:60])
+        await chatwoot.send_reply(
+            http_client, account_id, conversation_id, text
+        )
+    else:
+        logger.info("Sending Messenger reply to psid=%s: %s", inbound.psid, text[:60])
+        await messenger_api.send_text(http_client, inbound.psid, text)
+
+
+async def _send_typing(
+    http_client: httpx.AsyncClient,
+    inbound: InboundMessage,
+) -> None:
+    """Route typing indicator to Chatwoot or Meta Graph API."""
+    if inbound.channel == "chatwoot":
+        from app import chatwoot
+
+        account_id = inbound.account_id if inbound.account_id is not None else 1
+        conversation_id = inbound.conversation_id or inbound.psid
+        await chatwoot.send_typing(
+            http_client, account_id, conversation_id
+        )
+    else:
+        await messenger_api.send_typing(http_client, inbound.psid)
+
+
 async def process_event(inbound: InboundMessage) -> None:
     """One inbound event, end to end."""
     from app.main import app
 
+    convo_key = inbound.conversation_id or inbound.psid
     settings = get_settings()
     redis = getattr(app.state, "redis", None)
     session_factory = getattr(app.state, "session_factory", None)
@@ -51,7 +92,9 @@ async def process_event(inbound: InboundMessage) -> None:
             return
 
     # ── 2. HANDOFF CHECK ─────────────────────────────────────────────────────
-    if session_factory:
+    # For Meta, customers.handoff_active in PostgreSQL is the source of truth.
+    # For Chatwoot, handoff is conversation-scoped and managed in should_process().
+    if session_factory and inbound.channel != "chatwoot":
         async with session_factory() as session:
             customer = await repo.get_or_create_customer(
                 session, inbound.page_id, inbound.psid
@@ -83,8 +126,25 @@ async def process_event(inbound: InboundMessage) -> None:
         if session_factory:
             async with session_factory() as session:
                 await repo.set_handoff(session, inbound.page_id, inbound.psid, True)
+        if (
+            inbound.channel == "chatwoot"
+            and inbound.account_id
+            and inbound.conversation_id
+            and http_client
+        ):
+            from app import chatwoot
+
+            await chatwoot.escalate_to_human(
+                http_client,
+                inbound.account_id,
+                inbound.conversation_id,
+                note="Customer requested a human via HANDOFF postback.",
+            )
+        if session_factory and inbound.channel != "chatwoot": 
+            async with session_factory() as session:
+                await repo.set_handoff(session, inbound.page_id, inbound.psid, True)
         if http_client:
-            await messenger_api.send_text(http_client, inbound.psid, HANDOFF_REPLY)
+            await _send_text(http_client, inbound, HANDOFF_REPLY)
         return
 
     # ── 3b. MEDIA -> TEXT ────────────────────────────────────────────────────
@@ -103,13 +163,13 @@ async def process_event(inbound: InboundMessage) -> None:
 
     if not merged_text:
         if inbound.attachment_types and http_client:
-            await messenger_api.send_text(http_client, inbound.psid, UNSUPPORTED_REPLY)
+            await _send_text(http_client, inbound, UNSUPPORTED_REPLY)
         return
 
     # ── 4. DEBOUNCE ──────────────────────────────────────────────────────────
     if redis:
         debounced = await redis_ops.buffer_and_wait(
-            redis, inbound.psid, merged_text, debounce_seconds=settings.debounce_seconds
+            redis,convo_key, merged_text, debounce_seconds=settings.debounce_seconds
         )
         if debounced is None:
             return  # a newer message in the burst owns the flush
@@ -120,7 +180,7 @@ async def process_event(inbound: InboundMessage) -> None:
 
     # ── 5. LOCK ──────────────────────────────────────────────────────────────
     if redis:
-        if not await redis_ops.acquire_user_lock(redis, inbound.psid):
+        if not await redis_ops.acquire_user_lock(redis, convo_key):
             logger.info("Worker lock for %s already held.", inbound.psid)
             return
 
@@ -139,14 +199,25 @@ async def process_event(inbound: InboundMessage) -> None:
 
         # ── 7. TYPING INDICATOR ──────────────────────────────────────────────
         if http_client:
-            await messenger_api.send_typing(http_client, inbound.psid)
+            await _send_typing(http_client, inbound)
 
         # ── 8. AGENT TURN ────────────────────────────────────────────────────
         reply_text = FALLBACK_REPLY
         if llm and session_factory:
-            tools = make_tools(inbound.psid, inbound.page_id, session_factory)
+            tools = make_tools(
+                inbound.psid,
+                inbound.page_id,
+                session_factory,
+                channel=inbound.channel,
+                account_id=inbound.account_id,
+                conversation_id=inbound.conversation_id,
+                http_client=http_client,
+            )
             agent_graph = build_graph(llm, tools, SYSTEM_PROMPT, checkpointer=saver)
-            reply_text = await run_turn(agent_graph, merged_text, psid=inbound.psid)
+            thread_id = inbound.conversation_id or inbound.psid
+            reply_text = await run_turn(
+                agent_graph, merged_text, psid=inbound.psid, thread_id=thread_id
+            )
         else:
             logger.error(
                 "Agent skipped: llm=%s session_factory=%s — check the lifespan wiring.",
@@ -160,7 +231,7 @@ async def process_event(inbound: InboundMessage) -> None:
 
         # ── 9. SEND ──────────────────────────────────────────────────────────
         if http_client:
-            await messenger_api.send_text(http_client, inbound.psid, reply_text)
+            await _send_text(http_client, inbound, reply_text)
 
         # ── 10. LOG THE ASSISTANT MESSAGE ────────────────────────────────────
         if session_factory:
@@ -173,10 +244,9 @@ async def process_event(inbound: InboundMessage) -> None:
         logger.exception("Error processing message for %s: %s", inbound.psid, err)
         if http_client:
             try:
-                await messenger_api.send_text(http_client, inbound.psid, ERROR_REPLY)
+                await _send_text(http_client, inbound, ERROR_REPLY)
             except Exception:
                 logger.exception("Could not even send the error reply to %s.", inbound.psid)
     finally:
         if redis:
-            await redis_ops.release_user_lock(redis, inbound.psid)
-
+            await redis_ops.release_user_lock(redis, convo_key)

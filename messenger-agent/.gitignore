@@ -10,3 +10,4 @@ app/config/__pycache__
 app/schemas/__pycache__
 app/cache/__pycache__
 app/tests
+app/cache/

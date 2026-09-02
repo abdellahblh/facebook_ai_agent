@@ -24,9 +24,12 @@ async def init_engine(async_database_url: str) -> None:
 
     engine = create_async_engine(
         async_database_url,
-        echo=True,
+        echo=False,
         pool_size=5,
-        max_overflow=10
+        max_overflow=10,
+        pool_pre_ping=True,
+        # Recycle before Supabase's idle timeout reaches us.
+        pool_recycle=300,
     )
 
     SessionFactory = async_sessionmaker(

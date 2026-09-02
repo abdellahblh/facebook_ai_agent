@@ -1,28 +1,31 @@
-"""FastAPI app assembly — wiring provided; lifespan startup is YOURS.
+"""FastAPI app assembly: build every shared client ONCE at startup.
 
-Run: uvicorn app.main:app --reload --port 8000
+Everything the worker reads off app.state is created here. When a customer got
+a permanent apology reply for a whole evening, the cause was app.state.llm
+never being assigned — so the health endpoint below reports what is actually
+wired, instead of a hardcoded "ok".
 """
 
 from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
-from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver 
-from app.webhook import router as webhook_router
-from app.config import get_settings  
-from app.db.engine import init_engine
+
 import httpx
 import redis.asyncio as aioredis
+from fastapi import FastAPI, Request
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
+from psycopg.rows import dict_row
+from psycopg_pool import AsyncConnectionPool
+from pinecone import AsyncPinecone
+from app.chatwoot import router as chatwoot_router
+from app.config import get_settings
 from app.db import engine as db_engine
-from app.schemas import InboundMessage
-from langgraph.prebuilt import InjectedState, ToolNode
-from langchain_core.tools import tool
-from app.agent.tools import make_tools
-from app.agent.graph import build_graph
-from app.agent.prompts import SYSTEM_PROMPT
-from app.db.engine import dispose_engine
+from app.db.engine import dispose_engine, init_engine
+from app.kb import router as kb_router
+from fastapi.middleware.cors import CORSMiddleware
+
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
@@ -30,30 +33,76 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Build everything ONCE at startup; tear down cleanly at shutdown.
-
-  
-    """
     settings = get_settings()
+
     await init_engine(settings.async_database_url)
     app.state.session_factory = db_engine.SessionFactory
+
+    app.state.pg_pool = AsyncConnectionPool(
+        conninfo=settings.database_url,
+        min_size=2,
+        max_size=10,
+        kwargs={
+            "autocommit": True,
+            "row_factory": dict_row,
+            "prepare_threshold": None,
+        },
+        check=AsyncConnectionPool.check_connection,
+        max_idle=60,
+        max_lifetime=1800,
+        open=False,
+    )
+    await app.state.pg_pool.open()
+        # 3. Pinecone (Shared Client & Index)
+    pinecone_key = os.getenv("PINECONE_API_KEY")
+    if AsyncPinecone and pinecone_key:
+        app.state.pinecone = AsyncPinecone(api_key=pinecone_key)
+        app.state.pinecone_index = await app.state.pinecone.Index("facebook")
+    else:
+        app.state.pinecone = None
+        app.state.pinecone_index = None
+
+    app.state.saver = AsyncPostgresSaver(app.state.pg_pool)
+    await app.state.saver.setup()
+
     app.state.redis = aioredis.from_url(settings.redis_url)
     await app.state.redis.ping()
-    app.state.saver_cm = AsyncPostgresSaver.from_conn_string(settings.database_url)
+
     app.state.llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
-    app.state.session_factory = db_engine.SessionFactory
-    app.state.saver = await app.state.saver_cm.__aenter__()
-    await app.state.saver.setup()
     app.state.http = httpx.AsyncClient(timeout=30)
+
+    logger.info("Startup complete: db, redis, checkpointer, llm, http all wired.")
     yield
-    await app.state.http.aclose()
-    await app.state.saver_cm.__aexit__(None, None, None)
-    await app.state.redis.aclose()
-    await dispose_engine()
+
+    for name, closer in (
+        ("http", app.state.http.aclose()),
+        ("pg_pool", app.state.pg_pool.close()),
+        ("redis", app.state.redis.aclose()),
+        ("engine", dispose_engine()),
+    ):
+        try:
+            await closer
+        except Exception:
+            logger.exception("Error closing %s during shutdown.", name)
 
 
 app = FastAPI(title="Messenger AI Agent", lifespan=lifespan)
-app.include_router(webhook_router)
+app.include_router(chatwoot_router)
+app.include_router(kb_router)
+
+origins = [
+    "http://localhost:3000",
+    "https://chat.dzvoixoff.online"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+    max_age=600,
+)
 
 @app.get("/health/redis")
 async def redis_health(request: Request):
@@ -64,7 +113,19 @@ async def redis_health(request: Request):
         return {"redis": "disconnected", "error": str(e)}
 
 @app.get("/health")
-async def health() -> dict:
-    """Provided: extend it as you light up components (report db/redis/agent
-    readiness the way the debugger's /health reported mcp_connected)."""
-    return {"status": "ok", "mode": "skeleton"}
+async def health(request: Request) -> dict:
+    """Report what is ACTUALLY wired. A hardcoded {"status": "ok"} is how a
+    half-started app looks healthy while every customer gets the apology."""
+    state = request.app.state
+    components = {
+        "db": getattr(state, "session_factory", None) is not None,
+        "pg_pool": getattr(state, "pg_pool", None) is not None and not state.pg_pool.closed,
+        "redis": getattr(state, "redis", None) is not None,
+        "checkpointer": getattr(state, "saver", None) is not None,
+        "llm": getattr(state, "llm", None) is not None,
+        "http": getattr(state, "http", None) is not None,
+    }
+    return {"status": "ok" if all(components.values()) else "degraded", **components}
+
+
+
