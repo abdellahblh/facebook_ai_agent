@@ -20,7 +20,7 @@ from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from app.nlp.arabizi import (
     build_search_query,
     looks_like_arabizi,

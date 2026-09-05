@@ -8,13 +8,15 @@ from __future__ import annotations
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, Sequence
-from sqlalchemy import Select, asc, desc, or_, func
+from sqlalchemy import select, asc, desc, or_, func
 from app.db.models import (  
     Customer,
     DeadLetter,
     MessageLog,
     Product,
 )
+
+MAX_LIMIT = 20
 
 
 async def save_message(
@@ -103,9 +105,6 @@ async def find_products(
                 )
             )
 
-    # price_da is an INTEGER column. Comparing the display string does not
-    # work: '10000 DA' < '900 DA' is True, so a 10000 DA coat answers
-    # "anything under 900".
     if max_price is not None:
         stmt = stmt.where(Product.price <= max_price)
     if min_price is not None:

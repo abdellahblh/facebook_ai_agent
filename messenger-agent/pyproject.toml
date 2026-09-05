@@ -2,6 +2,9 @@
 name = "messenger-agent"
 version = "0.1.0"
 requires-python = ">=3.11"
+dependencies = [
+    "bfg>=0.1.0",
+]
 
 # ── The gate: same setup that caught 19 bugs in the debugger project ─────────
 

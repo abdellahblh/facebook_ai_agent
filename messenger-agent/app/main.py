@@ -25,6 +25,7 @@ from app.db import engine as db_engine
 from app.db.engine import dispose_engine, init_engine
 from app.kb import router as kb_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.agent.security import nemo_guardrails
 
 logging.basicConfig(level=logging.INFO)
 
@@ -53,11 +54,10 @@ async def lifespan(app: FastAPI):
         open=False,
     )
     await app.state.pg_pool.open()
-        # 3. Pinecone (Shared Client & Index)
-    pinecone_key = os.getenv("PINECONE_API_KEY")
-    if AsyncPinecone and pinecone_key:
-        app.state.pinecone = AsyncPinecone(api_key=pinecone_key)
-        app.state.pinecone_index = await app.state.pinecone.Index("facebook")
+    # 3. Pinecone (Shared Client & Index)
+    if AsyncPinecone and settings.pinecone_api_key:
+        app.state.pinecone = AsyncPinecone(api_key=settings.pinecone_api_key)
+        app.state.pinecone_index = await app.state.pinecone.index(settings.pinecone_index)
     else:
         app.state.pinecone = None
         app.state.pinecone_index = None
@@ -68,10 +68,25 @@ async def lifespan(app: FastAPI):
     app.state.redis = aioredis.from_url(settings.redis_url)
     await app.state.redis.ping()
 
+
     app.state.llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
     app.state.http = httpx.AsyncClient(timeout=30)
 
-    logger.info("Startup complete: db, redis, checkpointer, llm, http all wired.")
+    from app.agent.graph import build_graph
+    from app.agent.prompts import SYSTEM_PROMPT
+    from app.agent.tools import get_tools
+
+    app.state.agent_graph = build_graph(
+        app.state.llm,
+        get_tools(),
+        SYSTEM_PROMPT.format(business_name=settings.business_name),
+        checkpointer=app.state.saver,
+    )
+
+    nemo_guardrails.initialize()
+    app.state.nemo_guardrails = nemo_guardrails
+
+    logger.info("Startup complete: db, redis, checkpointer, llm, agent_graph, http, and NeMo Guardrails wired.")
     yield
 
     for name, closer in (
@@ -79,6 +94,8 @@ async def lifespan(app: FastAPI):
         ("pg_pool", app.state.pg_pool.close()),
         ("redis", app.state.redis.aclose()),
         ("engine", dispose_engine()),
+        ("pinecone", app.state.pinecone.close()),
+        ("nemoguardrails", app.state.nemo_guardrails.close()),
     ):
         try:
             await closer
@@ -104,13 +121,7 @@ app.add_middleware(
     max_age=600,
 )
 
-@app.get("/health/redis")
-async def redis_health(request: Request):
-    try:
-        pong = await request.app.state.redis.ping()
-        return {"redis": "connected", "ping": pong}
-    except Exception as e:
-        return {"redis": "disconnected", "error": str(e)}
+
 
 @app.get("/health")
 async def health(request: Request) -> dict:
@@ -123,9 +134,10 @@ async def health(request: Request) -> dict:
         "redis": getattr(state, "redis", None) is not None,
         "checkpointer": getattr(state, "saver", None) is not None,
         "llm": getattr(state, "llm", None) is not None,
+        "agent_graph": getattr(state, "agent_graph", None) is not None,
         "http": getattr(state, "http", None) is not None,
+        "nemo_guardrails": getattr(state, "nemo_guardrails", None) is not None
+        and state.nemo_guardrails.rails is not None,
     }
+    
     return {"status": "ok" if all(components.values()) else "degraded", **components}
-
-
-

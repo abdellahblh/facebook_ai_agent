@@ -22,13 +22,15 @@ class Settings:
 
     google_api_key: str = field(default_factory=lambda: os.getenv("GOOGLE_API_KEY", ""))
     gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite"))
+    pinecone_api_key: str = field(default_factory=lambda: os.getenv("PINECONE_API_KEY", ""))
+    pinecone_index: str = field(default_factory=lambda: os.getenv("PINECONE_INDEX", "facebook"))
 
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", ""))
     redis_url: str = field(default_factory=lambda: os.getenv("REDIS_URL", "redis://localhost:6379/0"))
 
     debounce_seconds: int = field(default_factory=lambda: int(os.getenv("DEBOUNCE_SECONDS", "10")))
     history_max_messages: int = field(default_factory=lambda: int(os.getenv("HISTORY_MAX_MESSAGES", "30")))
-
+    business_name: str = field(default_factory=lambda: os.getenv("business_name", "dzbot"))
     chatwoot_base_url: str = field(
         default_factory=lambda: os.getenv("CHATWOOT_BASE_URL", "")
     )
@@ -79,9 +81,8 @@ class Settings:
     chatwoot_handoff_agent_id: int = field(
         default_factory=lambda: int(os.getenv("CHATWOOT_HANDOFF_AGENT_ID", "0"))
     )
-
     graph_api_version: str = "v23.0"  # check the changelog when upgrading
-
+    OPENAI_API_KEY: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
     @property
     def async_database_url(self) -> str:
         """SQLAlchemy async needs the +asyncpg driver marker in the URL."""

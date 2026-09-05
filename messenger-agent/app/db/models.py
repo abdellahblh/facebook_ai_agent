@@ -17,11 +17,11 @@ Design decisions these tables encode (from the architecture review):
 """
 
 from __future__ import annotations
-
+from decimal import Decimal
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import JSON, Boolean, DateTime, Index, String, Text, Uuid
+from sqlalchemy import Boolean, DateTime, Index, Integer, String, Text, Uuid, Numeric, JSON
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -79,7 +79,12 @@ class Product(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     page_id: Mapped[str] = mapped_column(String(64), index=True)
     name: Mapped[str] = mapped_column(String(255), index=True)
-    price: Mapped[str] = mapped_column(String(64))  # string: currency formatting is presentation
+    price: Mapped[Decimal] = mapped_column(
+        Numeric(precision=10, scale=2),
+        nullable=False,
+        default=Decimal("0.00"),
+        index=True  
+    )  
     stock: Mapped[int] = mapped_column(default=0)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
