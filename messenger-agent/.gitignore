@@ -13,3 +13,4 @@ app/tests
 app/cache/
 ss 
 ss.pub
+uv.lock
