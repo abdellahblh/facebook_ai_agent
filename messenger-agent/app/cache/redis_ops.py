@@ -12,10 +12,12 @@ from __future__ import annotations
 
 import asyncio
 import time
+import secrets
 import redis.asyncio as aioredis
 
 DEDUPE_TTL_SECONDS = 3600
 LOCK_TTL_SECONDS = 120  # auto-release: a crashed worker must not lock a user forever
+DEBOUNCE_TTL_SECONDS = 120
 
 
 async def is_duplicate(r: aioredis.Redis, mid: str) -> bool:
@@ -28,21 +30,34 @@ async def is_duplicate(r: aioredis.Redis, mid: str) -> bool:
 
 async def buffer_and_wait(r: aioredis.Redis, psid: str, text: str, debounce_seconds: int | float) -> str | None:
     """The debounce — buffer rapid messages, wait for silence, answer ONCE with merged text."""
-    await r.rpush(f"buf:{psid}", text)
+    buffer_key = f"buf:{psid}"
+    last_key = f"last:{psid}"
+    await r.rpush(buffer_key, text)
     my_token = str(time.time_ns())
-    await r.set(f"last:{psid}", my_token)
+    # Expiry avoids a crashed worker merging a message from yesterday.
+    await r.set(last_key, my_token, ex=max(DEBOUNCE_TTL_SECONDS, int(debounce_seconds) * 3))
+    await r.expire(buffer_key, max(DEBOUNCE_TTL_SECONDS, int(debounce_seconds) * 3))
 
     await asyncio.sleep(debounce_seconds)
 
-    current_stamp = await r.get(f"last:{psid}")
+    current_stamp = await r.get(last_key)
     if isinstance(current_stamp, bytes):
         current_stamp = current_stamp.decode("utf-8")
 
     if current_stamp != my_token:
         return None
 
-    parts = await r.lrange(f"buf:{psid}", 0, -1)
-    await r.delete(f"buf:{psid}", f"last:{psid}")
+    # Compare/read/delete is one Redis operation. Without it, an arrival
+    # between LRANGE and DELETE could be silently erased.
+    script = """
+    if redis.call('GET', KEYS[2]) ~= ARGV[1] then return false end
+    local values = redis.call('LRANGE', KEYS[1], 0, -1)
+    redis.call('DEL', KEYS[1], KEYS[2])
+    return values
+    """
+    parts = await r.eval(script, 2, buffer_key, last_key, my_token)
+    if not parts:
+        return None
     decoded_parts = [p.decode("utf-8") if isinstance(p, bytes) else p for p in parts]
     return " ".join(decoded_parts)
 
@@ -53,7 +68,21 @@ async def acquire_user_lock(r: aioredis.Redis, psid: str) -> bool:
     return bool(was_set)
 
 
-async def release_user_lock(r: aioredis.Redis, psid: str) -> None:
-    """Delete the lock key."""
-    await r.delete(f"lock:{psid}")
+async def acquire_user_lock_token(r: aioredis.Redis, psid: str) -> str | None:
+    """Acquire a lock with an ownership token for safe release after TTLs."""
+    token = secrets.token_urlsafe(16)
+    acquired = await r.set(f"lock:{psid}", token, nx=True, ex=LOCK_TTL_SECONDS)
+    return token if acquired else None
 
+
+async def release_user_lock(r: aioredis.Redis, psid: str, token: str | None = None) -> None:
+    """Delete only our lock; never delete one acquired after our TTL expired."""
+    if token is None:
+        await r.delete(f"lock:{psid}")
+        return
+    await r.eval(
+        "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('DEL', KEYS[1]) end return 0",
+        1,
+        f"lock:{psid}",
+        token,
+    )

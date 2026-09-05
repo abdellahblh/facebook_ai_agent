@@ -87,11 +87,17 @@ async def process_event(inbound: InboundMessage) -> None:
 
     # ── 1. DEDUPE ────────────────────────────────────────────────────────────
     if redis and inbound.mid:
-        if await redis_ops.is_duplicate(redis, inbound.mid):
+        dedupe_id = f"{inbound.channel}:{inbound.page_id}:{inbound.mid}"
+        if await redis_ops.is_duplicate(redis, dedupe_id):
             logger.info("Duplicate message %s skipped.", inbound.mid)
             return
 
-    # ── 2. HANDOFF CHECK ─────────────────────────────────────────────────────
+    # ── 2. SEND TYPING ─────────────────────────────────────────────────────
+    if http_client:
+        await _send_typing(http_client, inbound)
+        logger.info("Typing indicator sent for message %s.", inbound.mid)
+
+    # ── 3. HANDOFF CHECK ─────────────────────────────────────────────────────
     # For Meta, customers.handoff_active in PostgreSQL is the source of truth.
     # For Chatwoot, handoff is conversation-scoped and managed in should_process().
     if session_factory and inbound.channel != "chatwoot":
@@ -121,7 +127,7 @@ async def process_event(inbound: InboundMessage) -> None:
                 )
                 return
 
-    # ── 3a. POSTBACK: explicit "talk to a human" button ──────────────────────
+    # ── 4. POSTBACK: explicit "talk to a human" button ──────────────────────
     if inbound.kind == "postback" and inbound.postback_payload == "HANDOFF":
         if session_factory:
             async with session_factory() as session:
@@ -179,8 +185,10 @@ async def process_event(inbound: InboundMessage) -> None:
         return
 
     # ── 5. LOCK ──────────────────────────────────────────────────────────────
+    lock_token = None
     if redis:
-        if not await redis_ops.acquire_user_lock(redis, convo_key):
+        lock_token = await redis_ops.acquire_user_lock_token(redis, convo_key)
+        if lock_token is None:
             logger.info("Worker lock for %s already held.", inbound.psid)
             return
 
@@ -203,26 +211,28 @@ async def process_event(inbound: InboundMessage) -> None:
 
         # ── 8. AGENT TURN ────────────────────────────────────────────────────
         reply_text = FALLBACK_REPLY
-        if llm and session_factory:
-            tools = make_tools(
-                inbound.psid,
-                inbound.page_id,
-                session_factory,
-                channel=inbound.channel,
-                account_id=inbound.account_id,
-                conversation_id=inbound.conversation_id,
-                http_client=http_client,
-            )
-            agent_graph = build_graph(llm, tools, SYSTEM_PROMPT, checkpointer=saver)
+        agent_graph = getattr(app.state, "agent_graph", None)
+        if llm and session_factory and agent_graph:
             thread_id = inbound.conversation_id or inbound.psid
             reply_text = await run_turn(
-                agent_graph, merged_text, psid=inbound.psid, thread_id=thread_id
+                agent_graph,
+                merged_text,
+                psid=inbound.psid,
+                thread_id=thread_id,
+                config_context={
+                    "page_id": inbound.page_id,
+                    "psid": inbound.psid,
+                    "channel": inbound.channel,
+                    "account_id": inbound.account_id,
+                    "conversation_id": inbound.conversation_id,
+                },
             )
         else:
             logger.error(
-                "Agent skipped: llm=%s session_factory=%s — check the lifespan wiring.",
+                "Agent skipped: llm=%s session_factory=%s graph=%s — check the lifespan wiring.",
                 bool(llm),
                 bool(session_factory),
+                bool(agent_graph),
             )
 
         if not reply_text or not reply_text.strip():
@@ -248,5 +258,5 @@ async def process_event(inbound: InboundMessage) -> None:
             except Exception:
                 logger.exception("Could not even send the error reply to %s.", inbound.psid)
     finally:
-        if redis:
-            await redis_ops.release_user_lock(redis, convo_key)
+        if redis and lock_token:
+            await redis_ops.release_user_lock(redis, convo_key, lock_token)

@@ -27,6 +27,7 @@ WHY page_id IS A QUERY PARAM ON DELETE
 from __future__ import annotations
 
 import logging
+import re
 import uuid
 from pathlib import Path
 
@@ -78,7 +79,6 @@ class ProductIn(BaseModel):
     price: str = Field(min_length=1, max_length=64)
     stock: int = Field(default=0, ge=0)
     description: str | None = None
-
 
 class PolicyIn(BaseModel):
     page_id: str = Field(min_length=1, max_length=64)

@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "messenger_agent": "./app/agent/studio_graph.py:graph"
+  },
+  "env": ".env",
+  "python_version": "3.11"
+}

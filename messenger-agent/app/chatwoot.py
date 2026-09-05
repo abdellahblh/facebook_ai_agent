@@ -360,12 +360,12 @@ def _conversation_url(account_id: int | str | None, conversation_id: int | str) 
     return f"{base}/api/v1/accounts/{resolved}/conversations/{conversation_id}"
 
 
-async def send_reply(client: httpx.AsyncClient, account_id: int | str | None, conversation_id: int | str, text:str) -> bool:
+async def send_reply(client: httpx.AsyncClient, account_id: int | str | None, conversation_id: int | str, text:str,private: bool =False) -> bool:
     async def _post():
         response = await client.post(
             f"{_conversation_url(account_id, conversation_id)}/messages",
             headers=_api_headers(),
-            json={"content": text, "message_type": "outgoing", "private": False},
+            json={"content": text, "message_type": "outgoing", "private": private},
             timeout=20.0,
         )
         response.raise_for_status()

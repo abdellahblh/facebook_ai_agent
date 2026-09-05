@@ -1,0 +1,18 @@
+# Eval-harness deps. Install into the SAME environment as the app — the runner
+# imports app.agent.*, app.db.*, app.config.
+langsmith>=0.4.37
+pytest>=8.0
+PyYAML>=6.0
+
+# Already in messenger-agent/requirements.txt, listed so nothing is implicit:
+#   langgraph            (langgraph.checkpoint.memory.MemorySaver)
+#   langchain-core       (HumanMessage)
+#   langchain-google-genai
+
+# App-side, for the guardrails fix in guardrails_fix/config.yml — NOT eval deps:
+#   nemoguardrails>=0.24.0   Python 3.10+. Every finding in the README was
+#                            verified on 0.24.0 / 3.12, not on older releases.
+#   langchain-openai         required by `engine: openai`. Missing -> LLMRails
+#                            init fails -> security.py sets rails=None again,
+#                            silently. Check it is installed before trusting a
+#                            `guardrails_loaded: true` in experiment metadata.

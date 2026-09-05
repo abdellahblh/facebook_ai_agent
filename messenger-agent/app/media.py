@@ -24,11 +24,15 @@ Definition of done: pytest tests/test_media.py
 from __future__ import annotations
 
 import base64
+import ipaddress
 import logging
+from urllib.parse import urljoin, urlparse
 
 import httpx
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import HumanMessage
+
+from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +41,7 @@ logger = logging.getLogger(__name__)
 MAX_MEDIA_BYTES = 12 * 1024 * 1024
 
 DOWNLOAD_TIMEOUT = 20.0
+MAX_REDIRECTS = 3
 
 TRANSCRIBE_PROMPT = (
     "Transcribe this voice message exactly, in its original language. "
@@ -62,7 +67,21 @@ async def fetch_media(client: httpx.AsyncClient, url: str) -> tuple[bytes, str] 
     ten minutes. Store the transcription, not the link.
     """
     try:
-        resp = await client.get(url, timeout=DOWNLOAD_TIMEOUT, follow_redirects=True)
+        current_url = url
+        for _ in range(MAX_REDIRECTS + 1):
+            if not _is_allowed_media_url(current_url):
+                logger.warning("Rejected media URL outside configured provider hosts")
+                return None
+            resp = await client.get(current_url, timeout=DOWNLOAD_TIMEOUT, follow_redirects=False)
+            if not resp.is_redirect:
+                break
+            location = resp.headers.get("location")
+            if not location:
+                return None
+            current_url = urljoin(current_url, location)
+        else:
+            logger.warning("Media download exceeded redirect limit")
+            return None
         if resp.status_code != 200:
             logger.warning("Failed to fetch media from %s (status %s)", url, resp.status_code)
             return None
@@ -74,6 +93,20 @@ async def fetch_media(client: httpx.AsyncClient, url: str) -> tuple[bytes, str] 
     except httpx.HTTPError as e:
         logger.warning("HTTP error fetching media: %s", e)
         return None
+
+
+def _is_allowed_media_url(url: str) -> bool:
+    """Reject arbitrary/private URLs before the HTTP client can fetch them."""
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or not parsed.hostname:
+        return False
+    host = parsed.hostname.lower()
+    try:
+        return not ipaddress.ip_address(host).is_private
+    except ValueError:
+        pass
+    chatwoot_host = urlparse(get_settings().chatwoot_base_url).hostname
+    return host.endswith(".fbcdn.net") or host == "lookaside.fbsbx.com" or host == chatwoot_host
 
 
 def build_media_block(data: bytes, mime_type: str) -> dict:
