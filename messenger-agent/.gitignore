@@ -14,3 +14,8 @@ app/cache/
 ss 
 ss.pub
 uv.lock
+node_modules/
+.codex/
+.venv/
+.tmp/
+LINKEDIN_POST.md 

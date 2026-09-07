@@ -36,7 +36,7 @@ async def search_products(
     min_price: int | None = None,
     in_stock_only: bool = False,
     sort: str = "relevance",
-    config: RunnableConfig | None = None,
+    config: RunnableConfig = None,
 ) -> str:
     """Search this shop's catalog. Returns exact prices and stock counts.
 
@@ -113,7 +113,7 @@ async def search_products(
 
 
 @tool
-async def policy_search(question: str, config: RunnableConfig | None = None) -> str:
+async def policy_search(question: str, config: RunnableConfig = None) -> str:
     """Search the tenant's published policies.
 
     The KB writes to PostgreSQL, so retrieval must query that same source
@@ -144,7 +144,7 @@ async def policy_search(question: str, config: RunnableConfig | None = None) -> 
 
 
 @tool
-async def handoff_to_human(reason: str, config: RunnableConfig | None = None) -> str:
+async def handoff_to_human(reason: str, config: RunnableConfig = None) -> str:
     """Escalate this conversation to a human teammate. Use when the
     customer is angry, stuck, or explicitly asks for a person."""
     configurable = (config or {}).get("configurable", {})
@@ -199,7 +199,7 @@ def make_tools(
         min_price: int | None = None,
         in_stock_only: bool = False,
         sort: str = "relevance",
-        config: RunnableConfig | None = None,
+        config: RunnableConfig = None,
     ) -> str:
         """Search this shop's catalog. Returns exact prices and stock counts."""
         cfg = dict((config or {}).get("configurable", {}))
@@ -219,7 +219,7 @@ def make_tools(
     @tool
     async def policy_search_bound(
         question: str,
-        config: RunnableConfig | None = None,
+        config: RunnableConfig = None,
     ) -> str:
         """Search the tenant's published policies."""
         cfg = dict((config or {}).get("configurable", {}))
@@ -233,7 +233,7 @@ def make_tools(
     @tool
     async def handoff_to_human_bound(
         reason: str,
-        config: RunnableConfig | None = None,
+        config: RunnableConfig = None,
     ) -> str:
         """Escalate this conversation to a human teammate."""
         cfg = dict((config or {}).get("configurable", {}))

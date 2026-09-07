@@ -6,6 +6,7 @@ Definition of done: pytest tests/test_repo.py
 
 from __future__ import annotations
 
+from decimal import Decimal
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional, Sequence
 from sqlalchemy import select, asc, desc, or_, func
@@ -106,9 +107,9 @@ async def find_products(
             )
 
     if max_price is not None:
-        stmt = stmt.where(Product.price <= max_price)
+        stmt = stmt.where(Product.price <= Decimal(str(max_price)))
     if min_price is not None:
-        stmt = stmt.where(Product.price >= min_price)
+        stmt = stmt.where(Product.price >= Decimal(str(min_price)))
 
     if in_stock_only:
         stmt = stmt.where(Product.stock > 0)
@@ -146,9 +147,9 @@ async def count_products(session: AsyncSession, *, page_id: str, **filters) -> i
                 or_(Product.name.ilike(pattern), Product.description.ilike(pattern))
             )
     if filters.get("max_price") is not None:
-        stmt = stmt.where(Product.price <= filters["max_price"])
+        stmt = stmt.where(Product.price <= Decimal(str(filters["max_price"])))
     if filters.get("min_price") is not None:
-        stmt = stmt.where(Product.price >= filters["min_price"])
+        stmt = stmt.where(Product.price >= Decimal(str(filters["min_price"])))
     if filters.get("in_stock_only"):
         stmt = stmt.where(Product.stock > 0)
     return int((await session.execute(stmt)).scalar_one())

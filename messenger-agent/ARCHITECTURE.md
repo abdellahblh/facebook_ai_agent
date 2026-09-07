@@ -94,27 +94,27 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 ---
 
 ### Phase 1: Webhook Ingestion & Security Verification
-* **Files involved**: [`app/main.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/main.py), [`app/webhook.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/webhook.py), [`app/security.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/security.py)
+* **Files involved**: `app/main.py`, `app/webhook.py`, `app/security.py`
 
 1. Meta sends an HTTP `POST /webhook` request containing a JSON body and an `X-Hub-Signature-256` header.
-2. `webhook.receive()` reads raw body bytes and invokes `verify_signature()` in [`app/security.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/security.py).
+2. `webhook.receive()` reads raw body bytes and invokes `verify_signature()` in `app/security.py`.
 3. `verify_signature()` computes an HMAC-SHA256 digest over the raw request bytes using `FACEBOOK_APP_SECRET` and compares it against Meta's signature with `hmac.compare_digest()`. If signature verification fails, HTTP `403 Forbidden` is returned immediately.
 
 ---
 
 ### Phase 2: Schema Parsing & Event Normalization
-* **Files involved**: [`app/schemas.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/schemas.py), [`app/webhook.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/webhook.py)
+* **Files involved**: `app/schemas.py`, `app/webhook.py`
 
 1. `WebhookPayload.model_validate_json(raw)` parses the JSON envelope. Models extend `Tolerant` (which sets `extra="ignore"`) so unexpected Meta fields will not break the endpoint.
 2. `webhook.normalize()` extracts events:
    * Echo messages (`is_echo = True`) and delivery/read receipts are ignored.
    * Relevant message/postback attributes are packed into a platform-agnostic `InboundMessage` dataclass (`page_id`, `psid`, `kind`, `text`, `attachment_urls`, `postback_payload`, `mid`).
-3. `process_event(normalized)` is invoked in [`app/worker.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/worker.py).
+3. `process_event(normalized)` is invoked in `app/worker.py`.
 
 ---
 
 ### Phase 3: Middleware Pipeline & Safety Guards
-* **Files involved**: [`app/worker.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/worker.py), [`app/cache/redis_ops.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/cache/redis_ops.py), [`app/db/repo.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/db/repo.py)
+* **Files involved**: `app/worker.py`, `app/cache/redis_ops.py`, `app/db/repo.py`
 
 `process_event()` executes a 10-step sequence:
 
@@ -131,7 +131,7 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 ---
 
 ### Phase 4: Database Logging & Typing Indicator
-* **Files involved**: [`app/db/repo.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/db/repo.py), [`app/messenger_api.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/messenger_api.py)
+* **Files involved**: `app/db/repo.py`, `app/messenger_api.py`
 
 1. `repo.save_message()` logs the merged user input into PostgreSQL `messages` table (`role="user"`).
 2. `messenger_api.send_typing()` sends a POST request to Meta Graph API endpoint `/me/messages` with body `{"recipient": {"id": psid}, "sender_action": "typing_on"}`.
@@ -139,7 +139,7 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 ---
 
 ### Phase 5: LangGraph Execution & Agent Tools
-* **Files involved**: [`app/agent/graph.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/agent/graph.py), [`app/agent/tools.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/agent/tools.py), [`app/agent/prompts.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/agent/prompts.py)
+* **Files involved**: `app/agent/graph.py`, `app/agent/tools.py`, `app/agent/prompts.py`
 
 1. `make_tools(psid, page_id, session_factory)` initializes request-scoped tools:
    * **`product_lookup(query)`**: Calls `repo.find_products()` via case-insensitive SQL ILIKE search on `products` table. Returns exact name, price, and stock count.
@@ -153,7 +153,7 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 ---
 
 ### Phase 6: Response Delivery & Splitting
-* **Files involved**: [`app/messenger_api.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/messenger_api.py)
+* **Files involved**: `app/messenger_api.py`
 
 1. `messenger_api.send_text()` accepts the generated response text.
 2. Meta Messenger enforces a strict 2,000 character limit per message payload. `split_message()` splits long agent responses cleanly along line breaks or sentence boundaries (`[.!?]`).
@@ -162,7 +162,7 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 ---
 
 ### Phase 7: Logging & Cleanup
-* **Files involved**: [`app/db/repo.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/db/repo.py), [`app/cache/redis_ops.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/cache/redis_ops.py)
+* **Files involved**: `app/db/repo.py`, `app/cache/redis_ops.py`
 
 1. `repo.save_message()` logs the AI response into PostgreSQL `messages` table (`role="assistant"`).
 2. The `finally` block in `process_event()` calls `redis_ops.release_user_lock(redis, psid)` to remove key `lock:{psid}`, allowing subsequent messages from the customer to be processed.
@@ -182,14 +182,14 @@ Below is the step-by-step trace of what happens when a customer sends a message 
 
 | File Path | Main Classes / Functions | Primary Responsibility |
 | :--- | :--- | :--- |
-| [`app/main.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/main.py) | `lifespan()`, `FastAPI app` | Application startup, resource initialization (DB, Redis, LLM, Saver, HTTP) |
-| [`app/webhook.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/webhook.py) | `verify()`, `receive()`, `normalize()` | Webhook verification endpoint, incoming webhook receiver, message normalizer |
-| [`app/security.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/security.py) | `verify_signature()` | Validates Meta HMAC-SHA256 signature on raw request body |
-| [`app/schemas.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/schemas.py) | `WebhookPayload`, `MessagingEvent`, `InboundMessage` | Tolerant Pydantic models for parsing Meta payloads and normalizing events |
-| [`app/worker.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/worker.py) | `process_event()` | Core end-to-end pipeline orchestrator |
-| [`app/cache/redis_ops.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/cache/redis_ops.py) | `is_duplicate()`, `buffer_and_wait()`, `acquire_user_lock()`, `release_user_lock()` | Deduplication, burst debouncing, and distributed locks via Redis |
-| [`app/db/repo.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/db/repo.py) | `save_message()`, `get_or_create_customer()`, `set_handoff()`, `find_products()` | Database operations interface for PostgreSQL tables |
-| [`app/agent/graph.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/agent/graph.py) | `build_graph()`, `run_turn()` | LangGraph state graph compilation and multi-turn turn runner |
-| [`app/agent/tools.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/agent/tools.py) | `make_tools()`, `product_lookup`, `policy_search`, `handoff_to_human` | LangChain tools factory providing access to SQL catalog, Pinecone RAG, and handoff |
-| [`app/messenger_api.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/app/messenger_api.py) | `send_typing()`, `send_text()`, `split_message()` | Outbound communication with Meta Graph API |
-| [`rag/rag.py`](file:///c:/Users/PcTec/OneDrive/Documents/courses/cs50ai/messenger-agent-skeleton/messenger-agent/rag/rag.py) | `ingest_docs()` | Markdown splitting, vector embedding (`llama-text-embed-v2`), and Pinecone vector store upsert |
+| `app/main.py` | `lifespan()`, `FastAPI app` | Application startup, resource initialization (DB, Redis, LLM, Saver, HTTP) |
+| `app/webhook.py` | `verify()`, `receive()`, `normalize()` | Webhook verification endpoint, incoming webhook receiver, message normalizer |
+| `app/security.py` | `verify_signature()` | Validates Meta HMAC-SHA256 signature on raw request body |
+| `app/schemas.py` | `WebhookPayload`, `MessagingEvent`, `InboundMessage` | Tolerant Pydantic models for parsing Meta payloads and normalizing events |
+| `app/worker.py` | `process_event()` | Core end-to-end pipeline orchestrator |
+| `app/cache/redis_ops.py` | `is_duplicate()`, `buffer_and_wait()`, `acquire_user_lock()`, `release_user_lock()` | Deduplication, burst debouncing, and distributed locks via Redis |
+| `app/db/repo.py` | `save_message()`, `get_or_create_customer()`, `set_handoff()`, `find_products()` | Database operations interface for PostgreSQL tables |
+| `app/agent/graph.py` | `build_graph()`, `run_turn()` | LangGraph state graph compilation and multi-turn turn runner |
+| `app/agent/tools.py` | `make_tools()`, `product_lookup`, `policy_search`, `handoff_to_human` | LangChain tools factory providing access to SQL catalog, Pinecone RAG, and handoff |
+| `app/messenger_api.py` | `send_typing()`, `send_text()`, `split_message()` | Outbound communication with Meta Graph API |
+| `rag/rag.py` | `ingest_docs()` | Markdown splitting, vector embedding (`llama-text-embed-v2`), and Pinecone vector store upsert |

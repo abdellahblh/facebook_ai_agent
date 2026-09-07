@@ -20,11 +20,16 @@ LOCK_TTL_SECONDS = 120  # auto-release: a crashed worker must not lock a user fo
 DEBOUNCE_TTL_SECONDS = 120
 
 
-async def is_duplicate(r: aioredis.Redis, mid: str) -> bool:
+async def is_duplicate(r: aioredis.Redis, channel: str, page_id: str, mid: str) -> bool:
     """True if we've already seen this message id. Meta redelivers webhooks —
     without this, every redelivery makes the bot answer the customer twice.
+
+    Uses the same key namespace as streams.seen_key (seen:{channel}:{page_id}:{mid})
+    so toggling QUEUE_ENABLED mid-flight does not create two dedupe regimes.
     """
-    was_set = await r.set(f"seen:{mid}", "1", nx=True, ex=DEDUPE_TTL_SECONDS)
+    if not mid:
+        return False
+    was_set = await r.set(f"seen:{channel}:{page_id}:{mid}", "1", nx=True, ex=DEDUPE_TTL_SECONDS)
     return not bool(was_set)
 
 
@@ -32,11 +37,11 @@ async def buffer_and_wait(r: aioredis.Redis, psid: str, text: str, debounce_seco
     """The debounce — buffer rapid messages, wait for silence, answer ONCE with merged text."""
     buffer_key = f"buf:{psid}"
     last_key = f"last:{psid}"
-    await r.rpush(buffer_key, text)
-    my_token = str(time.time_ns())
-    # Expiry avoids a crashed worker merging a message from yesterday.
-    await r.set(last_key, my_token, ex=max(DEBOUNCE_TTL_SECONDS, int(debounce_seconds) * 3))
-    await r.expire(buffer_key, max(DEBOUNCE_TTL_SECONDS, int(debounce_seconds) * 3))
+    async with r.pipeline(transaction=True) as pipe:
+        pipe.rpush(buffer_key, text)
+        pipe.expire(buffer_key, ttl)
+        pipe.set(last_key, my_token, ex=ttl)
+        await pipe.execute()
 
     await asyncio.sleep(debounce_seconds)
 
@@ -60,12 +65,6 @@ async def buffer_and_wait(r: aioredis.Redis, psid: str, text: str, debounce_seco
         return None
     decoded_parts = [p.decode("utf-8") if isinstance(p, bytes) else p for p in parts]
     return " ".join(decoded_parts)
-
-
-async def acquire_user_lock(r: aioredis.Redis, psid: str) -> bool:
-    """One reply pipeline per customer at a time."""
-    was_set = await r.set(f"lock:{psid}", "1", nx=True, ex=LOCK_TTL_SECONDS)
-    return bool(was_set)
 
 
 async def acquire_user_lock_token(r: aioredis.Redis, psid: str) -> str | None:

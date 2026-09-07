@@ -2,26 +2,28 @@
 models:
   - type: main
     engine: openai
-    model: llama-3.1-8b-instant
+    model: "openai/gpt-oss-safeguard-20b"
     parameters:
-      base_url: https://api.groq.com/openai/v1
+      base_url: "https://api.groq.com/openai/v1"
       temperature: 0.2
       max_tokens: 512
   - type: embeddings
     engine: FastEmbed
-    model: all-MiniLM-L6-v2
-  - type: "topic_control"
-    engine: nim
-    parameters:
-      base_url: "https://api.groq.com/openai/v1"
-      model_name: "llama-3.1-nemoguard-8b-topic-control"
+    model: "all-MiniLM-L6-v2"
 
 rails:
+  config:
+    injection_detection:
+      injections:
+        - code
+        - sqli
+        - template
+        - xss
+      action: reject
   input:
     parallel: True 
     flows:
       - self check input
-      - topic safety check input $model=topic_control
   output:
     flows:
       - self check output

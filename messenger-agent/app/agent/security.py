@@ -102,7 +102,7 @@ class NeMoGuardrailsWrapper:
             try:
                 # NeMo Guardrails OpenAI LLM engine expects OPENAI_API_KEY in environment variables
                 settings = get_settings()
-                OPENAI_API_KEY = get_settings.OPENAI_API_KEY
+                OPENAI_API_KEY = settings.OPENAI_API_KEY
                 if OPENAI_API_KEY:
                     os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
                 config = RailsConfig.from_path(self.config_dir)

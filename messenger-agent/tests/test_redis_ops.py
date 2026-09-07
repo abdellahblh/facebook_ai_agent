@@ -6,17 +6,17 @@ from app.cache.redis_ops import acquire_user_lock, buffer_and_wait, is_duplicate
 
 
 async def test_first_time_is_not_duplicate(fake_redis):
-    assert await is_duplicate(fake_redis, "m_1") is False
+    assert await is_duplicate(fake_redis, "chatwoot", "page-1", "m_1") is False
 
 
 async def test_second_time_is_duplicate(fake_redis):
-    await is_duplicate(fake_redis, "m_1")
-    assert await is_duplicate(fake_redis, "m_1") is True
+    await is_duplicate(fake_redis, "chatwoot", "page-1", "m_1")
+    assert await is_duplicate(fake_redis, "chatwoot", "page-1", "m_1") is True
 
 
 async def test_different_mids_independent(fake_redis):
-    await is_duplicate(fake_redis, "m_1")
-    assert await is_duplicate(fake_redis, "m_2") is False
+    await is_duplicate(fake_redis, "chatwoot", "page-1", "m_1")
+    assert await is_duplicate(fake_redis, "chatwoot", "page-1", "m_2") is False
 
 
 async def test_debounce_merges_burst_into_one_flush(fake_redis):

@@ -40,12 +40,26 @@ import os
 import sys
 import uuid
 import warnings
-
+import time
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import HumanMessage
 from langsmith import Client, aevaluate
-
+from app.util.retry import with_retry
 from tests.evals.evaluators import ALL_EVALUATORS, TOOL_ALIASES
+from google.api_core.exceptions import ResourceExhausted, ServiceUnavailable, InternalServerError
+from app.config import get_settings
+import httpx
 
+# Catch Gemini quota/transient errors AND HTTP transport layer timeouts
+RETRYABLE_EXCEPTIONS = (
+    ResourceExhausted,       # 429 Rate Limits / Quotas
+    ServiceUnavailable,      # 503 Backend overload
+    InternalServerError,     # 500 Google side
+    OutputParserException,   # LLM output formatting glitch
+    httpx.ReadTimeout,       # Network drop
+    httpx.ConnectTimeout,
+)
 DATASET = "english-production-readiness-v1"
 TURN_SEP = " || "
 # Verbatim from app/agent/graph.py — the refusal production returns when a
@@ -56,6 +70,15 @@ RUN_TURN_STEPS = (
     "pii_input_middleware", "check_input", "ainvoke", "check_output", "pii_output_middleware",
 )
 CALLS_PER_TURN = 2.2
+@retry(
+    reraise=True,
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=1, min=6, max=60),
+    retry=retry_if_exception_type(RETRYABLE_EXCEPTIONS),
+    before_sleep=lambda retry_state: print(f"Rate limited, retrying in {retry_state.next_action.sleep:.1f}s...")
+)
+async def call_with_retry(coro):
+    return await coro
 
 
 def check_drift(run_turn_fn) -> list[str]:
@@ -74,22 +97,29 @@ def _reply_text(content) -> str:
 
 
 def make_target(graph, guardrails, pii_in, pii_out, *,
-                page_id: str = "demo", max_input_chars: int = 8_000, recursion_limit: int = 15):
+                page_id: str = "1", max_input_chars: int = 8_000, recursion_limit: int = 15):
     """Build the LangSmith target. Every dependency is injected so the
     smoke test can pass fakes and never import app.* or call Gemini."""
 
     async def target(inputs: dict) -> dict:
         thread_id = f"eval-{uuid.uuid4()}"
-        turns = [t.strip() for t in (inputs.get("text") or "").split(TURN_SEP)]
+        raw_text = inputs.get("text")
+        if not raw_text:
+            print(f"WARNING: Empty or missing 'text' in inputs: {inputs}")
+        turns = [t.strip() for t in (raw_text or "").split(TURN_SEP)]
+        if not turns or all(t == "" for t in turns):
+            print(f"WARNING: No valid turns in input text: {raw_text!r}")
         tool_outputs: list[str] = []
         tools_called: list[str] = []
         answer = ""
         blocked_by: str | None = None
         seen = 0  # messages already scanned; the checkpointer returns full history
 
-        for turn in turns:
+        for turn_idx, turn in enumerate(turns):
             blocked_by = None
             user_text = turn[:max_input_chars]
+            if not user_text:
+                print(f"WARNING: Turn {turn_idx} is empty after stripping")
 
             # 1. PII mask on input
             if hasattr(pii_in, "mask"):
@@ -102,11 +132,11 @@ def make_target(graph, guardrails, pii_in, pii_out, *,
                 continue
 
             # 3. Graph
-            result = await graph.ainvoke(
+            result = await call_with_retry(graph.ainvoke(
                 {"messages": [HumanMessage(content=user_text)]},
                 config={"configurable": {"thread_id": thread_id, "page_id": page_id},
                         "recursion_limit": recursion_limit},
-            )
+            ))
             msgs = result["messages"]
             for m in msgs[seen:]:
                 if getattr(m, "type", "") == "tool":
@@ -209,6 +239,30 @@ async def main(args: argparse.Namespace) -> None:
     settings = get_settings()
     if hasattr(db_engine, "init_engine"):
         await db_engine.init_engine(settings.async_database_url)
+
+    # Seed the database with test products if not already present
+    print(f"Seeding database for page_id='{args.page_id}'...")
+    try:
+        from sqlalchemy import text as sql_text
+        seed_sql = pathlib.Path(__file__).parent / "seed_products.sql"
+        if seed_sql.exists():
+            sql_content = seed_sql.read_text(encoding="utf-8")
+            # Replace gen_random_uuid() with actual UUIDs for broader DB compatibility
+            import re
+            import uuid as uuid_module
+            def replace_uuid(match):
+                return f"'{uuid_module.uuid4()}'"
+            seeded_sql = re.sub(r'gen_random_uuid\(\)', replace_uuid, sql_content)
+            async with db_engine.engine.begin() as conn:
+                await conn.execute(sql_text(seeded_sql))
+            print("Database seeded successfully.")
+        else:
+            print(f"WARNING: seed file not found at {seed_sql}")
+    except Exception as e:
+        print(f"WARNING: Database seeding failed: {e} — proceeding anyway")
+
+    # Initialize NeMo Guardrails for the eval (normally done in FastAPI lifespan)
+    nemo_guardrails.initialize()
 
     llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
     tools = make_tools("eval-psid", args.page_id, db_engine.SessionFactory)

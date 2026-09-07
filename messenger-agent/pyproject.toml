@@ -3,7 +3,11 @@ name = "messenger-agent"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "alembic>=1.19.2",
     "bfg>=0.1.0",
+    "google-api-core>=2.36.0",
+    "langchain-core>=1.6.2",
+    "tenacity>=9.1.4",
 ]
 
 # ── The gate: same setup that caught 19 bugs in the debugger project ─────────

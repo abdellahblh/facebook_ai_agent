@@ -18,8 +18,7 @@ import hmac
 
 
 def verify_signature(app_secret: str, raw_body: bytes, header_value: str | None) -> bool:
-    Return True only if header_value is a
-      valid signature of raw_body.
+    """Return True only if header_value is a valid signature of raw_body."""
     if header_value is None or not header_value.startswith("sha256="):
         return False
     their_sig = header_value[7:]

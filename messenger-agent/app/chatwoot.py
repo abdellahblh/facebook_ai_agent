@@ -33,13 +33,14 @@ import logging
 import secrets
 from typing import Any, Literal
 from urllib.parse import urlsplit, urlunsplit
-from app.util.retry import with_retry_send
+
 import httpx
 from fastapi import APIRouter, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.config import get_settings
 from app.schemas import InboundMessage
+from app.util.retry import with_retry_send
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -76,7 +77,7 @@ class ChatwootAssignee(Tolerant):
     email: str | None = None
     type: str | None = None
 
- 
+
 class ChatwootTeam(Tolerant):
     id: int | None = None
     name: str | None = None
@@ -223,7 +224,7 @@ def should_process(event: ChatwootEvent) -> tuple[bool, str]:
 
     meta = event.conversation.meta
     assignee = meta.assignee if meta else None
-    
+
     if assignee and (assignee.type or "").lower() != "agent_bot":
         return False, f"assigned to agent {assignee.id}"
     team = meta.team if meta else None
@@ -327,12 +328,52 @@ async def chatwoot_webhook(webhook_secret: str, request: Request) -> Response | 
         logger.exception("Failed to process Chatwoot event — dropping, not retrying.")
         return {"status": "ok"}
 
-    # ACK NOW, WORK LATER. Transcription + an agent turn takes many seconds;
-    # awaiting it here blows Chatwoot's webhook timeout, Chatwoot retries, and
-    # the customer gets answered twice.
+    # ENQUEUE NOW, WORK LATER. Transcription + an agent turn takes many
+    # seconds; awaiting it here blows Chatwoot's webhook timeout, Chatwoot
+    # retries, and the customer gets answered twice. The stream gives
+    # durability across crashes: the producer's `seen:` SETNX stops one
+    # message from enqueueing twice, and the consumer's `sent:` flag stops a
+    # crash-between-send-and-ACK from double-replying.
+    settings = get_settings()
+    if settings.queue_enabled:
+        from app.cache import streams as queue
+        from app.main import app
+
+        redis = getattr(app.state, "redis", None)
+        if redis is None:
+            logger.error(
+                "Queue enabled but Redis is not wired — returning 503 so Chatwoot retries."
+            )
+            return Response(status_code=503)
+        try:
+            if not await queue.try_reserve(inbound, redis):
+                logger.info("Duplicate message %s already enqueued.", inbound.mid)
+                return {"status": "ignored"}
+        except Exception:
+            logger.exception("Failed to reserve Chatwoot event — returning 503 for redelivery.")
+            return Response(status_code=503)
+
+        try:
+            await queue.enqueue(redis, inbound)
+        except Exception:
+            # Release the reservation so a Chatwoot retry can enqueue cleanly.
+            # Without this, the retry hits `seen:` and is dropped as "ignored"
+            # — the message is never answered (silent loss).
+            logger.exception(
+                "Failed to enqueue Chatwoot event — releasing reservation and returning 503."
+            )
+            try:
+                await queue.release_reservation(redis, inbound)
+            except Exception:
+                logger.exception("Could not release reservation for %s.", inbound.mid)
+            return Response(status_code=503)
+        return {"status": "ok"}
+
+    # Escape hatch: QUEUE_ENABLED=false restores the old fire-and-forget task
+    # path (exact old behavior, including in-process dedupe) without a redeploy.
     from app import worker
 
-    task = asyncio.create_task(worker.process_event(inbound))
+    task = asyncio.create_task(worker.process_event(inbound, dedupe=True))
     task.add_done_callback(_log_worker_failure)
     return {"status": "ok"}
 

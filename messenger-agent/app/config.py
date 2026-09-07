@@ -27,6 +27,9 @@ class Settings:
 
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", ""))
     redis_url: str = field(default_factory=lambda: os.getenv("REDIS_URL", "redis://localhost:6379/0"))
+    langsmith_api_key: str = field(default_factory=lambda: os.getenv("LANGSMITH_API_KEY", ""))
+    langsmith_tracing: bool = field(default_factory=lambda: os.getenv("LANGSMITH_TRACING", "false").lower() == "true")
+    langsmith_project: str = field(default_factory=lambda: os.getenv("LANGSMITH_PROJECT", "facebook_ai_agent"))
 
     debounce_seconds: int = field(default_factory=lambda: int(os.getenv("DEBOUNCE_SECONDS", "10")))
     history_max_messages: int = field(default_factory=lambda: int(os.getenv("HISTORY_MAX_MESSAGES", "30")))
@@ -83,6 +86,31 @@ class Settings:
     )
     graph_api_version: str = "v23.0"  # check the changelog when upgrading
     OPENAI_API_KEY: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
+
+    # Webhook inbox queue (Redis Streams). The Chatwoot webhook enqueues, an
+    # in-process consumer drains it and runs worker.process_event. Set
+    # QUEUE_ENABLED=false as the ops escape hatch to revert to inline tasks.
+    redis_stream: str = field(
+        default_factory=lambda: os.getenv("REDIS_STREAM", "webhook:inbound")
+    )
+    redis_stream_group: str = field(
+        default_factory=lambda: os.getenv("REDIS_STREAM_GROUP", "webhook-consumers")
+    )
+    queue_enabled: bool = field(
+        default_factory=lambda: os.getenv("QUEUE_ENABLED", "true").lower() == "true"
+    )
+    queue_reclaim_min_idle_s: int = field(
+        # How long an unacked entry must sit idle before XAUTOCLAIM presumes its
+        # consumer died and reclaims it. MUST exceed worst-case turn duration so
+        # a slow-but-alive consumer is never tripped. Default 180s.
+        default_factory=lambda: int(os.getenv("QUEUE_RECLAIM_MIN_IDLE_S", "180"))
+    )
+    queue_max_attempts: int = field(
+        default_factory=lambda: int(os.getenv("QUEUE_MAX_ATTEMPTS", "3"))
+    )
+    queue_maxlen: int = field(
+        default_factory=lambda: int(os.getenv("QUEUE_MAXLEN", "10000"))
+    )
     @property
     def async_database_url(self) -> str:
         """SQLAlchemy async needs the +asyncpg driver marker in the URL."""
