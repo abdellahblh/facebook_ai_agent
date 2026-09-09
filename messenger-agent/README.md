@@ -1,6 +1,13 @@
-# Messenger AI Agent — Production Customer Support Bot
+# 🤖 Messenger AI Agent — Production Customer Support Bot
 
-An e-commerce customer support agent for an Algerian clothing store, deployed on **Chatwoot** with Facebook Messenger integration. The bot handles product inquiries, policy questions (returns, delivery, warranty), media messages (photos, voice notes), and human handoff — all in Algerian darija, French, or English.
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![LangGraph](https://img.shields.io/badge/LangGraph-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain-ai.github.io/langgraph/)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+
+An e-commerce customer support agent designed for an Algerian clothing store, deployed on **Chatwoot** with Meta Facebook Messenger integration. Handles product inquiries, store policies (returns, warranty, shipping), media processing (images, voice notes), and automated human handoff — natively supporting **Algerian Darija**, **French**, and **English**.
 
 ## Quick Start
 
@@ -108,45 +115,126 @@ pytest tests/test_kb.py             # KB admin API
 
 ## Directory Structure
 
-```
-messenger-agent/
-├── app/
-│   ├── main.py                  # FastAPI entrypoint, lifespan, resource wiring
-│   ├── config.py                # All settings from .env
-│   ├── security.py              # HMAC-SHA256 signature verification
-│   ├── schemas.py               # Tolerant Pydantic models for webhook payloads
-│   ├── webhook.py               # Meta webhook (GET verify + POST events)
-│   ├── chatwoot.py              # Chatwoot webhook, outbound replies, handoff
-│   ├── worker.py                # Core pipeline + queue consumer
-│   ├── messenger_api.py         # Outbound Meta Graph API helper
-│   ├── media.py                 # Voice transcription + image description
-│   ├── kb.py                    # KB admin API + Chatwoot dashboard panel
-│   ├── cache/
-│   │   ├── redis_ops.py         # Dedupe, debounce, per-user locks
-│   │   └── streams.py           # Redis Streams queue (producer + consumer ops)
-│   ├── db/
-│   │   ├── engine.py            # Async SQLAlchemy engine
-│   │   ├── models.py            # ORM models (MessageLog, Customer, Product, Policy)
-│   │   └── repo.py              # Database queries
-│   ├── nlp/
-│   │   └── arabizi.py           # Darija/Latin normalizer
-│   └── agent/
-│       ├── graph.py             # LangGraph state machine + guardrails nodes
-│       ├── prompts.py           # System prompt (English + Darija versions)
-│       ├── state.py             # AgentState TypedDict
-│       ├── tools.py             # Tool factory (search, policy, handoff)
-│       └── security.py          # PII masking + NeMo Guardrails wrapper
-├── rag/
-│   ├── politiques_boutique.md   # Raw policy document
-│   └── rag.py                   # Embedding + Pinecone ingestion script
-├── tests/                       # All test suites
-│   ├── evals/                   # LangSmith-compatible evaluation scripts
-│   └── ...
-├── docker-compose.yml           # Postgres + Redis dev stack
-├── requirements.txt             # Dependencies
-└── pyproject.toml               # ruff, mypy, pytest config
-```
+```plaintext
+.
+├── messenger-agent
+│   ├── ARCHITECTURE.md
+│   ├── alembic
+│   │   ├── README
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   │   └── versions
+│   ├── alembic.ini
+│   ├── app
+│   │   ├── __init__.py
+│   │   ├── agent
+│   │   │   ├── __init__.py
+│   │   │   ├── graph.py
+│   │   │   ├── nemo_guardrails_product_agent
+│   │   │   │   └── guardrails
+│   │   │   │       ├── config.yml
+│   │   │   │       ├── prompt.yml
+│   │   │   │       └── rails
+│   │   │   │           └── input_output.co
+│   │   │   ├── prompts.py
+│   │   │   ├── security.py
+│   │   │   ├── state.py
+│   │   │   └── tools.py
+│   │   ├── cache
+│   │   │   ├── __init__.py
+│   │   │   ├── redis_ops.py
+│   │   │   └── streams.py
+│   │   ├── chatwoot.py
+│   │   ├── config.py
+│   │   ├── db
+│   │   │   ├── __init__.py
+│   │   │   ├── engine.py
+│   │   │   ├── models.py
+│   │   │   └── repo.py
+│   │   ├── kb.py
+│   │   ├── main.py
+│   │   ├── media.py
+│   │   ├── messenger_api.py
+│   │   ├── nlp
+│   │   │   ├── __init__.py
+│   │   │   └── arabizi.py
+│   │   ├── schemas.py
+│   │   ├── security.py
+│   │   ├── util
+│   │   │   ├── __init__.py
+│   │   │   └── retry.py
+│   │   └── worker.py
+│   ├── check.sh
+│   ├── debug_queue.py
+│   ├── langgraph.json
+│   ├── pyproject.toml
+│   ├── rag
+│   │   ├── politiques_boutique.md
+│   │   └── rag.py
+│   ├── requirements.txt
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── evals
+│   │   │   ├── __init__.py
+│   │   │   ├── darija_messages.yaml
+│   │   │   ├── english_test_dataset.csv
+│   │   │   ├── english_test_dataset.yaml
+│   │   │   ├── evaluators.py
+│   │   │   ├── run_darija.py
+│   │   │   ├── run_experiment_en.py
+│   │   │   ├── seed_products.sql
+│   │   │   ├── smoke_runner.py
+│   │   │   ├── test_evaluators_en.py
+│   │   │   └── upload_dataset_en.py
+│   │   ├── test.py
+│   │   ├── test_agent.py
+│   │   ├── test_arabizi.py
+│   │   ├── test_chatwoot.py
+│   │   ├── test_kb.py
+│   │   ├── test_media.py
+│   │   ├── test_messenger_api.py
+│   │   ├── test_redis_ops.py
+│   │   ├── test_repo.py
+│   │   ├── test_retry.py
+│   │   ├── test_schemas.py
+│   │   ├── test_security.py
+│   │   └── test_streams.py
+│   └── uv.lock
+├── package-lock.json
+├── package.json
+├── ss
+└── ss.pub
 
+│   │   ├── test_messenger_api.py
+│   │   ├── test_redis_ops.py
+│   │   ├── test_repo.py
+│   │   ├── test_retry.py
+│   │   ├── test_schemas.py
+│   │   ├── test_security.py
+│   │   └── test_streams.py
+│   
+│   │   ├── test_messenger_api.py
+│   │   ├── test_redis_ops.py
+│   │   ├── test_repo.py
+│   │   ├── test_retry.py
+│   │   ├── test_schemas.py
+│   │   ├── test_security.py
+│   │   └── test_streams.py
+│   │   ├── test_messenger_api.py
+│   │   ├── test_redis_ops.py
+│   │   ├── test_repo.py
+│   │   ├── test_retry.py
+│   │   ├── test_messenger_api.py
+│   │   ├── test_messenger_api.py
+│   │   ├── test_redis_ops.py
+│   │   ├── test_repo.py
+│   │   ├── test_retry.py
+│   │   ├── test_schemas.py
+│   │   ├── test_security.py
+│   │   └── test_streams.py
+├── LICENSE
+├── README.MD
 ## Health Check
 
 ```bash
@@ -162,7 +250,3 @@ Returns component status (db, redis, llm, guardrails, queue backlog) and overall
 - **At-least-once delivery requires two idempotency checks:** `seen:{...}` (producer, blocks duplicate enqueue) and `sent:{...}` (consumer, blocks double-reply on redelivery).
 - **Eval-driven development.** A suite of deterministic evaluators (fact present, price refusal, tool used, brevity, handoff triggered) catches regressions before they reach customers. LLM-as-judge is reserved for tone only.
 - **NeMo Guardrails won over alternatives because it's YAML-configurable.** New input/output rules don't require code changes.
-
-## License
-
-Built as part of CS50's AI with Python course. The skeleton provided the architecture and tests; all implementation, bug fixes, and production additions are original work.

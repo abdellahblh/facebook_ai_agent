@@ -32,6 +32,30 @@ class Settings:
     langsmith_project: str = field(default_factory=lambda: os.getenv("LANGSMITH_PROJECT", "facebook_ai_agent"))
 
     debounce_seconds: int = field(default_factory=lambda: int(os.getenv("DEBOUNCE_SECONDS", "10")))
+    agent_response_cache_ttl_seconds: int = field(
+        default_factory=lambda: int(os.getenv("AGENT_RESPONSE_CACHE_TTL_SECONDS", "300"))
+    )
+    cache_l0_max_size: int = field(
+        default_factory=lambda: int(os.getenv("CACHE_L0_MAX_SIZE", "512"))
+    )
+    cache_lock_ttl_seconds: int = field(
+        default_factory=lambda: int(os.getenv("CACHE_LOCK_TTL_SECONDS", "120"))
+    )
+    cache_lock_wait_seconds: float = field(
+        default_factory=lambda: float(os.getenv("CACHE_LOCK_WAIT_SECONDS", "15"))
+    )
+    cache_embedding_model: str = field(
+        default_factory=lambda: os.getenv("CACHE_EMBEDDING_MODEL", "")
+    )
+    cache_embedding_dimensions: int = field(
+        default_factory=lambda: int(os.getenv("CACHE_EMBEDDING_DIMENSIONS", "0"))
+    )
+    cache_semantic_threshold: float = field(
+        default_factory=lambda: float(os.getenv("CACHE_SEMANTIC_THRESHOLD", "0.10"))
+    )
+    cache_semantic_index: str = field(
+        default_factory=lambda: os.getenv("CACHE_SEMANTIC_INDEX", "cache-semantic-index")
+    )
     history_max_messages: int = field(default_factory=lambda: int(os.getenv("HISTORY_MAX_MESSAGES", "30")))
     business_name: str = field(default_factory=lambda: os.getenv("business_name", "dzbot"))
     chatwoot_base_url: str = field(
@@ -110,6 +134,15 @@ class Settings:
     )
     queue_maxlen: int = field(
         default_factory=lambda: int(os.getenv("QUEUE_MAXLEN", "10000"))
+    )
+    langfuse_secret_key: str = field(
+        default_factory=lambda: os.getenv("LANGFUSE_SECRET_KEY", "")
+    )
+    langfuse_api_key: str = field(
+        default_factory=lambda: os.getenv("LANGFUSE_PUBLIC_KEY", "")
+    )
+    langfuse_base_url: str = field(
+        default_factory=lambda: os.getenv("LANGFUSE_BASE_URL", "https://cloud.langfuse.com")
     )
     @property
     def async_database_url(self) -> str:

@@ -1,34 +1,21 @@
-"""Run the agent over the English dataset on LangSmith and score it.
+"""Run the agent over the English dataset on Langfuse (v3 SDK) and score it.
 
 MIRRORS run_turn() STEP FOR STEP — AND MUST KEEP DOING SO
-    app.agent.graph.run_turn returns only the final string. Four evaluators
-    need what happened in between: which tools fired, what they returned,
-    whether a rail blocked. So make_target() re-implements run_turn's five
-    steps in the same order with the same refusal string:
+    See evaluators.py and the original docstring for the full rationale.
+    check_drift() compares run_turn's source against RUN_TURN_STEPS at
+    startup and warns if production changed shape.
 
-        PII mask in -> NeMo input rail -> graph -> NeMo output rail -> PII mask out
-
-    and captures the middle. check_drift() compares run_turn's source
-    against that step list at startup and warns if production changed shape.
-    A silent divergence here means you are scoring a pipeline nobody ships.
-
-MULTI-TURN ROWS
-    8 rows carry several turns in one cell, joined by " || ". They are fed
-    sequentially on ONE thread_id with an in-memory checkpointer, so turn two
-    really has turn one in its history. Tool calls accumulate across turns;
-    the answer is the LAST turn's. A fresh thread_id per example means state
-    never leaks between rows or between runs.
-
-WHY MemorySaver AND NOT THE PRODUCTION CHECKPOINTER
-    Eval threads would otherwise land in the production Postgres checkpoint
-    tables — 195 junk conversations per run, forever, competing with the
-    500 MB free tier. In-memory is per-process and gone when this exits.
+WHY dataset.run_experiment() AND NOT A HAND-ROLLED LOOP
+    An earlier version of this script manually captured trace IDs and called
+    langfuse.score()/item.link() itself. That capture happened BEFORE the
+    @observe-wrapped target ran, so it read the trace ID of the wrong (empty)
+    context — scores were likely never linked to the right trace at all.
+    run_experiment() owns trace creation, linking, and scoring internally,
+    which removes that entire failure mode.
 
 BUDGET
     ~2.2 Gemini calls per turn, +1 per NeMo self-check rail per turn when
-    the rails have an LLM. Full set ≈ 430-900 requests against a ~1,000/day
-    free tier. --dry-run prints the estimate and exits. Run one --category
-    at a time on a SEPARATE eval API key.
+    the rails have an LLM. --dry-run prints the estimate and exits.
 """
 
 from __future__ import annotations
@@ -37,52 +24,80 @@ import argparse
 import asyncio
 import inspect
 import os
+import pathlib
 import sys
+import time
 import uuid
 import warnings
-import time
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
+import httpx
+from google.api_core.exceptions import InternalServerError, ResourceExhausted, ServiceUnavailable
 from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import HumanMessage
-from langsmith import Client, aevaluate
-from app.util.retry import with_retry
-from tests.evals.evaluators import ALL_EVALUATORS, TOOL_ALIASES
-from google.api_core.exceptions import ResourceExhausted, ServiceUnavailable, InternalServerError
-from app.config import get_settings
-import httpx
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
-# Catch Gemini quota/transient errors AND HTTP transport layer timeouts
+from langfuse import get_client
+from langfuse.langchain import CallbackHandler
+
+from tests.evals.evaluators import ALL_EVALUATORS, TOOL_ALIASES
+from app.config import get_settings
+settings = get_settings()
+langfuse = get_client()
+langfuse_handler = CallbackHandler()
+
 RETRYABLE_EXCEPTIONS = (
-    ResourceExhausted,       # 429 Rate Limits / Quotas
-    ServiceUnavailable,      # 503 Backend overload
-    InternalServerError,     # 500 Google side
-    OutputParserException,   # LLM output formatting glitch
-    httpx.ReadTimeout,       # Network drop
+    ResourceExhausted,
+    ServiceUnavailable,
+    InternalServerError,
+    OutputParserException,
+    httpx.ReadTimeout,
     httpx.ConnectTimeout,
 )
 DATASET = "english-production-readiness-v1"
 TURN_SEP = " || "
-# Verbatim from app/agent/graph.py — the refusal production returns when a
-# rail blocks. If that string changes, change it here, or blocked turns will
-# be scored as normal answers.
 BLOCKED_REPLY = "Sma7lna, ma n9derch njawbek 3la had l'demande."
 RUN_TURN_STEPS = (
     "pii_input_middleware", "check_input", "ainvoke", "check_output", "pii_output_middleware",
 )
 CALLS_PER_TURN = 2.2
+
+
+class RateLimiter:
+    """Evenly spaces calls to stay under `rpm` per rolling minute. Shared
+    across EVERY Gemini-touching call — including the two guardrail checks,
+    which is why call_with_retry now wraps those too, not just the graph."""
+
+    def __init__(self, rpm: int):
+        self.min_interval = 60.0 / rpm
+        self._lock = asyncio.Lock()
+        self._next_slot = 0.0
+
+    async def acquire(self):
+        async with self._lock:
+            now = time.monotonic()
+            start = max(now, self._next_slot)
+            self._next_slot = start + self.min_interval
+            wait = start - now
+        if wait > 0:
+            await asyncio.sleep(wait)
+
+
+RATE_LIMITER = RateLimiter(rpm=15)
+
+
 @retry(
     reraise=True,
     stop=stop_after_attempt(5),
     wait=wait_exponential(multiplier=1, min=6, max=60),
     retry=retry_if_exception_type(RETRYABLE_EXCEPTIONS),
-    before_sleep=lambda retry_state: print(f"Rate limited, retrying in {retry_state.next_action.sleep:.1f}s...")
+    before_sleep=lambda rs: print(f"Rate limited, retrying in {rs.next_action.sleep:.1f}s..."),
 )
-async def call_with_retry(coro):
-    return await coro
+async def call_with_retry(coro_factory):
+    await RATE_LIMITER.acquire()
+    return await coro_factory()
 
 
 def check_drift(run_turn_fn) -> list[str]:
-    """Names that run_turn's source no longer contains. Empty = in sync."""
     try:
         src = inspect.getsource(run_turn_fn)
     except (OSError, TypeError):
@@ -96,46 +111,45 @@ def _reply_text(content) -> str:
     return str(content)
 
 
-def make_target(graph, guardrails, pii_in, pii_out, *,
-                page_id: str = "1", max_input_chars: int = 8_000, recursion_limit: int = 15):
-    """Build the LangSmith target. Every dependency is injected so the
-    smoke test can pass fakes and never import app.* or call Gemini."""
+def make_target(graph, guardrails, pii_in, pii_out, *, page_id: str = "demo",
+                 max_input_chars: int = 8_000, recursion_limit: int = 15):
+    """Task function for run_experiment(). Called once per dataset item with
+    the item's input; must return a plain dict (the evaluators' `output`)."""
 
-    async def target(inputs: dict) -> dict:
+    async def target(item_input: dict) -> dict:
         thread_id = f"eval-{uuid.uuid4()}"
-        raw_text = inputs.get("text")
+        raw_text = item_input.get("text", "")
         if not raw_text:
-            print(f"WARNING: Empty or missing 'text' in inputs: {inputs}")
-        turns = [t.strip() for t in (raw_text or "").split(TURN_SEP)]
-        if not turns or all(t == "" for t in turns):
-            print(f"WARNING: No valid turns in input text: {raw_text!r}")
+            print(f"WARNING: Empty or missing 'text' in input: {item_input}")
+        turns = [t.strip() for t in raw_text.split(TURN_SEP)]
         tool_outputs: list[str] = []
         tools_called: list[str] = []
-        answer = ""
+        answer = "error"
         blocked_by: str | None = None
-        seen = 0  # messages already scanned; the checkpointer returns full history
+        seen = 0
 
-        for turn_idx, turn in enumerate(turns):
+        for turn in turns:
             blocked_by = None
             user_text = turn[:max_input_chars]
             if not user_text:
-                print(f"WARNING: Turn {turn_idx} is empty after stripping")
+                continue
 
-            # 1. PII mask on input
             if hasattr(pii_in, "mask"):
                 user_text = pii_in.mask(user_text)
 
-            # 2. NeMo input rail — production returns the refusal and never
-            #    runs the graph for this turn. Later turns still run.
-            if not await guardrails.check_input(user_text):
+            # Guardrail checks now go through call_with_retry too, so they
+            # count against RATE_LIMITER just like the graph call does.
+            if not await call_with_retry(lambda: guardrails.check_input(user_text)):
                 answer, blocked_by = BLOCKED_REPLY, "input_rail"
                 continue
 
-            # 3. Graph
-            result = await call_with_retry(graph.ainvoke(
+            result = await call_with_retry(lambda: graph.ainvoke(
                 {"messages": [HumanMessage(content=user_text)]},
-                config={"configurable": {"thread_id": thread_id, "page_id": page_id},
-                        "recursion_limit": recursion_limit},
+                config={
+                    "configurable": {"thread_id": thread_id, "page_id": page_id},
+                    "recursion_limit": recursion_limit,
+                    "callbacks": [langfuse_handler],
+                },
             ))
             msgs = result["messages"]
             for m in msgs[seen:]:
@@ -146,12 +160,10 @@ def make_target(graph, guardrails, pii_in, pii_out, *,
             seen = len(msgs)
             reply = _reply_text(msgs[-1].content)
 
-            # 4. NeMo output rail
-            if not await guardrails.check_output(reply, user_text=user_text):
+            if not await call_with_retry(lambda: guardrails.check_output(reply, user_text=user_text)):
                 answer, blocked_by = BLOCKED_REPLY, "output_rail"
                 continue
 
-            # 5. PII mask on output
             if hasattr(pii_out, "mask"):
                 reply = pii_out.mask(reply)
             answer = reply
@@ -168,9 +180,6 @@ def make_target(graph, guardrails, pii_in, pii_out, *,
 
 
 def _resolve_system_prompt(prompts_module, business_name: str) -> str:
-    """prompts.py has changed shape across this project. Handle the three
-    shapes seen so far and fail LOUD on anything else — a wrong prompt makes
-    every score meaningless, so guessing is worse than stopping."""
     for name in ("build_system_prompt", "get_system_prompt", "make_system_prompt"):
         fn = getattr(prompts_module, name, None)
         if callable(fn):
@@ -189,26 +198,17 @@ def _resolve_system_prompt(prompts_module, business_name: str) -> str:
     )
 
 
-def _select_examples(client: Client, category: str | None, limit: int | None):
-    """Whole dataset by name, or a metadata-filtered slice."""
-    if not category and not limit:
-        return DATASET, None
-    kwargs = {"dataset_name": DATASET}
-    if category:
-        kwargs["metadata"] = {"category": category}
-    if limit:
-        kwargs["limit"] = limit
-    examples = list(client.list_examples(**kwargs))
-    return examples, len(examples)
-
-
 async def main(args: argparse.Namespace) -> None:
-    client = Client()
-    data, n = _select_examples(client, args.category, args.limit)
-    if n is None:
-        n = client.read_dataset(dataset_name=DATASET).example_count or 195
+    dataset = langfuse.get_dataset(DATASET)
+    items = dataset.items
+    if args.category:
+        items = [i for i in items if isinstance(i.metadata, dict) and i.metadata.get("category") == args.category]
+    if args.limit:
+        items = items[: args.limit]
+    n = len(items)
+
     if n == 0:
-        print(f"no examples matched category={args.category!r} — check the spelling against the CSV")
+        print(f"no examples matched category={args.category!r} — check the dataset in the Langfuse UI")
         sys.exit(1)
 
     est = round(n * CALLS_PER_TURN)
@@ -217,7 +217,6 @@ async def main(args: argparse.Namespace) -> None:
         print("dry run: nothing executed.")
         return
 
-    # Real imports only here, so --dry-run and the smoke test never need app.*
     from langchain_google_genai import ChatGoogleGenerativeAI
     from langgraph.checkpoint.memory import MemorySaver
 
@@ -240,63 +239,54 @@ async def main(args: argparse.Namespace) -> None:
     if hasattr(db_engine, "init_engine"):
         await db_engine.init_engine(settings.async_database_url)
 
-    # Seed the database with test products if not already present
     print(f"Seeding database for page_id='{args.page_id}'...")
     try:
-        from sqlalchemy import text as sql_text
-        seed_sql = pathlib.Path(__file__).parent / "seed_products.sql"
-        if seed_sql.exists():
-            sql_content = seed_sql.read_text(encoding="utf-8")
-            # Replace gen_random_uuid() with actual UUIDs for broader DB compatibility
-            import re
-            import uuid as uuid_module
-            def replace_uuid(match):
-                return f"'{uuid_module.uuid4()}'"
-            seeded_sql = re.sub(r'gen_random_uuid\(\)', replace_uuid, sql_content)
-            async with db_engine.engine.begin() as conn:
-                await conn.execute(sql_text(seeded_sql))
-            print("Database seeded successfully.")
-        else:
-            print(f"WARNING: seed file not found at {seed_sql}")
-    except Exception as e:
-        print(f"WARNING: Database seeding failed: {e} — proceeding anyway")
+        nemo_guardrails.initialize()
 
-    # Initialize NeMo Guardrails for the eval (normally done in FastAPI lifespan)
-    nemo_guardrails.initialize()
+        llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
+        tools = make_tools("eval-psid", args.page_id, db_engine.SessionFactory)
+        system_prompt = _resolve_system_prompt(prompts, args.business_name)
+        graph = build_graph(llm, tools, system_prompt, checkpointer=MemorySaver())
 
-    llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
-    tools = make_tools("eval-psid", args.page_id, db_engine.SessionFactory)
-    system_prompt = _resolve_system_prompt(prompts, args.business_name)
-    graph = build_graph(llm, tools, system_prompt, checkpointer=MemorySaver())
+        target = make_target(
+            graph, nemo_guardrails, pii_input_middleware, pii_output_middleware,
+            page_id=args.page_id, max_input_chars=MAX_INPUT_CHARS, recursion_limit=RECURSION_LIMIT,
+        )
 
-    target = make_target(
-        graph, nemo_guardrails, pii_input_middleware, pii_output_middleware,
-        page_id=args.page_id, max_input_chars=MAX_INPUT_CHARS, recursion_limit=RECURSION_LIMIT,
-    )
+        experiment_name = f"{args.experiment}-{args.category or 'all'}"
+        print(f"Starting evaluation run: {experiment_name}...")
 
-    results = await aevaluate(
-        target,
-        data=data,
-        evaluators=ALL_EVALUATORS,
-        experiment_prefix=args.experiment,
-        # 2, not 10: RPM is 15 and each example makes ~2.2 calls. Ten in
-        # flight is ~22 concurrent requests -> 429s that land as LOW SCORES,
-        # not errors. You would be measuring your rate limit.
-        max_concurrency=2,
-        metadata={
-            "dataset": DATASET,
-            "category": args.category or "all",
-            "model": settings.gemini_model,
-            "prompt_version": os.getenv("PROMPT_VERSION", "unversioned"),
-            "guardrails_loaded": bool(getattr(nemo_guardrails, "rails", None)),
-            "page_id": args.page_id,
-        },
-    )
-    print(results)
+        # run_experiment() owns concurrency, tracing, and score/trace linking —
+        # this is what removes the trace-id bug from the hand-rolled version.
+        # VERIFY against your installed langfuse version: exact param names for
+        # the task function's input, and whether it's item.input or an `item=`
+        # kwarg, can differ between SDK point releases.
+        result = dataset.run_experiment(
+            name=experiment_name,
+            task=lambda item: target(item.input if isinstance(item.input, dict) else {"text": item.input}),
+            evaluators=ALL_EVALUATORS,
+            max_concurrency=2,
+            metadata={
+                "dataset": DATASET,
+                "category": args.category or "all",
+                "model": settings.gemini_model,
+                "prompt_version": os.getenv("PROMPT_VERSION", "unversioned"),
+                "guardrails_loaded": bool(getattr(nemo_guardrails, "rails", None)),
+                "page_id": args.page_id,
+            },
+        )
+
+        print(result.format())
+        langfuse.flush()
+        print(f"Evaluation complete. Results posted to Langfuse under run '{experiment_name}'.")
+        pass
+    finally:
+        if hasattr(db_engine, "dispose_engine"):
+            await db_engine.dispose_engine()
 
 
 def parse_args(argv=None) -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Score the agent on the English LangSmith dataset.")
+    p = argparse.ArgumentParser(description="Score the agent on the English Langfuse dataset.")
     p.add_argument("--category", help="one category, e.g. rag_groundedness (metadata filter)")
     p.add_argument("--limit", type=int, help="cap the number of examples")
     p.add_argument("--experiment", default="en-baseline", help="experiment name prefix")

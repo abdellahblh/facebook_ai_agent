@@ -15,7 +15,10 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, trim
 from langchain_core.tools import BaseTool
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
-
+from langchain_core.runnables import RunnableConfig
+from langfuse.langchain import CallbackHandler
+from typing import Optional
+langfuse_handler = CallbackHandler()
 from app.agent.security import (
     mask_input_pii,
     mask_output_pii,
@@ -47,15 +50,16 @@ def _with_id(message) -> str:
 def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, checkpointer=None):
     llm_with_tools = llm.bind_tools(tools)
     settings = get_settings()
-    async def input_guardrail_node(state: AgentState):
+    async def input_guardrail_node(state: AgentState, config: Optional[RunnableConfig] = None):
         """Checks user input for PII and safety violations."""
         raw_user_text = HumanMessage(content=state["messages"][-1].content)
 
         # Step A: Apply PII Masking (e.g., Credit Cards)
         masked_text = mask_input_pii(raw_user_text.content)
+        
 
         # Step B: Check Input Guardrails via NeMo
-        is_safe = await nemo_guardrails.check_input(masked_text)
+        is_safe = await nemo_guardrails.check_input(masked_text, config=config)
 
         if not is_safe:
             logger.warning("Input blocked by NeMo Guardrails.")
@@ -78,7 +82,7 @@ def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, c
         # Reset the flag on every safe turn: the checkpointer persists state
         # ACROSS turns, so a stale True would block every later message.
         return {"input_blocked": False}
-    async def output_guardrail_node(state: AgentState):
+    async def output_guardrail_node(state: AgentState, config: Optional[RunnableConfig] = None):
         """Validates the generated AI response for safety/hallucination before sending to user."""
         last_ai_message = state["messages"][-1]
 
@@ -92,7 +96,8 @@ def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, c
         # Check Output Guardrails via NeMo
         is_safe = await nemo_guardrails.check_output(
             assistant_text=last_ai_message.content,
-            user_text=user_text
+            user_text=user_text,
+            config=config
         )
 
         if not is_safe:
@@ -188,6 +193,7 @@ async def run_turn(
         config={
             "configurable": configurable,
             "recursion_limit": RECURSION_LIMIT,
+            "callbacks": [langfuse_handler]
         },
     )
 

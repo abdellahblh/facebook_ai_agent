@@ -4,8 +4,11 @@ app/__pycache__
 app/db/__pycache__
 app/worker/__pycache__
 app/agent/__pycache__
+app/agent/__pycache__
 app/main/__pycache__
 app/webhook/__pycache__
+app/util/__pycache__
+app/nlp/__pycache__
 app/config/__pycache__
 app/schemas/__pycache__
 app/cache/__pycache__
@@ -19,3 +22,7 @@ node_modules/
 .venv/
 .tmp/
 LINKEDIN_POST.md 
+__pycache__
+.mypy_cache/
+.ruff_cache/
+.pip-tmp/

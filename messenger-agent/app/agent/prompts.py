@@ -1,21 +1,4 @@
-"""System prompt for the Algerian e-commerce support agent.
 
-TWO PARTS THAT MUST NOT BE WEAKENED
-    1. The PRICE GUARDRAIL. A number the bot invents is a screenshot in a
-       dispute with a customer. Every price comes from a tool or is not said.
-    2. The DARIJA GLOSSARY. ~40 lines, always present, no retrieval cost and
-       no extra API call.
-
-WHY THE GLOSSARY LIVES HERE AND NOT IN RAG
-    RAG retrieves by similarity to the query. To retrieve the entry explaining
-    `chhal`, the search must already match `chhal` — but weak darija matching
-    is the original problem, so it would be relying on the broken thing to fix
-    itself. It would also spend the top-k budget on dictionary entries instead
-    of the actual policy chunk.
-
-    Rule of thumb: knowledge that is SMALL and needed on EVERY message goes in
-    the prompt; knowledge that is LARGE and needed SOMETIMES goes in RAG.
-"""
 
 SYSTEM_PROMPT = """You are the customer support assistant for {business_name},
 an online clothing store. You talk to real shoppers through Messenger.

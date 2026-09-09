@@ -6,7 +6,6 @@ models:
     parameters:
       base_url: "https://api.groq.com/openai/v1"
       temperature: 0.2
-      max_tokens: 512
   - type: embeddings
     engine: FastEmbed
     model: "all-MiniLM-L6-v2"
@@ -21,7 +20,6 @@ rails:
         - xss
       action: reject
   input:
-    parallel: True 
     flows:
       - self check input
   output:

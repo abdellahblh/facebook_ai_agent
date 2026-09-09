@@ -1,9 +1,4 @@
-"""Redis: dedupe, debounce, per-user locks. YOU implement these.
-(Step 4 of the path)
-
-Honest note from the architecture review: we do NOT cache LLM responses here —
-support conversations are too varied for useful hit rates. Redis earns its
-place on the webhook hot path with these three jobs.
+"""Redis webhook primitives: dedupe, debounce, and per-user locks.
 
 Definition of done: pytest tests/test_redis_ops.py
 """
@@ -11,8 +6,8 @@ Definition of done: pytest tests/test_redis_ops.py
 from __future__ import annotations
 
 import asyncio
-import time
 import secrets
+
 import redis.asyncio as aioredis
 
 DEDUPE_TTL_SECONDS = 3600
@@ -37,10 +32,11 @@ async def buffer_and_wait(r: aioredis.Redis, psid: str, text: str, debounce_seco
     """The debounce — buffer rapid messages, wait for silence, answer ONCE with merged text."""
     buffer_key = f"buf:{psid}"
     last_key = f"last:{psid}"
+    my_token = secrets.token_urlsafe(16)
     async with r.pipeline(transaction=True) as pipe:
         pipe.rpush(buffer_key, text)
-        pipe.expire(buffer_key, ttl)
-        pipe.set(last_key, my_token, ex=ttl)
+        pipe.expire(buffer_key, DEBOUNCE_TTL_SECONDS)
+        pipe.set(last_key, my_token, ex=DEBOUNCE_TTL_SECONDS)
         await pipe.execute()
 
     await asyncio.sleep(debounce_seconds)
@@ -85,3 +81,9 @@ async def release_user_lock(r: aioredis.Redis, psid: str, token: str | None = No
         f"lock:{psid}",
         token,
     )
+
+
+async def acquire_user_lock(r: aioredis.Redis, psid: str) -> bool:
+    """Backward-compatible boolean lock API used by the original tests."""
+    token = await acquire_user_lock_token(r, psid)
+    return token is not None

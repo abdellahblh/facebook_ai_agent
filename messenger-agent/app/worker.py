@@ -19,6 +19,7 @@ import httpx
 from app import messenger_api
 from app.agent.graph import run_turn
 from app.cache import redis_ops, streams
+from app.cache.schemas import CachePayload, CacheRequest
 from app.config import get_settings
 from app.db import repo
 from app.media import media_to_text
@@ -220,13 +221,43 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
         # ── 8. AGENT TURN ────────────────────────────────────────────────────
         reply_text = FALLBACK_REPLY
         agent_graph = getattr(app.state, "agent_graph", None)
-        if llm and session_factory and agent_graph:
+        cache_manager = getattr(app.state, "cache_manager", None)
+        if cache_manager and llm and session_factory and agent_graph:
             thread_id = inbound.conversation_id or inbound.psid
+            cache_request = CacheRequest(
+                tenant_id=str(inbound.page_id),
+                user_id=str(convo_key),
+                auth_role="user",
+                query=merged_text,
+                metadata={"channel": inbound.channel},
+            )
+
+            async def compute_reply() -> CachePayload:
+                generated = await run_turn(
+                    agent_graph,
+                    merged_text,
+                    psid=inbound.psid,
+                    thread_id=thread_id,
+                    config_context={
+                        "page_id": inbound.page_id,
+                        "psid": inbound.psid,
+                        "channel": inbound.channel,
+                        "account_id": inbound.account_id,
+                        "conversation_id": inbound.conversation_id,
+                    },
+                )
+                if not generated or not generated.strip():
+                    raise RuntimeError("Agent returned an empty response")
+                return CachePayload(response=generated, source="agent")
+
+            payload = await cache_manager.get_or_compute(cache_request, compute_reply)
+            reply_text = payload.response
+        elif llm and session_factory and agent_graph:
             reply_text = await run_turn(
                 agent_graph,
                 merged_text,
                 psid=inbound.psid,
-                thread_id=thread_id,
+                thread_id=inbound.conversation_id or inbound.psid,
                 config_context={
                     "page_id": inbound.page_id,
                     "psid": inbound.psid,

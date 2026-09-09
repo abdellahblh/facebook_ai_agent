@@ -36,9 +36,6 @@ async def init_engine(async_database_url: str) -> None:
         expire_on_commit=False
     )
 
-    # Create tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
 
 async def dispose_engine() -> None:
     if engine is not None:

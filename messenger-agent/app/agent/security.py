@@ -5,23 +5,21 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
+from typing import Any, Optional, Dict
 
-from typing import Any, Optional
 from app.config import get_settings
 from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.runnables import RunnableConfig  
 
 logger = logging.getLogger(__name__)
 
 # ── LangChain prebuilt PIIMiddleware ─────────────────────────────────────────
 try:
     from langchain.agents.middleware import PIIMiddleware
-    # Redact credit cards from user input before the LLM sees them
     pii_input_middleware = PIIMiddleware("credit_card", strategy="mask", apply_to_input=True)
-    # Mask any credit cards that accidentally appear in the model's reply
     pii_output_middleware = PIIMiddleware("credit_card", strategy="mask", apply_to_output=True)
     HAS_PII_MIDDLEWARE = True
 except ImportError:
-    # Fallback: lightweight regex masker if the package version is older
     import re
 
     class _FallbackPII:
@@ -34,12 +32,6 @@ except ImportError:
 
 
 def mask_input_pii(text: str) -> str:
-    """Mask PII in one user message when using this custom LangGraph graph.
-
-    ``PIIMiddleware`` is designed for LangChain's agent lifecycle, rather
-    than as a callable ``str -> str`` object.  This adapter runs its public
-    ``before_model`` hook and returns the resulting message content.
-    """
     if not HAS_PII_MIDDLEWARE:
         return pii_input_middleware.mask(text)
 
@@ -52,7 +44,6 @@ def mask_input_pii(text: str) -> str:
 
 
 def mask_output_pii(text: str) -> str:
-    """Mask PII in one model reply using ``PIIMiddleware``'s output hook."""
     if not HAS_PII_MIDDLEWARE:
         return pii_output_middleware.mask(text)
 
@@ -67,24 +58,26 @@ def mask_output_pii(text: str) -> str:
 try:
     from nemoguardrails import LLMRails, RailsConfig
     from nemoguardrails.rails.llm.options import RailStatus, RailType
+    from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails  
     HAS_NEMO_GUARDRAILS = True
 except ImportError:
     LLMRails = None
     RailsConfig = None
     RailStatus = None
     RailType = None
+    RunnableRails = None
     HAS_NEMO_GUARDRAILS = False
 
 
 class NeMoGuardrailsWrapper:
-    """Wrapper around NeMo Guardrails (LLMRails)."""
+    """Wrapper around NeMo Guardrails (LLMRails & RunnableRails)."""
 
     def __init__(self, config_dir: Optional[str] = None):
         self.rails: Optional[Any] = None
+        self.runnable_rails: Optional[Any] = None  
         self.config_dir = config_dir or str(
             Path(__file__).resolve().parent
-            / "nemo_guardrails_product_agent"
-            / "nemo_guardrails_product_agent"
+            / "guardrails"
         )
         self._initialized = False
 
@@ -100,24 +93,36 @@ class NeMoGuardrailsWrapper:
 
         if os.path.exists(self.config_dir):
             try:
-                # NeMo Guardrails OpenAI LLM engine expects OPENAI_API_KEY in environment variables
                 settings = get_settings()
-                OPENAI_API_KEY = settings.OPENAI_API_KEY
-                if OPENAI_API_KEY:
-                    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
                 config = RailsConfig.from_path(self.config_dir)
                 self.rails = LLMRails(config)
+                # Create RunnableRails to support LangChain/Langfuse callbacks
+                self.runnable_rails = RunnableRails(config=config)
+                
                 logger.info("Successfully loaded NeMo Guardrails from %s", self.config_dir)
             except Exception as exc:
                 logger.warning("Failed to initialize NeMo Guardrails: %s", exc)
         else:
             logger.warning("NeMo Guardrails directory not found at: %s", self.config_dir)
 
-    async def check_input(self, user_text: str) -> bool:
-        """Runs NeMo INPUT rails — called before the graph sees the message."""
-        if not self.rails:
+    async def check_input(self, user_text: str, config: Optional[RunnableConfig] = None) -> bool:
+        """Runs NeMo INPUT rails with Langfuse trace propagation via config."""
+        if not self.runnable_rails and not self.rails:
             return True
-        try:            
+        try:
+            # If config (callbacks) is present, use RunnableRails to propagate trace
+            if self.runnable_rails and config:
+                res = await self.runnable_rails.ainvoke(
+                    {"input": user_text},
+                    config=config  # <-- Pass RunnableConfig containing Langfuse CallbackHandler
+                )
+                # Check if response was modified or blocked by rails
+                if isinstance(res, dict) and res.get("output") == "I'm sorry, I can't assist with that.":
+                    return False
+                return True
+            
+            # Fallback to direct check_async if no config is supplied
             result = await self.rails.check_async(
                 [{"role": "user", "content": user_text}],
                 rail_types=[RailType.INPUT],
@@ -129,11 +134,18 @@ class NeMoGuardrailsWrapper:
             logger.error("Error during NeMo input rail check: %s", err)
         return True
 
-    async def check_output(self, assistant_text: str, user_text: str = "") -> bool:
-        """Runs NeMo OUTPUT rails — called after the graph produces a reply."""
-        if not self.rails:
+    async def check_output(self, assistant_text: str, user_text: str = "", config: Optional[RunnableConfig] = None) -> bool:
+        """Runs NeMo OUTPUT rails with Langfuse trace propagation via config."""
+        if not self.runnable_rails and not self.rails:
             return True
         try:
+            if self.runnable_rails and config:
+                res = await self.runnable_rails.ainvoke(
+                    {"input": user_text, "output": assistant_text},
+                    config=config  # <-- Pass RunnableConfig containing Langfuse CallbackHandler
+                )
+                return True
+
             messages = []
             if user_text:
                 messages.append({"role": "user", "content": user_text})
@@ -149,6 +161,7 @@ class NeMoGuardrailsWrapper:
         except Exception as err:
             logger.error("Error during NeMo output rail check: %s", err)
         return True
+
     def close(self):
         if self.rails:
             if hasattr(self.rails, "close") and callable(getattr(self.rails, "close")):
@@ -157,11 +170,8 @@ class NeMoGuardrailsWrapper:
                 except Exception as exc:
                     logger.warning("Error closing NeMo Guardrails: %s", exc)
             self.rails = None
+            self.runnable_rails = None
             logger.info("Closed NeMo Guardrails.")
-    
 
 
-# The singleton is intentionally *constructed* at import time but initialized
-# in FastAPI's lifespan. This prevents expensive configuration/model work from
-# running in every worker import and makes its lifecycle observable on app.state.
 nemo_guardrails = NeMoGuardrailsWrapper()

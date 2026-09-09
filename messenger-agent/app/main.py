@@ -83,6 +83,45 @@ async def lifespan(app: FastAPI):
     )
     await app.state.redis.ping()
 
+    from app.cache.layers.l0_memory import L0InMemoryCache
+    from app.cache.layers.l1_semantic import L1SemanticCache, LangChainEmbeddingProvider
+    from app.cache.layers.l2_redis import L2RedisKVCache
+    from app.cache.manager import CacheManager
+
+    semantic_cache = None
+    if settings.cache_embedding_model and settings.cache_embedding_dimensions > 0:
+        try:
+            from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+            embeddings = GoogleGenerativeAIEmbeddings(
+                model=settings.cache_embedding_model,
+                google_api_key=settings.google_api_key,
+            )
+            semantic_cache = L1SemanticCache(
+                app.state.redis,
+                LangChainEmbeddingProvider(embeddings),
+                dimensions=settings.cache_embedding_dimensions,
+                similarity_threshold=settings.cache_semantic_threshold,
+                index_name=settings.cache_semantic_index,
+            )
+        except Exception:
+            logger.exception("Semantic cache unavailable; continuing with L0/L2.")
+
+    app.state.cache_manager = CacheManager(
+        l0=L0InMemoryCache(
+            max_size=settings.cache_l0_max_size,
+            default_ttl_seconds=settings.agent_response_cache_ttl_seconds,
+        ),
+        l2=L2RedisKVCache(
+            app.state.redis,
+            default_ttl_seconds=settings.agent_response_cache_ttl_seconds,
+        ),
+        l1=semantic_cache,
+        lock_ttl_seconds=settings.cache_lock_ttl_seconds,
+        lock_wait_seconds=settings.cache_lock_wait_seconds,
+    )
+    await app.state.cache_manager.initialize()
+
 
     app.state.llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
     app.state.http = httpx.AsyncClient(timeout=30)
@@ -154,6 +193,9 @@ async def lifespan(app: FastAPI):
                 await result
         except Exception:
             logger.exception("Error closing %s during shutdown.", name)
+    from langfuse import get_client
+    langfuse = get_client()
+    langfuse.flush()
 
 
 app = FastAPI(title="Messenger AI Agent", lifespan=lifespan)
@@ -211,4 +253,13 @@ async def health(request: Request) -> dict:
             logger.exception("Failed to read queue metrics for /health.")
             queue["redis_available"] = False
 
-    return {"status": "ok" if all(components.values()) else "degraded", **components, "queue": queue}
+    cache = {"enabled": getattr(state, "cache_manager", None) is not None}
+    cache_manager = getattr(state, "cache_manager", None)
+    if cache_manager is not None:
+        try:
+            cache["metrics"] = (await cache_manager.snapshot()).model_dump()
+        except Exception:
+            logger.exception("Failed to read cache metrics for /health.")
+            cache["metrics_available"] = False
+
+    return {"status": "ok" if all(components.values()) else "degraded", **components, "queue": queue, "cache": cache}
