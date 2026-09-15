@@ -14,6 +14,7 @@ from langgraph.graph.message import add_messages
 
 class AgentState(TypedDict):
     messages: Annotated[list, add_messages]
+    is_safe: NotRequired[bool]
     # Set by the input guardrail node when it blocks a message. Routing reads
     # this flag instead of matching reply text, which is how a blocked input
     # used to slip through to the model.

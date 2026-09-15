@@ -2,7 +2,7 @@
 
 Design (from the architecture review):
   exact facts   → product_lookup → SQL          (never embeddings)
-  fuzzy known.  → policy_search  → text/pgvector
+    fuzzy known.  → policy_search  → REDIS VECTOR STORE
   escape hatch  → handoff_to_human
 
 The factory pattern: tools need the psid and a DB session, but the LLM only
@@ -18,14 +18,16 @@ from typing import TYPE_CHECKING
 
 import httpx
 from langchain_core.runnables import RunnableConfig
+from redis.commands.search.query import Query
+from redis import Redis
 from langchain_core.tools import BaseTool, tool
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from app.nlp.arabizi import strip_darija_stopwords
-
+from app.agent.guardrail import EmbedderProvider
 from app.db import repo
-from app.db.models import Policy
-from sqlalchemy import or_, select
-
+from app.config import get_settings
+REDIS_URL = get_settings().redis_url
+INDEX_NAME = "store-policies-jina"
 logger = logging.getLogger(__name__)
 
 
@@ -116,31 +118,28 @@ async def search_products(
 async def policy_search(question: str, config: RunnableConfig = None) -> str:
     """Search the tenant's published policies.
 
-    The KB writes to PostgreSQL, so retrieval must query that same source
-    of truth. This prevents a dashboard edit from silently never reaching
-    customers because a separate vector index was not re-ingested.
+    Policies are embedded in redis's ``faq`` namespace by the RAG ingest
+    job. PostgreSQL remains the source for structured catalog and customer
+    data, but policy retrieval needs semantic search for natural-language
+    questions.
     """
-    configurable = (config or {}).get("configurable", {})
-    page_id = configurable.get("page_id", "")
-    session_factory = configurable.get("session_factory")
-    if not session_factory:
-        from app.main import app
-        session_factory = getattr(app.state, "session_factory", None)
+    limit = 3
+    embedder = app.state.embedder
 
-    if not session_factory or not page_id:
-        return "No matching store policies found."
-
-    words = [word for word in strip_darija_stopwords(question).split() if len(word) > 2]
-    async with session_factory() as session:
-        stmt = select(Policy).where(Policy.page_id == page_id, Policy.published.is_(True))
-        if words:
-            stmt = stmt.where(
-                or_(*[or_(Policy.title.ilike(f"%{word}%"), Policy.body.ilike(f"%{word}%")) for word in words])
-            )
-        policies = (await session.execute(stmt.limit(3))).scalars().all()
-    if not policies:
-        return "No matching store policies found."
-    return "\n\n".join(f"{policy.title}: {policy.body}" for policy in policies)
+    query_vector = embedder.embed_query([question])
+    redis_client = app.state.redis
+    query = (
+        Query("(*)=>[KNN $limit @embedding $query_vector AS distance]")
+        .sort_by("distance")
+        .return_fields("text", "source", "section_title", "distance")
+        .paging(0, limit)
+        .dialect(2)
+    )
+    result = redis_client.ft(INDEX_NAME).search(
+        query,
+        query_params={"query_vector": query_vector, "limit": limit},
+    )
+    return [dict(document.__dict__) for document in result.docs]
 
 
 @tool
@@ -189,6 +188,8 @@ def make_tools(
     account_id: int | None = None,
     conversation_id: str | None = None,
     http_client: httpx.AsyncClient | None = None,
+    redis_client=None,
+    INDEX_NAME  =None,
 ) -> list[BaseTool]:
     """Factory for tests and manual construction with bound fallback context."""
 
@@ -225,6 +226,8 @@ def make_tools(
         cfg = dict((config or {}).get("configurable", {}))
         cfg.setdefault("page_id", page_id)
         cfg.setdefault("session_factory", session_factory)
+        cfg.setdefault("pinecone_client", pinecone_client)
+        cfg.setdefault("pinecone_index", pinecone_index)
         return await policy_search.ainvoke(
             {"question": question},
             config={"configurable": cfg},
@@ -250,4 +253,6 @@ def make_tools(
         )
 
     return [search_products_bound, policy_search_bound, handoff_to_human_bound]
+
+
 

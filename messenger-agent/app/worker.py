@@ -1,7 +1,7 @@
 """The pipeline: everything between "webhook accepted" and "reply sent".
 
     dedupe -> handoff check -> media->text -> debounce -> lock
-           -> log -> typing -> agent -> send -> log
+           -> embedding guardrail -> log/cache/agent -> send -> log
 
 Media is converted to text BEFORE debounce on purpose: a voice note and the
 typed follow-up that comes after it must merge into ONE turn, exactly like two
@@ -15,7 +15,7 @@ import logging
 from time import monotonic
 
 import httpx
-
+import re
 from app import messenger_api
 from app.agent.graph import run_turn
 from app.cache import redis_ops, streams
@@ -30,9 +30,21 @@ logger = logging.getLogger(__name__)
 FALLBACK_REPLY = "I'm sorry, I couldn't process your request right now."
 ERROR_REPLY = "Something went wrong on our end. A teammate will follow up."
 HANDOFF_REPLY = "A teammate will reply here shortly."
+INPUT_GUARDRAIL_REPLY = "I can help with customer-support questions, but I can't help with that request."
 UNSUPPORTED_REPLY = (
     "I can understand voice messages and photos! "
     "For other files, please describe your request in text."
+)
+GREETING_REPLIES = {
+    "ar": "وعليكم السلام، مرحبا بيك! واش نقدر نعاونك اليوم؟ 😊",
+    "en": "Hello! How can I help you today?",
+}
+_GREETING_RE_AR = re.compile(
+    r"^\s*سلام(?:\s+عليكم)?(?:\s+ورحمة\s+الله(?:\s+وبركاته)?)?\s*[!.؟?]*\s*$"
+)
+_GREETING_RE_EN = re.compile(
+    r"^\s*(hi+|hello+|hey+)\s*[!.?]*\s*$",
+    re.IGNORECASE,
 )
 
 
@@ -56,6 +68,21 @@ async def _send_text(
         await messenger_api.send_text(http_client, inbound.psid, text)
 
 
+
+
+def try_handle_greeting(text: str) -> str | None:
+    """
+    Returns:
+        "ar" or "en" if this message is a greeting,
+        None if it's not a greeting at all — caller should proceed to the LLM/agent as normal.
+    """
+    stripped = text.strip()
+    if _GREETING_RE_AR.match(stripped):
+        return "ar"
+    elif _GREETING_RE_EN.match(stripped):
+        return "en"
+    return None  
+
 async def _send_typing(
     http_client: httpx.AsyncClient,
     inbound: InboundMessage,
@@ -64,7 +91,7 @@ async def _send_typing(
     if inbound.channel == "chatwoot":
         from app import chatwoot
 
-        account_id = inbound.account_id if inbound.account_id is not None else 1
+        account_id = inbound.account_id 
         conversation_id = inbound.conversation_id or inbound.psid
         await chatwoot.send_typing(
             http_client, account_id, conversation_id
@@ -101,7 +128,7 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
             logger.info("Duplicate message %s skipped.", inbound.mid)
             return
 
-
+#if i get off topic question i should block it and answer with "I'm sorry, I can only answer questions about company policies or products. Please ask a question that is on topic."
 
     # ── 3. HANDOFF CHECK ─────────────────────────────────────────────────────
     # For Meta, customers.handoff_active in PostgreSQL is the source of truth.
@@ -166,7 +193,7 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
             fragment = await media_to_text(llm, http_client, attachment_type, attachment_url)
             if fragment:
                 media_parts.append(fragment)
-\
+
     text_parts: list[str] = []
     if inbound.text:
         text_parts.append(inbound.text)
@@ -202,7 +229,74 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
             return
 
     try:
-        # ── 6. LOG THE USER MESSAGE ──────────────────────────────────────────
+        greeting_lang = try_handle_greeting(merged_text)
+        if greeting_lang and greeting_lang in GREETING_REPLIES:
+            greeting_reply = GREETING_REPLIES[greeting_lang]
+            if http_client:
+                await _send_text(http_client, inbound, greeting_reply)
+            if session_factory:
+                async with session_factory() as session:
+                    await repo.save_message(
+                        session, inbound.page_id, inbound.psid, "user", merged_text
+                    )
+                    await repo.save_message(
+                        session, inbound.page_id, inbound.psid, "assistant", greeting_reply
+                    )
+            return
+
+        # ── 6. TOPIC CONTROL GUARDRAIL ───────────────────────────────────────
+        reply_text = FALLBACK_REPLY
+        agent_graph = getattr(app.state, "agent_graph", None)
+        cache_manager = getattr(app.state, "cache_manager", None)
+        inbound_guardrail = getattr(app.state, "inbound_guardrail", None)
+        if inbound_guardrail is None:
+            raise RuntimeError("Topic control input guardrail is unavailable")
+
+        decision = await inbound_guardrail.inspect(merged_text)
+        logger.info(
+            "Topic guardrail inspection for %s: blocked=%s similarity=%.3f example=%s",
+            inbound.mid,
+            decision.blocked,
+            decision.similarity or 0.0,
+            decision.example_id,
+        )
+        if decision.blocked:
+            logger.warning(
+                "Topic control guardrail blocked inbound message %s (similarity=%.3f, example=%s).",
+                inbound.mid,
+                decision.similarity or 0.0,
+                decision.example_id,
+            )
+            guard = app.state.guard_model
+            result = await guard.generate(merged_text)
+            if not result.is_safe:       
+                reply_text = INPUT_GUARDRAIL_REPLY
+                if session_factory:
+                    async with session_factory() as session:
+                        await repo.save_message(
+                            session,
+                            inbound.page_id,
+                            inbound.psid,
+                            "user",
+                            merged_text,
+                            meta={
+                                "guardrail_violation": True,
+                                "guardrail_type": "topic_control",
+                                "guardrail_similarity": decision.similarity,
+                                "guardrail_example_id": decision.example_id,
+                                "attachment_types": inbound.attachment_types,
+                            },
+                        )
+            if http_client:
+                await _send_text(http_client, inbound, reply_text)
+            if session_factory:
+                async with session_factory() as session:
+                    await repo.save_message(
+                        session, inbound.page_id, inbound.psid, "assistant", reply_text
+                    )
+            return
+
+        # ── 7. LOG SAFE USER MESSAGE ─────────────────────────────────────────
         if session_factory:
             async with session_factory() as session:
                 await repo.save_message(
@@ -214,14 +308,7 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                     meta={"attachment_types": inbound.attachment_types},
                 )
 
-        # ── 7. TYPING INDICATOR ──────────────────────────────────────────────
-        if http_client:
-            await _send_typing(http_client, inbound)
-
-        # ── 8. AGENT TURN ────────────────────────────────────────────────────
-        reply_text = FALLBACK_REPLY
-        agent_graph = getattr(app.state, "agent_graph", None)
-        cache_manager = getattr(app.state, "cache_manager", None)
+        # ── 8. AGENT TURN / SEMANTIC CACHE ───────────────────────────────────
         if cache_manager and llm and session_factory and agent_graph:
             thread_id = inbound.conversation_id or inbound.psid
             cache_request = CacheRequest(
@@ -250,7 +337,9 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                     raise RuntimeError("Agent returned an empty response")
                 return CachePayload(response=generated, source="agent")
 
-            payload = await cache_manager.get_or_compute(cache_request, compute_reply)
+            payload = await cache_manager.get_or_compute(
+                cache_request, compute_reply, embedding=decision.embedding
+            )
             reply_text = payload.response
         elif llm and session_factory and agent_graph:
             reply_text = await run_turn(
@@ -264,6 +353,8 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                     "channel": inbound.channel,
                     "account_id": inbound.account_id,
                     "conversation_id": inbound.conversation_id,
+                    "redis_client": redis_client,
+                    "index_name": INDEX_NAME,
                 },
             )
         else:

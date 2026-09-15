@@ -1,0 +1,35 @@
+import json
+
+input_file = "algerian_darija_only.jsonl"
+output_file = "injection_examples.jsonl"
+
+class_to_move = "injection"
+
+# Read all lines and split them
+remaining = []
+removed = []
+
+with open(input_file, "r", encoding="utf-8") as f:
+    for line in f:
+        if not line.strip():
+            continue
+
+        data = json.loads(line)
+
+        if data.get("class") == class_to_move:
+            removed.append(data)
+        else:
+            remaining.append(data)
+
+# Rewrite the original file without the selected class
+with open(input_file, "w", encoding="utf-8") as f:
+    for data in remaining:
+        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+
+# Write removed lines to the new file
+with open(output_file, "w", encoding="utf-8") as f:
+    for data in removed:
+        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+
+print(f"Moved {len(removed)} records with class '{class_to_move}'")
+print(f"Remaining: {len(remaining)}")

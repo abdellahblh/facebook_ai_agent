@@ -14,15 +14,14 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, trim_messages
 from langchain_core.tools import BaseTool
 from langgraph.graph import END, START, StateGraph
-from langgraph.prebuilt import ToolNode
+from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.runnables import RunnableConfig
 from langfuse.langchain import CallbackHandler
 from typing import Optional
 langfuse_handler = CallbackHandler()
-from app.agent.security import (
+from app.agent.guardrail import (
     mask_input_pii,
     mask_output_pii,
-    nemo_guardrails,
 )
 from app.agent.state import AgentState
 from app.config import get_settings
@@ -33,101 +32,27 @@ logger = logging.getLogger(__name__)
 MAX_INPUT_CHARS = 8_000
 RECURSION_LIMIT = 15
 
-INPUT_BLOCKED_REPLY = "I'm sorry, I can't help with that request."
-OUTPUT_BLOCKED_REPLY = "I'm sorry, I can't provide that response."
 # Placeholder that REPLACES a blocked message INSIDE the checkpointer. The raw
 # text must never be persisted: it is the agent's memory and would otherwise be
 # fed back to the LLM on the next turn of the same conversation.
-BLOCKED_INPUT_RECORD = "[message blocked by content policy]"
-
-
-def _with_id(message) -> str:
-    """Messages are auto-assigned ids by add_messages, but be defensive: an
-    id-less message cannot be upserted/removed by the state reducer."""
-    return message.id or uuid.uuid4().hex
 
 
 def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, checkpointer=None):
     llm_with_tools = llm.bind_tools(tools)
     settings = get_settings()
-    async def input_guardrail_node(state: AgentState, config: Optional[RunnableConfig] = None):
-        """Checks user input for PII and safety violations."""
-        raw_user_text = HumanMessage(content=state["messages"][-1].content)
-
-        # Step A: Apply PII Masking (e.g., Credit Cards)
-        masked_text = mask_input_pii(raw_user_text.content)
-        
-
-        # Step B: Check Input Guardrails via NeMo
-        is_safe = await nemo_guardrails.check_input(masked_text, config=config)
-
-        if not is_safe:
-            logger.warning("Input blocked by NeMo Guardrails.")
-            raw_human = state["messages"][-1]
-            # Bypass the add_messages append with an upsert that REPLACES the
-            # raw message in place (same id), so the checkpointer — the agent's
-            # memory — never stores the blocked text and a later turn cannot
-            # recall it.
-            redacted = HumanMessage(
-                content=BLOCKED_INPUT_RECORD, id=_with_id(raw_human)
-            )
-            return {
-                "input_blocked": True,
-                "messages": [
-                    redacted,
-                    AIMessage(content=INPUT_BLOCKED_REPLY),
-                ],
-            }
-
-        # Reset the flag on every safe turn: the checkpointer persists state
-        # ACROSS turns, so a stale True would block every later message.
-        return {"input_blocked": False}
-    async def output_guardrail_node(state: AgentState, config: Optional[RunnableConfig] = None):
-        """Validates the generated AI response for safety/hallucination before sending to user."""
-        last_ai_message = state["messages"][-1]
-
-        # Extract original user prompt if available in state
-        user_text = ""
-        for msg in reversed(state["messages"]):
-            if isinstance(msg, HumanMessage):
-                user_text = msg.content
-                break
-
-        # Check Output Guardrails via NeMo
-        is_safe = await nemo_guardrails.check_output(
-            assistant_text=last_ai_message.content,
-            user_text=user_text,
-            config=config
-        )
-
-        if not is_safe:
-            logger.warning("Output blocked by NeMo Guardrails.")
-            # Replace the unsafe AI message IN PLACE (upsert by id): the raw
-            # response must not survive in the checkpointer, or the model would
-            # echo it back from memory on a later turn.
-            return {
-                "messages": [
-                    AIMessage(
-                        content=OUTPUT_BLOCKED_REPLY,
-                        id=_with_id(last_ai_message),
-                    )
-                ]
-            }
-    def check_if_blocked(state: AgentState) -> str:
-        return "blocked" if state.get("input_blocked") else "safe"
-
 
     async def agent_node(state: AgentState):
-        def _token_count(msgs_or_msg):
-            if isinstance(msgs_or_msg, list):
-                return sum(len(str(getattr(m, 'content', m))) for m in msgs_or_msg)
-            return len(str(getattr(msgs_or_msg, 'content', msgs_or_msg)))
+        def count_tokens_approximately(messages, chars_per_token=4.0):
+            
+            total_chars = sum(len(str(getattr(m, "content", m))) for m in messages)
+            return int(total_chars / chars_per_token)
+
 
         trimmed_messages = trim_messages(
             state["messages"],
             max_tokens=settings.history_max_messages * 500,
             strategy="last",
-            token_counter=_token_count,
+            token_counter=count_tokens_approximately,
             start_on="human",
             include_system=False,
             allow_partial=False,
@@ -152,21 +77,12 @@ def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, c
         response.id = None
         return {"messages": [response]}
 
-    def after_agent(state: AgentState) -> str:
-        """Tools must return to the agent; only its final answer is guarded."""
-        last = state["messages"][-1]
-        return "tools" if getattr(last, "tool_calls", None) else "output_guardrail"
-
     graph = StateGraph(AgentState)
-    graph.add_node("input_guardrail", input_guardrail_node)
     graph.add_node("agent", agent_node)
-    graph.add_node("output_guardrail", output_guardrail_node)
     graph.add_node("tools", ToolNode(tools))
-    graph.add_edge(START, "input_guardrail")
-    graph.add_conditional_edges("input_guardrail", check_if_blocked, {"blocked": END, "safe": "agent"})
-    graph.add_conditional_edges("agent", after_agent, {"tools": "tools", "output_guardrail": "output_guardrail"})
+    graph.add_edge(START, "agent")
+    graph.add_conditional_edges("agent", tools_condition)
     graph.add_edge("tools", "agent")
-    graph.add_edge("output_guardrail", END)
     return graph.compile(checkpointer=checkpointer)
 
 

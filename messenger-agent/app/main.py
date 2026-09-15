@@ -21,22 +21,18 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
-from pinecone import AsyncPinecone
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
 
-from app.agent.security import nemo_guardrails
 from app.chatwoot import router as chatwoot_router
 from app.config import get_settings
 from app.db import engine as db_engine
 from app.db.engine import dispose_engine, init_engine
 from app.kb import router as kb_router
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger(__name__)
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
@@ -59,13 +55,6 @@ async def lifespan(app: FastAPI):
         open=False,
     )
     await app.state.pg_pool.open()
-    # 3. Pinecone (Shared Client & Index)
-    if AsyncPinecone and settings.pinecone_api_key:
-        app.state.pinecone = AsyncPinecone(api_key=settings.pinecone_api_key)
-        app.state.pinecone_index = await app.state.pinecone.index(settings.pinecone_index)
-    else:
-        app.state.pinecone = None
-        app.state.pinecone_index = None
 
     app.state.saver = AsyncPostgresSaver(app.state.pg_pool)
     await app.state.saver.setup()
@@ -83,29 +72,43 @@ async def lifespan(app: FastAPI):
     )
     await app.state.redis.ping()
 
+    from app.agent.guardrail import EmbedderProvider, RedisTopicControlGuard
+    from app.cache.layers.faiss_semantic import FaissSemanticCache
     from app.cache.layers.l0_memory import L0InMemoryCache
-    from app.cache.layers.l1_semantic import L1SemanticCache, LangChainEmbeddingProvider
     from app.cache.layers.l2_redis import L2RedisKVCache
     from app.cache.manager import CacheManager
 
-    semantic_cache = None
-    if settings.cache_embedding_model and settings.cache_embedding_dimensions > 0:
-        try:
-            from langchain_google_genai import GoogleGenerativeAIEmbeddings
+    # One query embedding per inbound message is shared by the Redis
+    # topic guardrail and the FAISS semantic cache.
+    app.state.embedder = EmbedderProvider(
+        api_key=settings.embedder_api_key,
+        model=settings.embedder_model,
+        dimensions=settings.embedder_dimensions,
+    )
+    app.state.inbound_guardrail = RedisTopicControlGuard(
+        app.state.redis,
+        settings.redis_guardrail_index,
+        settings.faiss_guardrail_threshold,
+        app.state.embedder,
+    )
 
-            embeddings = GoogleGenerativeAIEmbeddings(
-                model=settings.cache_embedding_model,
-                google_api_key=settings.google_api_key,
-            )
-            semantic_cache = L1SemanticCache(
-                app.state.redis,
-                LangChainEmbeddingProvider(embeddings),
-                dimensions=settings.cache_embedding_dimensions,
-                similarity_threshold=settings.cache_semantic_threshold,
-                index_name=settings.cache_semantic_index,
-            )
-        except Exception:
-            logger.exception("Semantic cache unavailable; continuing with L0/L2.")
+    from app.agent.guardrail import LLMGuardModel
+    from app.agent.prompts import guardrail_prompt
+
+    if settings.groq_api_key:
+        app.state.guard_model = LLMGuardModel(
+            api_key=settings.groq_api_key,
+            base_url=settings.groq_base_url,
+            model=settings.guard_model,
+            system_prompt=guardrail_prompt,
+        )
+    else:
+        app.state.guard_model = None
+    semantic_cache = FaissSemanticCache(
+        max_size=settings.faiss_cache_max_size,
+        ttl_seconds=settings.agent_response_cache_ttl_seconds,
+        similarity_threshold=settings.faiss_semantic_threshold,
+    )
 
     app.state.cache_manager = CacheManager(
         l0=L0InMemoryCache(
@@ -137,9 +140,6 @@ async def lifespan(app: FastAPI):
         checkpointer=app.state.saver,
     )
 
-    nemo_guardrails.initialize()
-    app.state.nemo_guardrails = nemo_guardrails
-
     # Queue consumer: drain the webhook stream in-process. Started last so the
     # guardrail "fail fast" above means no consumer is left half-wired.
     if settings.queue_enabled:
@@ -158,7 +158,7 @@ async def lifespan(app: FastAPI):
     else:
         app.state.queue_consumer_task = None
 
-    logger.info("Startup complete: db, redis, checkpointer, llm, agent_graph, http, NeMo Guardrails, and webhook queue wired.")
+    logger.info("Startup complete: Jina embeddings, guardrail/cache, db, redis, checkpointer, llm, and webhook queue wired.")
     yield
 
     # Stop the consumer FIRST: it must not be processing an entry while Redis,
@@ -179,12 +179,9 @@ async def lifespan(app: FastAPI):
         ("pg_pool", app.state.pg_pool.close),
         ("redis", app.state.redis.aclose),
         ("engine", dispose_engine),
-        ("nemoguardrails", nemo_guardrails.close),
     ]
     # Pinecone is optional: closing None would raise AttributeError and abort
     # the whole shutdown before the remaining closers run.
-    if app.state.pinecone is not None:
-        closers.append(("pinecone", app.state.pinecone.close))
 
     for name, closer in closers:
         try:
@@ -231,8 +228,7 @@ async def health(request: Request) -> dict:
         "llm": getattr(state, "llm", None) is not None,
         "agent_graph": getattr(state, "agent_graph", None) is not None,
         "http": getattr(state, "http", None) is not None,
-        "nemo_guardrails": getattr(state, "nemo_guardrails", None) is not None
-        and state.nemo_guardrails.rails is not None,
+        "guardrail": getattr(state, "inbound_guardrail", None) is not None,
     }
 
     settings = get_settings()

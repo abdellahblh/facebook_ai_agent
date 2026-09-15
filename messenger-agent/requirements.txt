@@ -24,7 +24,9 @@ langgraph==1.2.11
 langgraph-checkpoint-postgres>=2.0
 langchain-core>=0.3
 langchain-google-genai>=2.0
-nemoguardrails>=0.12
+langchain-text-splitters>=0.3
+faiss-cpu>=1.8
+nemoguardrails>=0.24,<0.25
 
 # ---- RAG / vector store (rag/rag.py, tools.policy_search) ----
 pinecone==9.1.0

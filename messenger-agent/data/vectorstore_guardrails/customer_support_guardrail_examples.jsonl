@@ -1,0 +1,1052 @@
+{"id": "a-en-s01", "text": "How do I update my delivery address?", "lang": "en", "class": "support"}
+{"id": "a-en-s03", "text": "Why is my payment still pending?", "lang": "en", "class": "support"}
+{"id": "a-en-s04", "text": "Please explain the refund processing time.", "lang": "en", "class": "support"}
+{"id": "a-en-s05", "text": "My discount code says it is invalid.", "lang": "en", "class": "support"}
+{"id": "a-en-s07", "text": "I received a damaged item. What are my options?", "lang": "en", "class": "support"}
+{"id": "a-en-s08", "text": "Can you resend my order confirmation email?", "lang": "en", "class": "support"}
+{"id": "a-en-s12", "text": "Can I return an item bought during a sale?", "lang": "en", "class": "support"}
+{"id": "a-en-s13", "text": "My tracking number does not show any updates.", "lang": "en", "class": "support"}
+{"id": "a-en-s15", "text": "How can I get a copy of my receipt?", "lang": "en", "class": "support"}
+{"id": "a-en-s18", "text": "Why was my order partially cancelled?", "lang": "en", "class": "support"}
+{"id": "a-fr-s01", "text": "Comment modifier mon adresse de livraison ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s03", "text": "Pourquoi mon paiement est-il toujours en attente ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s04", "text": "Quel est le délai de traitement d'un remboursement ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s05", "text": "Mon code de réduction est indiqué comme invalide.", "lang": "fr", "class": "support"}
+{"id": "a-fr-s07", "text": "J'ai reçu un article endommagé. Que faire ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s08", "text": "Pouvez-vous renvoyer l'email de confirmation de commande ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s12", "text": "Puis-je retourner un article acheté en promotion ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s13", "text": "Mon numéro de suivi ne se met pas à jour.", "lang": "fr", "class": "support"}
+{"id": "a-fr-s15", "text": "Comment obtenir une copie de mon reçu ?", "lang": "fr", "class": "support"}
+{"id": "a-fr-s18", "text": "Pourquoi ma commande a-t-elle été partiellement annulée ?", "lang": "fr", "class": "support"}
+{"id": "a-dz-s01", "text": "كيفاه نبدل adresse تاع livraison؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s03", "text": "علاش paiement تاعي مازال pending؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s04", "text": "قداه ياخذ remboursement باش يجي؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s05", "text": "code promo تاعي يقول invalid.", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s07", "text": "وصلني article مكسور، واش نقدر ندير؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s08", "text": "تقدرو تعاودو تصيفطو email confirmation؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s12", "text": "نقدر نرجع article شريتو في promotion؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s13", "text": "numéro suivi تاعي ما يتبدلش.", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s15", "text": "كيفاه نجيب copie من reçu تاعي؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-dz-s18", "text": "علاش الطلبية تاعي تلغات جزئيا؟", "lang": "ar-dz", "class": "support"}
+{"id": "a-lat-s01", "text": "Kifach nbadel adresse ta3 livraison?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s03", "text": "3lah paiement ta3i mazal pending?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s04", "text": "Chhal yakhed remboursement bach yji?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s05", "text": "Code promo ta3i ygol invalid.", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s07", "text": "Wselni article mkasser, wach n9der ndir?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s08", "text": "T9edrou t3awdou tsiftou email confirmation?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s12", "text": "N9der nrja3 article chritou fi promotion?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s13", "text": "Numéro suivi ta3i ma yetbedelch.", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s15", "text": "Kifach njib copie men reçu ta3i?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "a-lat-s18", "text": "3lah talbiya ta3i telghat partiellement?", "lang": "ar-dz-latn", "class": "support"}
+{"id": "new-en-s001", "text": "Do you have this product in stock?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s002", "text": "Is the black version available right now?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s003", "text": "Do you still have size large in stock?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s004", "text": "What colors does this product come in?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s005", "text": "Can you tell me the available sizes for this item?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s006", "text": "Is this item currently available for purchase?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s007", "text": "Do you have a cheaper option similar to this product?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s008", "text": "Which product would you recommend for this use case?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s009", "text": "Can you compare these two products for me?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s010", "text": "What is the price of this item?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s011", "text": "Has the price of this product changed?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s012", "text": "Is this product part of the current promotion?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s013", "text": "Do you have this model in another color?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s014", "text": "Can I order two of these items?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s015", "text": "Is there a maximum quantity I can buy?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s016", "text": "What are the main features of this product?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s017", "text": "What is included in the box?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s018", "text": "Does this product come with a warranty?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s019", "text": "How long is the warranty for this item?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s020", "text": "Is this product suitable for everyday use?", "lang": "en", "class": "support", "topic": "product_lookup"}
+{"id": "new-en-s021", "text": "How much does shipping cost?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s022", "text": "How long does delivery usually take?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s023", "text": "What delivery options do you offer?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s024", "text": "Do you offer express delivery?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s025", "text": "Do you deliver to my city?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s026", "text": "Which areas do you ship to?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s027", "text": "Do you ship nationwide?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s028", "text": "Can I choose the delivery address?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s029", "text": "Can I change my shipping address after placing the order?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s030", "text": "When will my order be shipped?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s031", "text": "Has my order been dispatched yet?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s032", "text": "Where is my order right now?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s033", "text": "Can I track my package?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s034", "text": "My tracking number has not updated. What should I do?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s035", "text": "Why is my delivery taking longer than expected?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s036", "text": "What should I do if my package is late?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s037", "text": "Can I schedule a delivery time?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s038", "text": "Do you deliver on weekends?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s039", "text": "Do you charge extra for remote areas?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s040", "text": "Will I receive a tracking number by email?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s041", "text": "What happens if nobody is home when the courier arrives?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s042", "text": "Can the courier call me before delivery?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s043", "text": "Can I pick up my order instead of having it delivered?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s044", "text": "Do you deliver to pickup points?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s045", "text": "Is international shipping available?", "lang": "en", "class": "support", "topic": "shipping"}
+{"id": "new-en-s046", "text": "How can I place an order?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s047", "text": "Can I cancel my order before it ships?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s048", "text": "Can I add another item to an existing order?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s049", "text": "Can I change the quantity in my order?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s050", "text": "I received the wrong product. What should I do?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s051", "text": "Part of my order is missing. Can you help?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s052", "text": "One item in my order was cancelled. Why?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s053", "text": "I received a damaged item. How do I report it?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s054", "text": "Can you resend my order confirmation?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s055", "text": "Where can I find my receipt?", "lang": "en", "class": "support", "topic": "orders"}
+{"id": "new-en-s056", "text": "What is your return policy?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s057", "text": "How many days do I have to return an item?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s058", "text": "Can I return an item if I changed my mind?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s059", "text": "Can I return a product bought on sale?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s060", "text": "How do I start a return?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s061", "text": "Who pays the return shipping cost?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s062", "text": "When will I receive my refund after a return?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s063", "text": "Can I exchange an item instead of getting a refund?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s064", "text": "Are opened products eligible for return?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s065", "text": "What items cannot be returned?", "lang": "en", "class": "support", "topic": "returns_refunds"}
+{"id": "new-en-s066", "text": "What is your shipping policy?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s067", "text": "What is your refund policy?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s068", "text": "What is your exchange policy?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s069", "text": "Do you have a warranty policy?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s070", "text": "What are your terms for promotional discounts?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s071", "text": "Do you have a minimum order requirement?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s072", "text": "Is there a purchase limit for some products?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s073", "text": "What payment methods do you accept?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s074", "text": "Do you charge any additional fees?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s075", "text": "Do you offer cash on delivery?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s076", "text": "Is cash on delivery available in my area?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s077", "text": "Are there conditions for free shipping?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s078", "text": "What is the minimum order for free delivery?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s079", "text": "Can I use more than one discount code on the same order?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s080", "text": "Can a discount code be used with sale items?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s081", "text": "How long are promotional offers valid?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s082", "text": "Are prices the same online and in store?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s083", "text": "Do you have a price-matching policy?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s084", "text": "How do I contact customer support about an order?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-en-s085", "text": "What should I do if I have a problem with my delivery?", "lang": "en", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s001", "text": "Avez-vous ce produit en stock ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s002", "text": "La version noire est-elle disponible actuellement ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s003", "text": "Avez-vous encore la taille L en stock ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s004", "text": "Quelles couleurs sont disponibles pour ce produit ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s005", "text": "Pouvez-vous me donner les tailles disponibles pour cet article ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s006", "text": "Cet article est-il actuellement disponible à l'achat ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s007", "text": "Avez-vous une option moins chère similaire à ce produit ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s008", "text": "Quel produit me conseillez-vous pour ce besoin ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s009", "text": "Pouvez-vous comparer ces deux produits ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s010", "text": "Quel est le prix de cet article ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s011", "text": "Le prix de ce produit a-t-il changé ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s012", "text": "Ce produit fait-il partie de la promotion actuelle ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s013", "text": "Avez-vous ce modèle dans une autre couleur ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s014", "text": "Puis-je commander deux exemplaires de cet article ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s015", "text": "Y a-t-il une quantité maximale que je peux acheter ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s016", "text": "Quelles sont les principales caractéristiques de ce produit ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s017", "text": "Que contient la boîte ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s018", "text": "Ce produit est-il garanti ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s019", "text": "Quelle est la durée de la garantie ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s020", "text": "Ce produit convient-il à un usage quotidien ?", "lang": "fr", "class": "support", "topic": "product_lookup"}
+{"id": "new-fr-s021", "text": "Combien coûte la livraison ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s022", "text": "Quel est le délai habituel de livraison ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s023", "text": "Quelles options de livraison proposez-vous ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s024", "text": "Proposez-vous une livraison express ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s025", "text": "Livrez-vous dans ma ville ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s026", "text": "Dans quelles régions livrez-vous ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s027", "text": "Livrez-vous dans tout le pays ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s028", "text": "Puis-je choisir l'adresse de livraison ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s029", "text": "Puis-je modifier l'adresse après avoir passé la commande ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s030", "text": "Quand ma commande sera-t-elle expédiée ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s031", "text": "Ma commande a-t-elle déjà été expédiée ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s032", "text": "Où se trouve ma commande actuellement ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s033", "text": "Puis-je suivre mon colis ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s034", "text": "Mon numéro de suivi ne se met pas à jour, que faire ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s035", "text": "Pourquoi ma livraison prend-elle plus de temps que prévu ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s036", "text": "Que faire si mon colis est en retard ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s037", "text": "Puis-je choisir une heure de livraison ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s038", "text": "Livrez-vous le week-end ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s039", "text": "Faites-vous payer un supplément pour les zones éloignées ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s040", "text": "Vais-je recevoir un numéro de suivi par email ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s041", "text": "Que se passe-t-il si personne n'est présent à la livraison ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s042", "text": "Le livreur peut-il m'appeler avant de livrer ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s043", "text": "Puis-je récupérer ma commande au lieu de la faire livrer ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s044", "text": "Livrez-vous dans des points relais ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s045", "text": "La livraison internationale est-elle disponible ?", "lang": "fr", "class": "support", "topic": "shipping"}
+{"id": "new-fr-s046", "text": "Comment passer une commande ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s047", "text": "Puis-je annuler ma commande avant son expédition ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s048", "text": "Puis-je ajouter un article à une commande existante ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s049", "text": "Puis-je modifier la quantité de mon article ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s050", "text": "J'ai reçu le mauvais produit, que dois-je faire ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s051", "text": "Il manque un article dans ma commande, pouvez-vous m'aider ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s052", "text": "Pourquoi un article de ma commande a-t-il été annulé ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s053", "text": "J'ai reçu un article endommagé, comment le signaler ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s054", "text": "Pouvez-vous renvoyer la confirmation de ma commande ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s055", "text": "Où puis-je trouver mon reçu ?", "lang": "fr", "class": "support", "topic": "orders"}
+{"id": "new-fr-s056", "text": "Quelle est votre politique de retour ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s057", "text": "De combien de jours dispose-je pour retourner un article ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s058", "text": "Puis-je retourner un article si j'ai changé d'avis ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s060", "text": "Comment commencer une procédure de retour ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s061", "text": "Qui paie les frais de retour ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s062", "text": "Quand recevrai-je mon remboursement après un retour ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s063", "text": "Puis-je échanger un article au lieu d'être remboursé ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s064", "text": "Les produits ouverts sont-ils éligibles au retour ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s065", "text": "Quels articles ne peuvent pas être retournés ?", "lang": "fr", "class": "support", "topic": "returns_refunds"}
+{"id": "new-fr-s066", "text": "Quelle est votre politique de livraison ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s067", "text": "Quelle est votre politique de remboursement ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s068", "text": "Quelle est votre politique d'échange ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s069", "text": "Avez-vous une politique de garantie ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s070", "text": "Quelles sont les conditions de vos promotions ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s071", "text": "Y a-t-il un minimum de commande ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s072", "text": "Existe-t-il une limite d'achat pour certains produits ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s073", "text": "Quels moyens de paiement acceptez-vous ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s074", "text": "Y a-t-il des frais supplémentaires ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s075", "text": "Proposez-vous le paiement à la livraison ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s076", "text": "Le paiement à la livraison est-il disponible dans ma région ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s077", "text": "Sous quelles conditions la livraison est-elle gratuite ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s078", "text": "Quel est le montant minimum pour bénéficier de la livraison gratuite ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s079", "text": "Puis-je utiliser plusieurs codes promo sur une même commande ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s080", "text": "Un code promo peut-il être utilisé avec des articles soldés ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s081", "text": "Combien de temps les offres promotionnelles sont-elles valables ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s082", "text": "Les prix sont-ils identiques en ligne et en magasin ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s083", "text": "Avez-vous une politique d'alignement des prix ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s084", "text": "Comment contacter le service client concernant une commande ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-fr-s085", "text": "Que dois-je faire en cas de problème avec ma livraison ?", "lang": "fr", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s001", "text": "واش هذا المنتج مازال موجود فالستوك؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s002", "text": "النسخة لكحلة راهي متوفرة دروك؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s003", "text": "عندكم taille L فالستوك؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s004", "text": "واش من ألوان كاينين فهاد المنتج؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s005", "text": "واش من tailles متوفرين؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s006", "text": "هاد article نقدر نشريه دروك ولا راهو سالا؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s007", "text": "عندكم حاجة أرخص وتشبه لهاذ المنتج؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s008", "text": "واش هو المنتج لي تنصحوني بيه لهاد الاستعمال؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s009", "text": "تقدرو تقارنو بين هاذ الزوج منتجات؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s010", "text": "قداه سوم هاذ المنتج؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s011", "text": "السعر تاع هاذ المنتج تبدل؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s012", "text": "هاد المنتج داخل فالعرض الحالي؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s013", "text": "عندكم نفس الموديل بلون آخر؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s014", "text": "نقدر نطلب زوج من هاذ المنتج؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s015", "text": "كاين limite فالكمية لي نقدر نشريها؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s016", "text": "واش هي les caractéristiques الرئيسية تاع المنتج؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s017", "text": "واش يجي داخل العلبة؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s018", "text": "هاد المنتج عندو garantie؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s019", "text": "قداه مدة الضمان تاعو؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s020", "text": "هاد المنتج يصلح للاستعمال اليومي؟", "lang": "ar-dz", "class": "support", "topic": "product_lookup"}
+{"id": "new-dz-s021", "text": "قداه تكلف livraison؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s022", "text": "قداه تاخذ livraison عادة؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s023", "text": "واش من options تاع livraison عندكم؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s024", "text": "كاين livraison express؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s025", "text": "توصّلو لمدينتي؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s026", "text": "واش من مناطق توصلولها؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s027", "text": "توصّلو للولايات كامل؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s028", "text": "نقدر نختار adresse تاع livraison؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s029", "text": "نقدر نبدل adresse بعد ما ندير الطلبية؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s030", "text": "وقتاش تبعثو الطلبية؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s031", "text": "الطلبية تاعي تبعثات ولا مازال؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s032", "text": "وين راهي الطلبية تاعي دروك؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s033", "text": "نقدر نتبع colis تاعي؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s034", "text": "numéro de suivi ما راهوش يتبدل، واش ندير؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s035", "text": "علاش livraison تأخرت على الوقت المتوقع؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s036", "text": "واش ندير إذا colis تأخر؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s037", "text": "نقدر نحدد وقت livraison؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s038", "text": "توصّلو نهار الويكاند؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s039", "text": "كاين supplément للمناطق البعيدة؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s040", "text": "يبعثولي numéro de suivi بالإيميل؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s041", "text": "واش يصرا إذا ما كان حتى واحد فالدار وقت التوصيل؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s042", "text": "livreur يقدر يعيطلي قبل ما يوصل؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s043", "text": "نقدر نجيب الطلبية بنفسي بلا livraison؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s044", "text": "عندكم livraison لنقاط الاستلام؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s045", "text": "كاينة livraison دولية؟", "lang": "ar-dz", "class": "support", "topic": "shipping"}
+{"id": "new-dz-s046", "text": "كيفاه ندير commande؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s047", "text": "نقدر نلغي الطلبية قبل ما تتبعث؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s048", "text": "نقدر نزيد article لطلبية درتها من قبل؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s049", "text": "نقدر نبدل الكمية فالطلبية؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s050", "text": "وصلني produit غالط، واش ندير؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s051", "text": "كاين article ناقص فالطلبية، تعاونوني؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s052", "text": "علاش تلغات وحدة من المنتجات تاع الطلبية؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s053", "text": "وصلني article مضرور، كيفاه نصرح بالمشكل؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s054", "text": "تقدرو تعاودو تبعثولي confirmation تاع الطلبية؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s055", "text": "وين نلقى reçu تاعي؟", "lang": "ar-dz", "class": "support", "topic": "orders"}
+{"id": "new-dz-s056", "text": "واش هي سياسة retour تاعكم؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s057", "text": "قداه عندي وقت باش نرجع article؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s058", "text": "نقدر نرجع article إذا بدلت رأيي؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s060", "text": "كيفاه نبدا procédure تاع retour؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s061", "text": "شكون يخلص frais تاع retour؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s062", "text": "وقتاش يرجعولي الدراهم بعد retour؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s063", "text": "نقدر نبدل article بدل remboursement؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s064", "text": "المنتج لي تفتح يقدر يرجع؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s065", "text": "واش من articles ما يتقبلوش retour؟", "lang": "ar-dz", "class": "support", "topic": "returns_refunds"}
+{"id": "new-dz-s066", "text": "واش هي سياسة livraison تاع الشركة؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s067", "text": "واش هي سياسة remboursement تاعكم؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s068", "text": "واش هي سياسة échange؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s069", "text": "عندكم سياسة تاع garantie؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s070", "text": "واش هي شروط les promotions تاعكم؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s071", "text": "كاين minimum للطلبية؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s072", "text": "كاين limite فالشراء لبعض المنتجات؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s073", "text": "واش من طرق paiement تقبلو؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s074", "text": "كاين frais إضافية؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s075", "text": "عندكم paiement à la livraison؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s076", "text": "الدفع عند الاستلام متوفر فالمنطقة تاعي؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s077", "text": "واش هي شروط livraison gratuite؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s078", "text": "قداه لازم نشري باش تولي livraison gratuite؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s079", "text": "نقدر نستعمل أكثر من code promo فنفس الطلبية؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s080", "text": "نقدر نستعمل code promo مع article راهو في promotion؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s081", "text": "قداه تبقى العروض صالحة؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s082", "text": "الأسعار فالويب كيف كيف مع المحل؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s083", "text": "عندكم سياسة مطابقة الأسعار؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s084", "text": "كيفاه نتصل بالsupport بخصوص طلبية؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-dz-s085", "text": "واش ندير إذا كان عندي مشكل مع livraison؟", "lang": "ar-dz", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s001", "text": "Had produit mazal fel stock?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s002", "text": "La version noire rahia disponible drwk?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s003", "text": "3andkom taille L fel stock?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s004", "text": "Wach men couleurs kaynin f had produit?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s005", "text": "Wach men tailles disponibles?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s006", "text": "Had article n9der nechrih drwk wela sala?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s007", "text": "3andkom haja arkhes w tchebeh l had produit?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s008", "text": "Wach howa l produit li tans7ouni bih l had l isti3mal?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s009", "text": "T9edrou t9arnou bin had zouj produits?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s010", "text": "Ch7al soum had produit?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s011", "text": "S3ar had produit tbadel?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s012", "text": "Had produit dakhel fel offre actuelle?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s013", "text": "3andkom nafs modèle b loun akhor?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s014", "text": "N9der nطلب zouj men had produit?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s015", "text": "Kayna limite fel quantité li n9der nechriha?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s016", "text": "Wach homa les caractéristiques principales ta3 produit?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s017", "text": "Wach yji dakhel l3elba?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s018", "text": "Had produit 3ando garantie?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s019", "text": "Ch7al moddet l garantie?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s020", "text": "Had produit yselah lel isti3mal quotidien?", "lang": "ar-dz-latn", "class": "support", "topic": "product_lookup"}
+{"id": "new-lat-s021", "text": "Ch7al teklef livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s022", "text": "Ch7al ta5od livraison 3ada?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s023", "text": "Wach men options ta3 livraison 3andkom?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s024", "text": "Kayna livraison express?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s025", "text": "Twaslou l mdinti?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s026", "text": "Wach men manate9 twasloulha?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s027", "text": "Twaslou l wilayat kamel?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s028", "text": "N9der nekhtar adresse ta3 livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s029", "text": "N9der nbadel adresse ba3d ma ndir commande?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s030", "text": "Waqtach teb3thou l commande?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s031", "text": "La commande ta3i teb3that wela mazal?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s032", "text": "Win rahia commande ta3i drwk?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s033", "text": "N9der netbe3 colis ta3i?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s034", "text": "Numéro de suivi ma rahouch yetbadel, wach ndir?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s035", "text": "3lach livraison t2akhret 3la lwa9t li kont نستنا?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s036", "text": "Wach ndir ila colis t2akher?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s037", "text": "N9der n7added wa9t ta3 livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s038", "text": "Twaslou nhar l weekend?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s039", "text": "Kayen supplément lel manate9 lba3ida?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s040", "text": "Yb3thouli numéro de suivi bel email?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s041", "text": "Wach ysra ila ma kan 7ta wa7ed fel dar waqt livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s042", "text": "Livreur y9der y3ayetli 9bel ma ywasel?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s043", "text": "N9der nji n5od commande bla livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s044", "text": "3andkom livraison l points de retrait?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s045", "text": "Kayna livraison internationale?", "lang": "ar-dz-latn", "class": "support", "topic": "shipping"}
+{"id": "new-lat-s046", "text": "Kifach ndir commande?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s047", "text": "N9der nلغي commande 9bel ma tetb3ath?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s048", "text": "N9der nzid article l commande li dert 9bel?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s049", "text": "N9der nbadel quantité fel commande?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s050", "text": "Wselni produit ghalet, wach ndir?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s051", "text": "Kayen article na9es fel commande, t3awnouni?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s052", "text": "3lach telghat wa7da men les produits ta3 commande?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s053", "text": "Wselni article mdarreb, kifach nصرح bel mochkil?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s054", "text": "T9edrou t3awdou teb3thouli confirmation ta3 commande?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s055", "text": "Win nel9a reçu ta3i?", "lang": "ar-dz-latn", "class": "support", "topic": "orders"}
+{"id": "new-lat-s056", "text": "Wach hiya politique ta3 retour?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s057", "text": "Ch7al 3andi wa9t bach nrja3 article?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s058", "text": "N9der nrja3 article ila baddelt rayi?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s060", "text": "Kifach nbda procédure ta3 retour?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s061", "text": "Chkoun ykheless frais ta3 retour?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s062", "text": "Waqtach yerj3ouli drahem ba3d retour?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s063", "text": "N9der nبدل article bla remboursement?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s064", "text": "Produit li t7al y9der yerja3?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s065", "text": "Wach men articles ma yet9بلوش retour?", "lang": "ar-dz-latn", "class": "support", "topic": "returns_refunds"}
+{"id": "new-lat-s066", "text": "Wach hiya politique ta3 livraison ta3 charika?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s067", "text": "Wach hiya politique ta3 remboursement?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s068", "text": "Wach hiya politique ta3 échange?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s069", "text": "3andkom politique ta3 garantie?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s070", "text": "Wach homa chourout ta3 les promotions?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s071", "text": "Kayen minimum ta3 commande?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s072", "text": "Kayna limite ta3 chra l ba3d produits?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s073", "text": "Wach men méthodes ta3 paiement t9بلou?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s074", "text": "Kayen frais zyada?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s075", "text": "3andkom paiement à la livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s076", "text": "Paiement 3and l istلام متوفر fi l jiha ta3i?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s077", "text": "Wach homa chourout livraison gratuite?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s078", "text": "Ch7al lazem nechri bach twelli livraison gratuite?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s079", "text": "N9der nesta3mel kter men code promo f nafs commande?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s080", "text": "N9der nesta3mel code promo m3a article fi promotion?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s081", "text": "Ch7al teb9a les offres s7i7a?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s082", "text": "Les prix fel web kif kif m3a l magasin?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s083", "text": "3andkom politique ta3 matching ta3 les prix?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s084", "text": "Kifach netصل bel support 3la commande?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "new-lat-s085", "text": "Wach ndir ila 3andi mochkil m3a livraison?", "lang": "ar-dz-latn", "class": "support", "topic": "company_policy"}
+{"id": "cs-dz-ar-001", "text": "ما نقدرش ندخل للحساب تاعي، كيفاه نبدل password؟", "lang": "ar-dz", "intent": "password_reset", "class": "customer-support"}
+{"id": "cs-dz-ar-002", "text": "وين نلقى facture تاع الشهر لي فات؟", "lang": "ar-dz", "intent": "invoice_request", "class": "customer-support"}
+{"id": "cs-dz-ar-003", "text": "الطلبية تاعي ما وصلتش، تقدر تشوفلي suivi؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "cs-dz-ar-004", "text": "خلصت الاشتراك مرتين بالغلط، واش ندير؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "cs-dz-ar-005", "text": "حاب نلغي abonnement كي تسالي الفترة الحالية.", "lang": "ar-dz", "intent": "subscription_cancellation", "class": "customer-support"}
+{"id": "cs-dz-ar-006", "text": "كيفاه نبدل email لي مربوط بالحساب؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "cs-dz-ar-007", "text": "واش من طرق الدفع تقبلو؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "cs-dz-ar-008", "text": "code de vérification ما راهوش يوصل للإيميل تاعي.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "cs-dz-lat-001", "text": "Man9derch ndkhol l compte ta3i, kifach nbadel password?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-002", "text": "Win nel9a facture ta3 chhar li fet?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-003", "text": "Talbiya ta3i ma wessletch, t9der tchoufli suivi?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-004", "text": "Khlest l'abonnement mertein b ghalet, wach ndir?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-005", "text": "Hab n annulé abonnement ki tsali la période actuelle.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-006", "text": "Kifach nbadel email li mrebout bel compte?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-007", "text": "Wach men méthodes de paiement t9eblou?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "cs-dz-lat-008", "text": "Code de vérification ma rahouch youssel l email ta3i.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-dz-s01", "text": "كيفاه نبدل adresse تاع livraison؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s02", "text": "نقدر نبدل forfait من شهري لسنوي؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s03", "text": "علاش paiement تاعي مازال pending؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s04", "text": "قداه ياخذ remboursement باش يجي؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s05", "text": "code promo تاعي يقول invalid.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s06", "text": "كيفاه نحذف carte de paiement مسجلة؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s07", "text": "وصلني article مكسور، واش نقدر ندير؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s08", "text": "تقدرو تعاودو تصيفطو email confirmation؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s09", "text": "وين نلقى date تاع renouvellement abonnement؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s10", "text": "application تسكر من بعد ما ندخل.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s11", "text": "كيفاه نفعل two-factor authentication؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s12", "text": "نقدر نرجع article شريتو في promotion؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s13", "text": "numéro suivi تاعي ما يتبدلش.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s14", "text": "عاونوني ندمج زوج comptes مكررين.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s15", "text": "كيفاه نجيب copie من reçu تاعي؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s16", "text": "المعلومات الشخصية تاعي مشفرة؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s17", "text": "حاب نبدل اللغة في application.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s18", "text": "علاش الطلبية تاعي تلغات جزئيا؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s19", "text": "نقدر نوقف abonnement شهر واحد؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s20", "text": "lien confirmation سالا، تقدر تعاون؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s21", "text": "كيفاه نتصل بالsupport بالتليفون؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s22", "text": "نقدر نستعمل service كي نكون خارج البلاد؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s23", "text": "carte تاعي ترفض وهي تخدم في بلاصة أخرى.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s24", "text": "واش من documents لازم باش نأكد الهوية؟", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-dz-s25", "text": "شرحلي كيفاه نسد الحساب تاعي.", "lang": "ar-dz", "class": "customer-support"}
+{"id": "a-lat-s01", "text": "Kifach nbadel adresse ta3 livraison?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s02", "text": "N9der nbadel forfait men chahri l sanawi?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s03", "text": "3lah paiement ta3i mazal pending?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s04", "text": "Chhal yakhed remboursement bach yji?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s05", "text": "Code promo ta3i ygol invalid.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s06", "text": "Kifach nahdef carte paiement mesjella?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s07", "text": "Wselni article mkasser, wach n9der ndir?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s08", "text": "T9edrou t3awdou tsiftou email confirmation?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s09", "text": "Win nel9a date ta3 renouvellement abonnement?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s10", "text": "Application tesker melli ndkhol.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s11", "text": "Kifach nfe3el two-factor authentication?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s12", "text": "N9der nrja3 article chritou fi promotion?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s13", "text": "Numéro suivi ta3i ma yetbedelch.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s14", "text": "3awnouni ndmej zouj comptes mkerrin.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s15", "text": "Kifach njib copie men reçu ta3i?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s16", "text": "Informations personnelles ta3i mcheffrin?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s17", "text": "Hab nbadel langue fi application.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s18", "text": "3lah talbiya ta3i telghat partiellement?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s19", "text": "N9der nwa9ef abonnement chhar wahed?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s20", "text": "Lien confirmation sala, t9der t3awen?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s21", "text": "Kifach netsel b support bel téléphone?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s22", "text": "N9der nesta3mel service ki nkoun kharej l blad?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s23", "text": "Carte ta3i tetrefed w hia tekhdem fi blassa okhra.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s24", "text": "Wach men documents lazem bach n2akked l hawiya?", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": "a-lat-s25", "text": "Chrahli kifach nsedd compte ta3i.", "lang": "ar-dz-latn", "class": "customer-support"}
+{"id": 1, "class": "cod_availability", "lang": "darija_arabic", "text": "واش عندكم الدفع عند الاستلام؟"}
+{"id": 1, "class": "cod_availability", "lang": "darija_arabizi", "text": "wach 3andkoum eddaf3 3end listilem?"}
+{"id": 1, "class": "cod_availability", "lang": "french", "text": "Est-ce que vous avez le paiement à la livraison ?"}
+{"id": 2, "class": "cod_availability", "lang": "darija_arabic", "text": "نقدر نخلص كاش من يدي للموصل؟"}
+{"id": 2, "class": "cod_availability", "lang": "darija_arabizi", "text": "nqder nkhalas cash men yeddi lel moussel?"}
+{"id": 2, "class": "cod_availability", "lang": "french", "text": "Je peux payer en cash directement au livreur ?"}
+{"id": 3, "class": "cod_availability", "lang": "darija_arabic", "text": "الدفع كاش وليا موجود ولا لازم بطاقة؟"}
+{"id": 3, "class": "cod_availability", "lang": "darija_arabizi", "text": "eddaf3 cash rani mawjoud walla lazem carte?"}
+{"id": 3, "class": "cod_availability", "lang": "french", "text": "Le paiement cash est disponible ou il faut une carte ?"}
+{"id": 4, "class": "cod_wilaya_coverage", "lang": "darija_arabic", "text": "واش الدفع عند الاستلام خدام في ولاية تلمسان؟"}
+{"id": 4, "class": "cod_wilaya_coverage", "lang": "darija_arabizi", "text": "wach eddaf3 3end listilem khadem fi wilaya Tlemcen?"}
+{"id": 4, "class": "cod_wilaya_coverage", "lang": "french", "text": "Le paiement à la livraison marche pour la wilaya de Tlemcen ?"}
+{"id": 5, "class": "cod_wilaya_coverage", "lang": "darija_arabic", "text": "يخدم الكاش أون ديليفري في كل الولايات ولا كاين بلايص ما توصلش؟"}
+{"id": 5, "class": "cod_wilaya_coverage", "lang": "darija_arabizi", "text": "yakhdem cash on delivery f koulech wilayat walla kayn blayes ma toussalch?"}
+{"id": 5, "class": "cod_wilaya_coverage", "lang": "french", "text": "Le COD fonctionne dans toutes les wilayas ou il y a des zones non couvertes ?"}
+{"id": 6, "class": "cod_fees", "lang": "darija_arabic", "text": "كاين زيادة فلوس إذا خلصت كاش عند الاستلام؟"}
+{"id": 6, "class": "cod_fees", "lang": "darija_arabizi", "text": "kayn zyada flouss ila khalast cash 3end listilem?"}
+{"id": 6, "class": "cod_fees", "lang": "french", "text": "Il y a un supplément si je paie en cash à la livraison ?"}
+{"id": 7, "class": "cod_fees", "lang": "darija_arabic", "text": "الدفع عند الاستلام فيه تكلفة إضافية ولا نفس السعر؟"}
+{"id": 7, "class": "cod_fees", "lang": "darija_arabizi", "text": "eddaf3 3end listilem fih taklifa idafiya walla nafss essaomeg?"}
+{"id": 7, "class": "cod_fees", "lang": "french", "text": "Le paiement à la livraison coûte plus cher ou c'est le même prix ?"}
+{"id": 8, "class": "cod_min_max", "lang": "darija_arabic", "text": "كاين حد أدنى للطلبية باش تقدر تخلص كاش؟"}
+{"id": 8, "class": "cod_min_max", "lang": "darija_arabizi", "text": "kayn hadd adna lel talabiya bach teqder tkhalass cash?"}
+{"id": 8, "class": "cod_min_max", "lang": "french", "text": "Il y a un montant minimum de commande pour payer en cash ?"}
+{"id": 9, "class": "cod_min_max", "lang": "darija_arabic", "text": "نقدر نخلص كاش حتى لو الطلبية غالية بزاف؟"}
+{"id": 9, "class": "cod_min_max", "lang": "darija_arabizi", "text": "nqder nkhalas cash hatta law talabiya ghalya bezzaf?"}
+{"id": 9, "class": "cod_min_max", "lang": "french", "text": "Je peux payer cash même si la commande est très chère ?"}
+{"id": 10, "class": "inspect_before_pay", "lang": "darija_arabic", "text": "نقدر نشوف السلعة قبل ما نخلص؟"}
+{"id": 10, "class": "inspect_before_pay", "lang": "darija_arabizi", "text": "nqder nchouf slaa9 qbal ma nkhalas?"}
+{"id": 10, "class": "inspect_before_pay", "lang": "french", "text": "Je peux vérifier le produit avant de payer ?"}
+{"id": 11, "class": "inspect_before_pay", "lang": "darija_arabic", "text": "نقدر نحل الكولي ونتأكد قبل ما نعطي الفلوس للموصل؟"}
+{"id": 11, "class": "inspect_before_pay", "lang": "darija_arabizi", "text": "nqder nhell colis w net2akked qbal ma na3ti flouss lel moussel?"}
+{"id": 11, "class": "inspect_before_pay", "lang": "french", "text": "Je peux ouvrir le colis et vérifier avant de donner l'argent au livreur ?"}
+{"id": 12, "class": "inspect_before_pay", "lang": "darija_arabic", "text": "إذا السلعة ماعجبتنيش بعد ما نحلها نقدر نرفضها ونرجعها؟"}
+{"id": 12, "class": "inspect_before_pay", "lang": "darija_arabizi", "text": "ila slaa9 ma3jebnich b3ed ma nhella nqder narfedha w nrej3ha?"}
+{"id": 12, "class": "inspect_before_pay", "lang": "french", "text": "Si le produit ne me plaît pas après ouverture, je peux le refuser et le retourner ?"}
+{"id": 13, "class": "confirmation_call", "lang": "darija_arabic", "text": "واش راح يتصلوا بيا قبل ما يشحنوا الطلبية؟"}
+{"id": 13, "class": "confirmation_call", "lang": "darija_arabizi", "text": "wach rah yatasslou biya qbal ma yachnou talabiya?"}
+{"id": 13, "class": "confirmation_call", "lang": "french", "text": "Est-ce que vous allez m'appeler avant d'expédier la commande ?"}
+{"id": 14, "class": "confirmation_call", "lang": "darija_arabic", "text": "علاش ما جاتنيش مكالمة تأكيد على الطلب تاعي؟"}
+{"id": 14, "class": "confirmation_call", "lang": "darija_arabizi", "text": "3lech ma jatnich mkalma ta2kid 3la talab ta3i?"}
+{"id": 14, "class": "confirmation_call", "lang": "french", "text": "Pourquoi je n'ai pas reçu d'appel de confirmation pour ma commande ?"}
+{"id": 15, "class": "confirmation_call", "lang": "darija_arabic", "text": "إذا ما رديتش على مكالمة التأكيد واش يتلغى الطلب؟"}
+{"id": 15, "class": "confirmation_call", "lang": "darija_arabizi", "text": "ila ma raditch 3la mkalmat ta2kid wach yetlagha talab?"}
+{"id": 15, "class": "confirmation_call", "lang": "french", "text": "Si je ne réponds pas à l'appel de confirmation, la commande est annulée ?"}
+{"id": 16, "class": "refusal_no_charge", "lang": "darija_arabic", "text": "إذا رفضت الكولي عند الاستلام نخلص حاجة؟"}
+{"id": 16, "class": "refusal_no_charge", "lang": "darija_arabizi", "text": "ila rafadt colis 3end listilem nkhalas haja?"}
+{"id": 16, "class": "refusal_no_charge", "lang": "french", "text": "Si je refuse le colis à la livraison, je dois payer quelque chose ?"}
+{"id": 17, "class": "refusal_no_charge", "lang": "darija_arabic", "text": "نقدر نرفض الطلبية بلا ما نخسر فلوس؟"}
+{"id": 17, "class": "refusal_no_charge", "lang": "darija_arabizi", "text": "nqder narfed talabiya bla ma nkhosser flouss?"}
+{"id": 17, "class": "refusal_no_charge", "lang": "french", "text": "Je peux refuser la commande sans perdre d'argent ?"}
+{"id": 18, "class": "cancel_after_confirm", "lang": "darija_arabic", "text": "خلاص أكدت الطلب، نقدر نلغيه قبل ما يوصل؟"}
+{"id": 18, "class": "cancel_after_confirm", "lang": "darija_arabizi", "text": "khlass akkadt talab, nqder nalghih qbal ma youssal?"}
+{"id": 18, "class": "cancel_after_confirm", "lang": "french", "text": "J'ai déjà confirmé la commande, je peux l'annuler avant l'arrivée ?"}
+{"id": 19, "class": "delivery_person_change", "lang": "darija_arabic", "text": "نقدر نخلي حد آخر يستلم ويخلص بلاصتي؟"}
+{"id": 19, "class": "delivery_person_change", "lang": "darija_arabizi", "text": "nqder nkhalli hadd akher yastalam w ykhalas blassti?"}
+{"id": 19, "class": "delivery_person_change", "lang": "french", "text": "Quelqu'un d'autre peut recevoir et payer à ma place ?"}
+{"id": 20, "class": "absent_at_delivery", "lang": "darija_arabic", "text": "ما كنتش داير إذا جا الموصل، واش يرجع تاني نهار؟"}
+{"id": 20, "class": "absent_at_delivery", "lang": "darija_arabizi", "text": "ma kontch dayer ila ja moussel, wach yarja3 tani nhar?"}
+{"id": 20, "class": "absent_at_delivery", "lang": "french", "text": "Si je suis absent quand le livreur arrive, il repasse le lendemain ?"}
+{"id": 21, "class": "exact_amount", "lang": "darija_arabic", "text": "قداش بالضبط لازم نحضر كاش، بالتوصيل داخل ولا لا؟"}
+{"id": 21, "class": "exact_amount", "lang": "darija_arabizi", "text": "qeddach bledabt lazem nhadder cash, bettawssil dakhel walla la?"}
+{"id": 21, "class": "exact_amount", "lang": "french", "text": "Combien exactement je dois préparer en cash, frais de livraison inclus ou pas ?"}
+{"id": 22, "class": "exact_amount", "lang": "darija_arabic", "text": "الفلوس نعطيها بالضبط ولا لازم نحضر زيادة للصرف؟"}
+{"id": 22, "class": "exact_amount", "lang": "darija_arabizi", "text": "flouss na3tiha bledabt walla lazem nhadder zyada las-sarf?"}
+{"id": 22, "class": "exact_amount", "lang": "french", "text": "Je donne le montant exact ou je dois prévoir de la monnaie en plus ?"}
+{"id": 23, "class": "card_alternative", "lang": "darija_arabic", "text": "بصراحة نحب نخلص بالبطاقة، واش ممكن ولا لازم كاش؟"}
+{"id": 23, "class": "card_alternative", "lang": "darija_arabizi", "text": "bessaraha nheb nkhalas bel carte, wach mumkin walla lazem cash?"}
+{"id": 23, "class": "card_alternative", "lang": "french", "text": "En fait je préfère payer par carte, c'est possible ou c'est obligatoirement cash ?"}
+{"id": 24, "class": "large_order_cod", "lang": "darija_arabic", "text": "الطلبية تاعي فيها بزاف حوايج، واش الكاش أون ديليفري خدام برك ولا لا؟"}
+{"id": 24, "class": "large_order_cod", "lang": "darija_arabizi", "text": "talabiya ta3i fiha bezzaf hwayej, wach cash on delivery khadem berk walla la?"}
+{"id": 24, "class": "large_order_cod", "lang": "french", "text": "Ma commande contient beaucoup d'articles, le COD fonctionne quand même ou pas ?"}
+{"id": 25, "class": "cod_courier_name", "lang": "darija_arabic", "text": "الطلبية جاية بياليدين ولا مايسترو، ونخلص كاش لهوما ولا للحانوت؟"}
+{"id": 25, "class": "cod_courier_name", "lang": "darija_arabizi", "text": "talabiya jaya bYalidine walla Maystro, w nkhalas cash lihoum walla lel hanout?"}
+{"id": 25, "class": "cod_courier_name", "lang": "french", "text": "La commande arrive par Yalidine ou Maystro, je paie cash à eux ou en boutique ?"}
+{"id": 26, "class": "damaged_on_arrival", "lang": "darija_arabic", "text": "إذا وصلاتني الحاجة مهرية نقدر نرفض الدفع؟"}
+{"id": 26, "class": "damaged_on_arrival", "lang": "darija_arabizi", "text": "ila wasslatni haja mahriya nqder narfed eddaf3?"}
+{"id": 26, "class": "damaged_on_arrival", "lang": "french", "text": "Si le produit arrive endommagé, je peux refuser de payer ?"}
+{"id": 27, "class": "partial_deposit", "lang": "darija_arabic", "text": "لازم نخلص عربون قبل ما يشحنوا ولا كامل الفلوس عند الاستلام؟"}
+{"id": 27, "class": "partial_deposit", "lang": "darija_arabizi", "text": "lazem nkhalas 3arboun qbal ma yachnou walla kamel flouss 3end listilem?"}
+{"id": 27, "class": "partial_deposit", "lang": "french", "text": "Je dois verser un acompte avant l'expédition ou tout le montant à la livraison ?"}
+{"id": 28, "class": "cod_availability", "lang": "darija_arabic", "text": "wach 3andkoum edafou3 cash 3la bab eddar?"}
+{"id": 28, "class": "cod_availability", "lang": "darija_arabizi", "text": "wach 3andkoum edafou3 cash 3la bab eddar?"}
+{"id": 28, "class": "cod_availability", "lang": "french", "text": "Vous livrez avec paiement cash directement à la porte ?"}
+{"id": 29, "class": "wrong_amount", "lang": "darija_arabic", "text": "إذا الموصل طلب مني فلوس أكثر من السعر لي مكتوب واش ندير؟"}
+{"id": 29, "class": "wrong_amount", "lang": "darija_arabizi", "text": "ila moussel talab menni flouss akther men ess3er li maktoub wach ndir?"}
+{"id": 29, "class": "wrong_amount", "lang": "french", "text": "Si le livreur me demande plus d'argent que le prix indiqué, qu'est-ce que je fais ?"}
+{"id": 30, "class": "receipt_after_pay", "lang": "darija_arabic", "text": "نعطى وصل ولا فاتورة بعد ما نخلص كاش؟"}
+{"id": 30, "class": "receipt_after_pay", "lang": "darija_arabizi", "text": "na3ta wasl walla facture b3ed ma nkhalas cash?"}
+{"id": 30, "class": "receipt_after_pay", "lang": "french", "text": "Je reçois un reçu ou une facture après avoir payé en cash ?"}
+{"id": 31, "class": "trust_concern", "lang": "darija_arabic", "text": "كاين ناس تعرضلهم مشكل، كيفاش نثق فيكم قبل ما نخلص؟"}
+{"id": 31, "class": "trust_concern", "lang": "darija_arabizi", "text": "kayn nas ta3radlhoum mochkel, kifach nethaq fikoum qbal ma nkhalas?"}
+{"id": 31, "class": "trust_concern", "lang": "french", "text": "Certaines personnes ont eu des problèmes, comment je peux vous faire confiance avant de payer ?"}
+{"id": 32, "class": "trust_concern", "lang": "darija_arabic", "text": "واش كاين ناس خدامين معاكم من قبل نقدر نسولهم؟"}
+{"id": 32, "class": "trust_concern", "lang": "darija_arabizi", "text": "wach kayn nas khadmin m3akoum men qbal nqder nsawelhoum?"}
+{"id": 32, "class": "trust_concern", "lang": "french", "text": "Il y a des clients précédents que je peux contacter pour avis ?"}
+{"id": 33, "class": "no_change_courier", "lang": "darija_arabic", "text": "إذا الموصل ما عندوش الصرف واش ندير؟"}
+{"id": 33, "class": "no_change_courier", "lang": "darija_arabizi", "text": "ila moussel ma 3andouch essarf wach ndir?"}
+{"id": 33, "class": "no_change_courier", "lang": "french", "text": "Si le livreur n'a pas de monnaie, qu'est-ce que je fais ?"}
+{"id": 34, "class": "partial_refusal_multi_item", "lang": "darija_arabic", "text": "طلبت بزاف حوايج، نقدر ناخذ شي وحدة ونرفض الباقي وانخلص غير على لي اخذت؟"}
+{"id": 34, "class": "partial_refusal_multi_item", "lang": "darija_arabizi", "text": "talabt bezzaf hwayej, nqder nakhod chi wahda w narfed lba9i w nkhalas ghir 3la li khedt?"}
+{"id": 34, "class": "partial_refusal_multi_item", "lang": "french", "text": "J'ai commandé plusieurs articles, je peux en garder un et refuser le reste en payant seulement celui gardé ?"}
+{"id": 35, "class": "promo_code_cod", "lang": "darija_arabic", "text": "عندي كود تخفيض، يخدم حتى بالدفع عند الاستلام؟"}
+{"id": 35, "class": "promo_code_cod", "lang": "darija_arabizi", "text": "3andi code takhfid, yakhdem hatta beddaf3 3end listilem?"}
+{"id": 35, "class": "promo_code_cod", "lang": "french", "text": "J'ai un code promo, il fonctionne aussi avec le paiement à la livraison ?"}
+{"id": 36, "class": "delivery_location_choice", "lang": "darija_arabic", "text": "نقدر نطلب التوصيل للخدمة بلاصة الدار وبرك تكونش عندي فلوس دار؟"}
+{"id": 36, "class": "delivery_location_choice", "lang": "darija_arabizi", "text": "nqder natlob ettawssil lel khedma blassa eddar w berk tkonch 3andi flouss dar?"}
+{"id": 36, "class": "delivery_location_choice", "lang": "french", "text": "Je peux demander la livraison au travail plutôt qu'à la maison ?"}
+{"id": 37, "class": "reschedule_delivery", "lang": "darija_arabic", "text": "نقدر نبدل نهار التوصيل باش يكون عندي الكاش لاهي؟"}
+{"id": 37, "class": "reschedule_delivery", "lang": "darija_arabizi", "text": "nqder nbeddel nhar ettawssil bach ykoun 3andi cash lahi?"}
+{"id": 37, "class": "reschedule_delivery", "lang": "french", "text": "Je peux changer le jour de livraison pour avoir le cash prêt ?"}
+{"id": 38, "class": "return_refund_method", "lang": "darija_arabic", "text": "إذا رجعت السلعة بعد ما خلصت كاش، الفلوس ترجعلي كاش ولا فيرمان بنكي؟"}
+{"id": 38, "class": "return_refund_method", "lang": "darija_arabizi", "text": "ila rajje3t slaa9 b3ed ma khallast cash, flouss tarja3li cash walla virement bancaire?"}
+{"id": 38, "class": "return_refund_method", "lang": "french", "text": "Si je retourne le produit après avoir payé cash, je suis remboursé en cash ou par virement ?"}
+{"id": 39, "class": "blacklist_after_refusals", "lang": "darija_arabic", "text": "رفضت الكولي مرتين من قبل، واش نقدر نطلب من جديد؟"}
+{"id": 39, "class": "blacklist_after_refusals", "lang": "darija_arabizi", "text": "rafadt colis marrtin men qbal, wach nqder natlob men jdid?"}
+{"id": 39, "class": "blacklist_after_refusals", "lang": "french", "text": "J'ai refusé le colis deux fois avant, je peux encore commander ?"}
+{"id": 40, "class": "imported_item_cod", "lang": "darija_arabic", "text": "السلعة جايا من برا، الدفع عند الاستلام خدام عليها هي زادة؟"}
+{"id": 40, "class": "imported_item_cod", "lang": "darija_arabizi", "text": "slaa9 jaya men barra, eddaf3 3end listilem khadem 3liha hiya zada?"}
+{"id": 40, "class": "imported_item_cod", "lang": "french", "text": "Le produit vient de l'étranger, le paiement à la livraison fonctionne pour lui aussi ?"}
+{"id": 41, "class": "add_item_after_confirm", "lang": "darija_arabic", "text": "بعد ما أكدو الطلب بالتيليفون نقدر نزيد حاجة أخرى؟"}
+{"id": 41, "class": "add_item_after_confirm", "lang": "darija_arabizi", "text": "b3ed ma akkadou talab bettelefon nqder nzid haja okhra?"}
+{"id": 41, "class": "add_item_after_confirm", "lang": "french", "text": "Après l'appel de confirmation, je peux ajouter un autre article à la commande ?"}
+{"id": 42, "class": "track_before_pay", "lang": "darija_arabic", "text": "نقدر نتبع الطلبية قبل ما توصل باش نحضر روحي للدفع؟"}
+{"id": 42, "class": "track_before_pay", "lang": "darija_arabizi", "text": "nqder netba3 talabiya qbal ma toussal bach nhadder rohi lddaf3?"}
+{"id": 42, "class": "track_before_pay", "lang": "french", "text": "Je peux suivre la commande avant l'arrivée pour me préparer à payer ?"}
+{"id": 43, "class": "cod_availability", "lang": "darija_arabic", "text": "نخلص كاش وقت ما توصلني السلعة؟"}
+{"id": 43, "class": "cod_availability", "lang": "darija_arabizi", "text": "nkhalas cash waqt ma toussalni slaa9?"}
+{"id": 43, "class": "cod_availability", "lang": "french", "text": "Je paie en cash au moment où je reçois le produit ?"}
+{"id": 44, "class": "cod_availability", "lang": "darija_arabic", "text": "ماعنديش بطاقة بنكية، نقدر نخلص بالفلوس ديريكت للموصل؟"}
+{"id": 44, "class": "cod_availability", "lang": "darija_arabizi", "text": "ma3andich carte bancaire, nqder nkhalas belflouss direct lel moussel?"}
+{"id": 44, "class": "cod_availability", "lang": "french", "text": "Je n'ai pas de carte bancaire, je peux payer directement en espèces au livreur ?"}
+{"id": 45, "class": "inspect_before_pay", "lang": "darija_arabic", "text": "نقدر نتأكد من المقاس واللون قبل ما نعطي الفلوس؟"}
+{"id": 45, "class": "inspect_before_pay", "lang": "darija_arabizi", "text": "nqder net2akked men lma9as w llawn qbal ma na3ti flouss?"}
+{"id": 45, "class": "inspect_before_pay", "lang": "french", "text": "Je peux vérifier la taille et la couleur avant de donner l'argent ?"}
+{"id": 46, "class": "inspect_before_pay", "lang": "darija_arabic", "text": "الموصل يخليني نشوف الحاجة قدامو ولا لازم نخلص أولا؟"}
+{"id": 46, "class": "inspect_before_pay", "lang": "darija_arabizi", "text": "moussel ykhallini nchouf haja qeddamou walla lazem nkhalas awalan?"}
+{"id": 46, "class": "inspect_before_pay", "lang": "french", "text": "Le livreur me laisse regarder le produit devant lui ou je dois payer d'abord ?"}
+{"id": 47, "class": "confirmation_call", "lang": "darija_arabic", "text": "شكون يتصل بيا، أنتوما ولا شركة التوصيل؟"}
+{"id": 47, "class": "confirmation_call", "lang": "darija_arabizi", "text": "chkoun yattasel biya, antouma walla charikat ettawssil?"}
+{"id": 47, "class": "confirmation_call", "lang": "french", "text": "Qui va m'appeler, vous ou la société de livraison ?"}
+{"id": 48, "class": "confirmation_call", "lang": "darija_arabic", "text": "المكالمة تكون بالعربية ولا بالفرنسية؟"}
+{"id": 48, "class": "confirmation_call", "lang": "darija_arabizi", "text": "mkalma tkoun bel3arbiya walla belfaransiya?"}
+{"id": 48, "class": "confirmation_call", "lang": "french", "text": "L'appel de confirmation sera en arabe ou en français ?"}
+{"id": 49, "class": "refusal_no_charge", "lang": "darija_arabic", "text": "إذا بدلت رأيي وما نحبش الحاجة، خسرت شي حاجة؟"}
+{"id": 49, "class": "refusal_no_charge", "lang": "darija_arabizi", "text": "ila baddalt ra2yi w ma nhebbech haja, khsart chi haja?"}
+{"id": 49, "class": "refusal_no_charge", "lang": "french", "text": "Si je change d'avis et ne veux plus le produit, je perds quelque chose ?"}
+{"id": 50, "class": "refusal_no_charge", "lang": "darija_arabic", "text": "نقدر نرفض الطلبية في الباب بلا ما نبرر ليه؟"}
+{"id": 50, "class": "refusal_no_charge", "lang": "darija_arabizi", "text": "nqder narfed talabiya fel bab bla ma nbarrer lih?"}
+{"id": 50, "class": "refusal_no_charge", "lang": "french", "text": "Je peux refuser la commande à la porte sans justification ?"}
+{"id": 51, "class": "price_inquiry", "lang": "darija_arabic", "text": "بشحال هاد القميجة؟"}
+{"id": 51, "class": "price_inquiry", "lang": "darija_arabizi", "text": "bcha7al had lqamija?"}
+{"id": 51, "class": "price_inquiry", "lang": "french", "text": "C'est combien cette chemise ?"}
+{"id": 52, "class": "price_inquiry", "lang": "darija_arabic", "text": "واش السعر يبان فيه التوصيل ولا لا؟"}
+{"id": 52, "class": "price_inquiry", "lang": "darija_arabizi", "text": "wach ess3er yban fih ettawssil walla la?"}
+{"id": 52, "class": "price_inquiry", "lang": "french", "text": "Le prix affiché inclut la livraison ou pas ?"}
+{"id": 53, "class": "stock_availability", "lang": "darija_arabic", "text": "باقي عندكم منها ولا ماكانش؟"}
+{"id": 53, "class": "stock_availability", "lang": "darija_arabizi", "text": "ba9i 3andkoum menha walla makanch?"}
+{"id": 53, "class": "stock_availability", "lang": "french", "text": "Il en reste en stock ou c'est épuisé ?"}
+{"id": 54, "class": "stock_availability", "lang": "darija_arabic", "text": "واش هاد المنتوج متوفر دابا ولا خاصني نستنى؟"}
+{"id": 54, "class": "stock_availability", "lang": "darija_arabizi", "text": "wach had lmountoj mutawaffer daba walla khassni nastanna?"}
+{"id": 54, "class": "stock_availability", "lang": "french", "text": "Ce produit est disponible maintenant ou je dois attendre ?"}
+{"id": 55, "class": "size_availability", "lang": "darija_arabic", "text": "عندكم هاد الصبّاط في المقاس 42؟"}
+{"id": 55, "class": "size_availability", "lang": "darija_arabizi", "text": "3andkoum had sabbat fel ma9as 42?"}
+{"id": 55, "class": "size_availability", "lang": "french", "text": "Vous avez cette chaussure en taille 42 ?"}
+{"id": 56, "class": "size_availability", "lang": "darija_arabic", "text": "واش كاين مقاسات كبار زيادة على لي مكتوبين؟"}
+{"id": 56, "class": "size_availability", "lang": "darija_arabizi", "text": "wach kayn ma9assat kbar zyada 3la li maktoubin?"}
+{"id": 56, "class": "size_availability", "lang": "french", "text": "Il existe des tailles plus grandes que celles affichées ?"}
+{"id": 57, "class": "color_availability", "lang": "darija_arabic", "text": "عندكم هاد القميجة بلون آخر غير لي في الصورة؟"}
+{"id": 57, "class": "color_availability", "lang": "darija_arabizi", "text": "3andkoum had lqamija belloun akher ghir li fessora?"}
+{"id": 57, "class": "color_availability", "lang": "french", "text": "Vous avez cette chemise dans une autre couleur que celle en photo ?"}
+{"id": 58, "class": "product_material", "lang": "darija_arabic", "text": "هاد الحاجة قطن صافي ولا فيها بوليستر؟"}
+{"id": 58, "class": "product_material", "lang": "darija_arabizi", "text": "had lhaja quttun safi walla fiha polyester?"}
+{"id": 58, "class": "product_material", "lang": "french", "text": "C'est du coton pur ou il y a du polyester dedans ?"}
+{"id": 59, "class": "product_dimensions", "lang": "darija_arabic", "text": "شحال طولها وعرضها هاد الطاولة بالضبط؟"}
+{"id": 59, "class": "product_dimensions", "lang": "darija_arabizi", "text": "chhal toulha w 3ardha had ettawla bledabt?"}
+{"id": 59, "class": "product_dimensions", "lang": "french", "text": "Quelles sont les dimensions exactes de cette table ?"}
+{"id": 60, "class": "compare_products", "lang": "darija_arabic", "text": "شنو الفرق بين هاد الموديل ولي الآخر الغالي شوية؟"}
+{"id": 60, "class": "compare_products", "lang": "darija_arabizi", "text": "chnou lfar9 bin had lmodel w li lakher lghali chwiya?"}
+{"id": 60, "class": "compare_products", "lang": "french", "text": "Quelle est la différence entre ce modèle et l'autre un peu plus cher ?"}
+{"id": 61, "class": "recommendation", "lang": "darija_arabic", "text": "أي واحد تنصحوني بيه لخدمة يومية؟"}
+{"id": 61, "class": "recommendation", "lang": "darija_arabizi", "text": "ayy wahed tanass7ouni bih lekhedma yawmiya?"}
+{"id": 61, "class": "recommendation", "lang": "french", "text": "Lequel me conseillez-vous pour un usage quotidien ?"}
+{"id": 62, "class": "warranty", "lang": "darija_arabic", "text": "كاين ضمان على هاد المنتوج، شحال المدة؟"}
+{"id": 62, "class": "warranty", "lang": "darija_arabizi", "text": "kayn daman 3la had lmountoj, chhal lmodda?"}
+{"id": 62, "class": "warranty", "lang": "french", "text": "Il y a une garantie sur ce produit, quelle est sa durée ?"}
+{"id": 63, "class": "product_photos", "lang": "darija_arabic", "text": "تقدروا تبعتولي تصاور زيادة ولا فيديو للمنتوج؟"}
+{"id": 63, "class": "product_photos", "lang": "darija_arabizi", "text": "teqdrou tab3atouli tsawer zyada walla video lelmountoj?"}
+{"id": 63, "class": "product_photos", "lang": "french", "text": "Vous pouvez m'envoyer plus de photos ou une vidéo du produit ?"}
+{"id": 64, "class": "discount_promo", "lang": "darija_arabic", "text": "كاين تخفيض على هاد المنتوج ولا السعر ثابت؟"}
+{"id": 64, "class": "discount_promo", "lang": "darija_arabizi", "text": "kayn takhfid 3la had lmountoj walla ess3er tabet?"}
+{"id": 64, "class": "discount_promo", "lang": "french", "text": "Il y a une réduction sur ce produit ou le prix est fixe ?"}
+{"id": 65, "class": "discount_promo", "lang": "darija_arabic", "text": "إذا شريت زوج، نستافد من تخفيض؟"}
+{"id": 65, "class": "discount_promo", "lang": "darija_arabizi", "text": "ila chrit zouj, nastafed men takhfid?"}
+{"id": 65, "class": "discount_promo", "lang": "french", "text": "Si j'en achète deux, j'ai droit à une réduction ?"}
+{"id": 66, "class": "product_origin", "lang": "darija_arabic", "text": "هاد المنتوج مصنوع فين، محلي ولا مستورد؟"}
+{"id": 66, "class": "product_origin", "lang": "darija_arabizi", "text": "had lmountoj masnou3 fin, ma7alli walla mustawrad?"}
+{"id": 66, "class": "product_origin", "lang": "french", "text": "Ce produit est fabriqué où, local ou importé ?"}
+{"id": 67, "class": "product_authenticity", "lang": "darija_arabic", "text": "واش هاد الماركة أصلية ولا copie؟"}
+{"id": 67, "class": "product_authenticity", "lang": "darija_arabizi", "text": "wach had lmarka assliya walla copie?"}
+{"id": 67, "class": "product_authenticity", "lang": "french", "text": "Cette marque est-elle authentique ou une copie ?"}
+{"id": 68, "class": "bundle_availability", "lang": "darija_arabic", "text": "كاين طقم كامل ولا خاصني نشري كل حاجة على حدة؟"}
+{"id": 68, "class": "bundle_availability", "lang": "darija_arabizi", "text": "kayn ta9m kamel walla khassni nachri kol haja 3la 7dda?"}
+{"id": 68, "class": "bundle_availability", "lang": "french", "text": "Il existe un ensemble complet ou je dois acheter chaque article séparément ?"}
+{"id": 69, "class": "product_usage", "lang": "darija_arabic", "text": "هاد الجهاز يخدم بالكهرباء ولا بالباتري؟"}
+{"id": 69, "class": "product_usage", "lang": "darija_arabizi", "text": "had ljihaz yakhdem belkahraba walla belbatri?"}
+{"id": 69, "class": "product_usage", "lang": "french", "text": "Cet appareil fonctionne à l'électricité ou sur batterie ?"}
+{"id": 70, "class": "new_arrival", "lang": "darija_arabic", "text": "عندكم حوايج جداد وصلو هاد الأسبوع؟"}
+{"id": 70, "class": "new_arrival", "lang": "darija_arabizi", "text": "3andkoum hwayej jdad wsslou had lasboua3?"}
+{"id": 70, "class": "new_arrival", "lang": "french", "text": "Vous avez de nouveaux articles arrivés cette semaine ?"}
+{"id": 71, "class": "wilaya_coverage", "lang": "darija_arabic", "text": "واش التوصيل خدام لولاية بجاية؟"}
+{"id": 71, "class": "wilaya_coverage", "lang": "darija_arabizi", "text": "wach ettawssil khadem lwilaya Bejaia?"}
+{"id": 71, "class": "wilaya_coverage", "lang": "french", "text": "Est-ce que la livraison est disponible pour la wilaya de Béjaïa ?"}
+{"id": 72, "class": "wilaya_coverage", "lang": "darija_arabic", "text": "توصلوا حتى للبلديات الصغار ولا غير للمدن الكبار؟"}
+{"id": 72, "class": "wilaya_coverage", "lang": "darija_arabizi", "text": "twasslou hatta lel baladiyat esghar walla ghir lel moudoun lekbar?"}
+{"id": 72, "class": "wilaya_coverage", "lang": "french", "text": "Vous livrez même dans les petites communes ou seulement les grandes villes ?"}
+{"id": 73, "class": "wilaya_coverage", "lang": "darija_arabic", "text": "ماكانش عندكم توصيل لولايتي، شنو نقدر ندير؟"}
+{"id": 73, "class": "wilaya_coverage", "lang": "darija_arabizi", "text": "makanch 3andkoum tawssil lwilayti, chnou nqder ndir?"}
+{"id": 73, "class": "wilaya_coverage", "lang": "french", "text": "Vous ne livrez pas dans ma wilaya, qu'est-ce que je peux faire ?"}
+{"id": 74, "class": "home_vs_desk", "lang": "darija_arabic", "text": "التوصيل يكون لدار ولا لازم نروح نجيب من المكتب؟"}
+{"id": 74, "class": "home_vs_desk", "lang": "darija_arabizi", "text": "ettawssil ykoun leddar walla lazem nrouh njib men lmaktab?"}
+{"id": 74, "class": "home_vs_desk", "lang": "french", "text": "La livraison se fait à domicile ou je dois aller chercher au bureau ?"}
+{"id": 75, "class": "home_vs_desk", "lang": "darija_arabic", "text": "واش عندي الخيار بين التوصيل للدار ولا ستوب ديسك؟"}
+{"id": 75, "class": "home_vs_desk", "lang": "darija_arabizi", "text": "wach 3andi lkhyar bin ettawssil leddar walla stop desk?"}
+{"id": 75, "class": "home_vs_desk", "lang": "french", "text": "J'ai le choix entre la livraison à domicile et le stop desk ?"}
+{"id": 76, "class": "home_vs_desk", "lang": "darija_arabic", "text": "التوصيل للمكتب أرخص من التوصيل للدار؟"}
+{"id": 76, "class": "home_vs_desk", "lang": "darija_arabizi", "text": "ettawssil lelmaktab arkhas men ettawssil leddar?"}
+{"id": 76, "class": "home_vs_desk", "lang": "french", "text": "La livraison au bureau est moins chère que la livraison à domicile ?"}
+{"id": 77, "class": "home_vs_desk", "lang": "darija_arabic", "text": "وين كاين المكتب لي نقدر نجي نجيب الكولي منه؟"}
+{"id": 77, "class": "home_vs_desk", "lang": "darija_arabizi", "text": "win kayn lmaktab li nqder nji njib colis menno?"}
+{"id": 77, "class": "home_vs_desk", "lang": "french", "text": "Où se trouve le bureau où je peux venir récupérer le colis ?"}
+{"id": 78, "class": "delivery_time", "lang": "darija_arabic", "text": "شحال تقريبا تاخذ الطلبية باش توصل؟"}
+{"id": 78, "class": "delivery_time", "lang": "darija_arabizi", "text": "chhal ta9riban takhod talabiya bach toussal?"}
+{"id": 78, "class": "delivery_time", "lang": "french", "text": "Combien de temps met approximativement la commande pour arriver ?"}
+{"id": 79, "class": "delivery_time", "lang": "darija_arabic", "text": "التوصيل يكون بزربة ولا يقدر ياخذ بزاف نهار؟"}
+{"id": 79, "class": "delivery_time", "lang": "darija_arabizi", "text": "ettawssil ykoun bezerba walla yeqder yakhod bezzaf nhar?"}
+{"id": 79, "class": "delivery_time", "lang": "french", "text": "La livraison est rapide ou peut prendre plusieurs jours ?"}
+{"id": 80, "class": "express_delivery", "lang": "darija_arabic", "text": "كاين توصيل سريع بزيادة فلوس إذا مستعجل؟"}
+{"id": 80, "class": "express_delivery", "lang": "darija_arabizi", "text": "kayn tawssil seri3 bzyada flouss ila musta3jel?"}
+{"id": 80, "class": "express_delivery", "lang": "french", "text": "Il y a une livraison express en payant plus si je suis pressé ?"}
+{"id": 81, "class": "shipping_cost", "lang": "darija_arabic", "text": "شحال ثمن التوصيل لولايتي؟"}
+{"id": 81, "class": "shipping_cost", "lang": "darija_arabizi", "text": "chhal thaman ettawssil lwilayti?"}
+{"id": 81, "class": "shipping_cost", "lang": "french", "text": "Combien coûte la livraison pour ma wilaya ?"}
+{"id": 82, "class": "shipping_cost", "lang": "darija_arabic", "text": "التوصيل مجاني ولا نخلص عليه زيادة؟"}
+{"id": 82, "class": "shipping_cost", "lang": "darija_arabizi", "text": "ettawssil majjani walla nkhalas 3lih zyada?"}
+{"id": 82, "class": "shipping_cost", "lang": "french", "text": "La livraison est gratuite ou je dois payer un supplément ?"}
+{"id": 83, "class": "change_address", "lang": "darija_arabic", "text": "نسيت نبدل العنوان، نقدر نبدلو قبل ما تشحن الطلبية؟"}
+{"id": 83, "class": "change_address", "lang": "darija_arabizi", "text": "nssit nbeddel l3unwan, nqder nbeddlou qbal ma tachen talabiya?"}
+{"id": 83, "class": "change_address", "lang": "french", "text": "J'ai oublié de changer l'adresse, je peux la modifier avant l'expédition ?"}
+{"id": 84, "class": "change_address", "lang": "darija_arabic", "text": "غلطت في العنوان لي كتبتو، شكون نتصل بيه باش نصححو؟"}
+{"id": 84, "class": "change_address", "lang": "darija_arabizi", "text": "ghlatt fel 3unwan li ktabtou, chkoun nattassel bih bach nsahou?"}
+{"id": 84, "class": "change_address", "lang": "french", "text": "Je me suis trompé dans l'adresse écrite, qui je dois contacter pour la corriger ?"}
+{"id": 85, "class": "remote_area", "lang": "darija_arabic", "text": "نسكن في دوار بعيد شوية، واش توصلوا لتما؟"}
+{"id": 85, "class": "remote_area", "lang": "darija_arabizi", "text": "naskon fi douar b3id chwiya, wach twasslou ltamma?"}
+{"id": 85, "class": "remote_area", "lang": "french", "text": "J'habite dans un village un peu éloigné, vous livrez jusque-là ?"}
+{"id": 86, "class": "tracking", "lang": "darija_arabic", "text": "كيفاش نقدر نتبع الطلبية تاعي فين وصلات؟"}
+{"id": 86, "class": "tracking", "lang": "darija_arabizi", "text": "kifach nqder netba3 talabiya ta3i fin wasslat?"}
+{"id": 86, "class": "tracking", "lang": "french", "text": "Comment je peux suivre où en est ma commande ?"}
+{"id": 87, "class": "tracking", "lang": "darija_arabic", "text": "عندكم رقم تتبع نقدر نستعملو باش نشوف الطلبية؟"}
+{"id": 87, "class": "tracking", "lang": "darija_arabizi", "text": "3andkoum ra9m tatabbo3 nqder nasta3mlou bach nchouf talabiya?"}
+{"id": 87, "class": "tracking", "lang": "french", "text": "Vous avez un numéro de suivi que je peux utiliser pour voir la commande ?"}
+{"id": 88, "class": "weekend_delivery", "lang": "darija_arabic", "text": "التوصيل يخدم يوم الجمعة ولا غير أيام الخدمة؟"}
+{"id": 88, "class": "weekend_delivery", "lang": "darija_arabizi", "text": "ettawssil yakhdem youm eljomo3a walla ghir ayyam lekhedma?"}
+{"id": 88, "class": "weekend_delivery", "lang": "french", "text": "La livraison fonctionne le vendredi ou seulement les jours ouvrables ?"}
+{"id": 89, "class": "delivery_courier_choice", "lang": "darija_arabic", "text": "نقدر نختار بين يليدين ومايسترو ولا أنتوما لي تقررو؟"}
+{"id": 89, "class": "delivery_courier_choice", "lang": "darija_arabizi", "text": "nqder nakhtar bin Yalidine w Maystro walla antouma li tqarrarou?"}
+{"id": 89, "class": "delivery_courier_choice", "lang": "french", "text": "Je peux choisir entre Yalidine et Maystro ou c'est vous qui décidez ?"}
+{"id": 90, "class": "multiple_delivery_attempts", "lang": "darija_arabic", "text": "إذا ماكنتش داير المرة الأولى، كم مرة يعاودوا يجيو؟"}
+{"id": 90, "class": "multiple_delivery_attempts", "lang": "darija_arabizi", "text": "ila makontch dayer lmarra loula, kam marra ya3awdou yjiw?"}
+{"id": 90, "class": "multiple_delivery_attempts", "lang": "french", "text": "Si je suis absent la première fois, combien de fois ils repassent ?"}
+{"id": 91, "class": "how_to_order", "lang": "darija_arabic", "text": "كيفاش ندير الطلب، نكتب هنا ولا كاين موقع؟"}
+{"id": 91, "class": "how_to_order", "lang": "darija_arabizi", "text": "kifach ndir talab, nekteb hna walla kayn site?"}
+{"id": 91, "class": "how_to_order", "lang": "french", "text": "Comment je passe commande, j'écris ici ou il y a un site ?"}
+{"id": 92, "class": "order_confirmation_channel", "lang": "darija_arabic", "text": "الطلب يتأكد بمسج هنا ولا لازم مكالمة؟"}
+{"id": 92, "class": "order_confirmation_channel", "lang": "darija_arabizi", "text": "talab yat2akked b message hna walla lazem mkalma?"}
+{"id": 92, "class": "order_confirmation_channel", "lang": "french", "text": "La commande est confirmée par message ici ou il faut un appel ?"}
+{"id": 93, "class": "modify_order", "lang": "darija_arabic", "text": "نقدر نبدل المقاس بعد ما دايرة الطلب؟"}
+{"id": 93, "class": "modify_order", "lang": "darija_arabizi", "text": "nqder nbeddel lma9as b3ed ma dayra talab?"}
+{"id": 93, "class": "modify_order", "lang": "french", "text": "Je peux changer la taille après avoir passé la commande ?"}
+{"id": 94, "class": "modify_order", "lang": "darija_arabic", "text": "نقدر نزيد منتوج آخر لنفس الطلبية قبل ما تشحن؟"}
+{"id": 94, "class": "modify_order", "lang": "darija_arabizi", "text": "nqder nzid mountoj akher lenafss talabiya qbal ma tachen?"}
+{"id": 94, "class": "modify_order", "lang": "french", "text": "Je peux ajouter un autre produit à la même commande avant l'expédition ?"}
+{"id": 95, "class": "cancel_order_general", "lang": "darija_arabic", "text": "بغيت نلغي الطلب لي درتو البارح، مازال ممكن؟"}
+{"id": 95, "class": "cancel_order_general", "lang": "darija_arabizi", "text": "bghit nalghi talab li dertou lbareh, mazal mumkin?"}
+{"id": 95, "class": "cancel_order_general", "lang": "french", "text": "Je veux annuler la commande que j'ai passée hier, c'est encore possible ?"}
+{"id": 96, "class": "duplicate_order_concern", "lang": "darija_arabic", "text": "دويت الطلب بالغلط مرتين، واش راح يجيوني زوج كوليات؟"}
+{"id": 96, "class": "duplicate_order_concern", "lang": "darija_arabizi", "text": "dawwit talab belghalat marrtin, wach rah yjiouni zouj koliyat?"}
+{"id": 96, "class": "duplicate_order_concern", "lang": "french", "text": "J'ai passé la commande deux fois par erreur, je vais recevoir deux colis ?"}
+{"id": 97, "class": "exchange_after_delivery", "lang": "darija_arabic", "text": "الحذاء ضيق عليا، نقدر نبدلو بمقاس أكبر بعد ما وصلني؟"}
+{"id": 97, "class": "exchange_after_delivery", "lang": "darija_arabizi", "text": "le7ida yeq 3liya, nqder nbeddlou b ma9as akbar b3ed ma wsselni?"}
+{"id": 97, "class": "exchange_after_delivery", "lang": "french", "text": "La chaussure est trop petite, je peux l'échanger contre une taille plus grande après réception ?"}
+{"id": 98, "class": "return_window", "lang": "darija_arabic", "text": "شحال المدة لي عندي باش نرجع المنتوج إذا ما عجبنيش؟"}
+{"id": 98, "class": "return_window", "lang": "darija_arabizi", "text": "chhal lmodda li 3andi bach nrejje3 lmountoj ila ma 3jebnich?"}
+{"id": 98, "class": "return_window", "lang": "french", "text": "Quel est le délai dont je dispose pour retourner le produit s'il ne me plaît pas ?"}
+{"id": 99, "class": "how_to_return", "lang": "darija_arabic", "text": "كيفاش ندير باش نرجع حاجة، نتصل بيكم ولا نبعتها ديريكت؟"}
+{"id": 99, "class": "how_to_return", "lang": "darija_arabizi", "text": "kifach ndir bach nrejje3 haja, natassel bikoum walla nab3atha direct?"}
+{"id": 99, "class": "how_to_return", "lang": "french", "text": "Comment procéder pour retourner un article, je vous contacte ou je l'envoie directement ?"}
+{"id": 100, "class": "complaint_escalation", "lang": "darija_arabic", "text": "عندي مشكل مع الطلب تاعي وحبيت نهدر مع شخص مسؤول"}
+{"id": 100, "class": "complaint_escalation", "lang": "darija_arabizi", "text": "3andi mochkel m3a talab ta3i w hbit nahder m3a chakhs mas2oul"}
+{"id": 100, "class": "complaint_escalation", "lang": "french", "text": "J'ai un problème avec ma commande et je veux parler à un responsable"}
+{"id": 101, "class": "business_hours", "lang": "darija_arabic", "text": "من قداش لقداش راكم خدامين؟"}
+{"id": 101, "class": "business_hours", "lang": "darija_arabizi", "text": "men qeddach l qeddach rakoum khadmin?"}
+{"id": 101, "class": "business_hours", "lang": "french", "text": "De quelle heure à quelle heure êtes-vous ouverts ?"}
+{"id": 102, "class": "contact_info", "lang": "darija_arabic", "text": "عندكم رقم تيليفون نقدر نتصل بيه مباشرة؟"}
+{"id": 102, "class": "contact_info", "lang": "darija_arabizi", "text": "3andkoum ra9m telefon nqder nattassel bih mubacharatan?"}
+{"id": 102, "class": "contact_info", "lang": "french", "text": "Vous avez un numéro de téléphone que je peux appeler directement ?"}
+{"id": 103, "class": "bulk_order", "lang": "darija_arabic", "text": "بغيت نشري بالجملة، كاين سعر خاص للكمية الكبيرة؟"}
+{"id": 103, "class": "bulk_order", "lang": "darija_arabizi", "text": "bghit nachri beljomla, kayn ess3er khass lelkamiya lkbira?"}
+{"id": 103, "class": "bulk_order", "lang": "french", "text": "Je veux acheter en gros, il y a un prix spécial pour les grandes quantités ?"}
+{"id": 104, "class": "gift_wrapping", "lang": "darija_arabic", "text": "تقدروا تلفوها كهدية قبل ما تبعتوها؟"}
+{"id": 104, "class": "gift_wrapping", "lang": "darija_arabizi", "text": "teqdrou tliffouha kahadiya qbal ma tab3atouha?"}
+{"id": 104, "class": "gift_wrapping", "lang": "french", "text": "Vous pouvez l'emballer comme cadeau avant de l'envoyer ?"}
+{"id": 105, "class": "back_in_stock_notify", "lang": "darija_arabic", "text": "إذا سالات، تقدروا تعلموني كي ترجع تتوفر؟"}
+{"id": 105, "class": "back_in_stock_notify", "lang": "darija_arabizi", "text": "ila salat, teqdrou ta3lmouni ki tarja3 tatawaffar?"}
+{"id": 105, "class": "back_in_stock_notify", "lang": "french", "text": "Si c'est épuisé, vous pouvez me prévenir quand ça sera de nouveau disponible ?"}
+{"id": 106, "class": "payment_security", "lang": "darija_arabic", "text": "الدفع مضمون؟ ماكانش خوف نتخدع؟"}
+{"id": 106, "class": "payment_security", "lang": "darija_arabizi", "text": "eddaf3 madmoun? makanch khouf netkhda3?"}
+{"id": 106, "class": "payment_security", "lang": "french", "text": "Le paiement est-il sécurisé ? Il n'y a pas de risque de se faire arnaquer ?"}
+{"id": 107, "class": "invoice_request", "lang": "darija_arabic", "text": "نقدر نطلب فاتورة رسمية للشركة تاعي؟"}
+{"id": 107, "class": "invoice_request", "lang": "darija_arabizi", "text": "nqder natlob facture rasmiya lecharika ta3i?"}
+{"id": 107, "class": "invoice_request", "lang": "french", "text": "Je peux demander une facture officielle pour mon entreprise ?"}
+{"id": 108, "class": "order_history", "lang": "darija_arabic", "text": "كيفاش نشوف الطلبات لي درتهم من قبل؟"}
+{"id": 108, "class": "order_history", "lang": "darija_arabizi", "text": "kifach nchouf talabat li dertohom men qbal?"}
+{"id": 108, "class": "order_history", "lang": "french", "text": "Comment je peux consulter mes commandes précédentes ?"}
+{"id": 109, "class": "minimum_free_shipping", "lang": "darija_arabic", "text": "شحال خاصني نشري باش يكون التوصيل مجاني؟"}
+{"id": 109, "class": "minimum_free_shipping", "lang": "darija_arabizi", "text": "chhal khassni nachri bach ykoun ettawssil majjani?"}
+{"id": 109, "class": "minimum_free_shipping", "lang": "french", "text": "Combien dois-je acheter pour que la livraison soit gratuite ?"}
+{"id": 110, "class": "wrong_item_received", "lang": "darija_arabic", "text": "جاتني حاجة غير لي طلبتها، شنو ندير دابا؟"}
+{"id": 110, "class": "wrong_item_received", "lang": "darija_arabizi", "text": "jatni haja ghir li talabtha, chnou ndir daba?"}
+{"id": 110, "class": "wrong_item_received", "lang": "french", "text": "J'ai reçu un article différent de celui commandé, que dois-je faire maintenant ?"}
+{"id": 111, "class": "payment_methods_other", "lang": "darija_arabic", "text": "تقبلوا الدفع بالإدهابية ولا الكاش غير لي موجود؟"}
+{"id": 111, "class": "payment_methods_other", "lang": "darija_arabizi", "text": "teqbelou eddaf3 bel EDAHABIA walla cash ghir li mawjoud?"}
+{"id": 111, "class": "payment_methods_other", "lang": "french", "text": "Vous acceptez le paiement par carte EDAHABIA ou seulement le cash ?"}
+{"id": 112, "class": "payment_methods_other", "lang": "darija_arabic", "text": "نقدر نحول الفلوس بالبريد ولا CCP قبل التوصيل؟"}
+{"id": 112, "class": "payment_methods_other", "lang": "darija_arabizi", "text": "nqder na7awwel flouss belbarid walla CCP qbal ettawssil?"}
+{"id": 112, "class": "payment_methods_other", "lang": "french", "text": "Je peux faire un virement postal (CCP) avant la livraison ?"}
+{"id": 113, "class": "care_instructions", "lang": "darija_arabic", "text": "كيفاش نغسل هاد القميجة بلا ما تتلف؟"}
+{"id": 113, "class": "care_instructions", "lang": "darija_arabizi", "text": "kifach neghsel had lqamija bla ma tetlaf?"}
+{"id": 113, "class": "care_instructions", "lang": "french", "text": "Comment laver cette chemise sans l'abîmer ?"}
+{"id": 114, "class": "care_instructions", "lang": "darija_arabic", "text": "واش نقدر نحطها في المكواة ولا لا؟"}
+{"id": 114, "class": "care_instructions", "lang": "darija_arabizi", "text": "wach nqder n7attha fel mekwa walla la?"}
+{"id": 114, "class": "care_instructions", "lang": "french", "text": "Je peux la repasser au fer ou pas ?"}
+{"id": 115, "class": "size_guide", "lang": "darija_arabic", "text": "عندكم جدول المقاسات باش نعرف قداش نطلب؟"}
+{"id": 115, "class": "size_guide", "lang": "darija_arabizi", "text": "3andkoum jadwal lma9assat bach na3ref qeddach natlob?"}
+{"id": 115, "class": "size_guide", "lang": "french", "text": "Vous avez un guide des tailles pour savoir laquelle commander ?"}
+{"id": 116, "class": "size_guide", "lang": "darija_arabic", "text": "المقاسات ديالكم زي الأوروبية ولا مختلفة؟"}
+{"id": 116, "class": "size_guide", "lang": "darija_arabizi", "text": "lma9assat dyalkoum zay lourobiya walla mokhtalifa?"}
+{"id": 116, "class": "size_guide", "lang": "french", "text": "Vos tailles correspondent aux tailles européennes ou sont différentes ?"}
+{"id": 117, "class": "reviews_social_proof", "lang": "darija_arabic", "text": "كاين ناس شرات هاد المنتوج قبلي وقالت رأيها فيه؟"}
+{"id": 117, "class": "reviews_social_proof", "lang": "darija_arabizi", "text": "kayn nas chrat had lmountoj qabli w 9alat ra2yaha fih?"}
+{"id": 117, "class": "reviews_social_proof", "lang": "french", "text": "Des gens ont déjà acheté ce produit et donné leur avis dessus ?"}
+{"id": 118, "class": "reviews_social_proof", "lang": "darija_arabic", "text": "واش عندكم تقييمات نقدر نشوفهم قبل ما نشري؟"}
+{"id": 118, "class": "reviews_social_proof", "lang": "darija_arabizi", "text": "wach 3andkoum ta9yimat nqder nchoufhom qbal ma nachri?"}
+{"id": 118, "class": "reviews_social_proof", "lang": "french", "text": "Vous avez des avis clients que je peux consulter avant d'acheter ?"}
+{"id": 119, "class": "holiday_schedule", "lang": "darija_arabic", "text": "راكم خدامين أيام العيد ولا التوصيل يوقف؟"}
+{"id": 119, "class": "holiday_schedule", "lang": "darija_arabizi", "text": "rakoum khadmin ayyam l3id walla ettawssil yaw9af?"}
+{"id": 119, "class": "holiday_schedule", "lang": "french", "text": "Vous travaillez pendant l'Aïd ou la livraison s'arrête ?"}
+{"id": 120, "class": "holiday_schedule", "lang": "darija_arabic", "text": "الطلبات لي دايرين قبل رمضان يوصلوا قبل الشهر ولا لا؟"}
+{"id": 120, "class": "holiday_schedule", "lang": "darija_arabizi", "text": "talabat li dayrin qbal ramadan yousslou qbal chahar walla la?"}
+{"id": 120, "class": "holiday_schedule", "lang": "french", "text": "Les commandes passées avant Ramadan arrivent avant le mois ou pas ?"}
+{"id": 121, "class": "defective_after_warranty", "lang": "darija_arabic", "text": "طاحت الضمان وخربت الحاجة، واش مازال نقدر نصلحها معاكم؟"}
+{"id": 121, "class": "defective_after_warranty", "lang": "darija_arabizi", "text": "tahet ddaman w kharbet lhaja, wach mazal nqder nsalla7ha m3akom?"}
+{"id": 121, "class": "defective_after_warranty", "lang": "french", "text": "La garantie est expirée et le produit est en panne, je peux encore le faire réparer chez vous ?"}
+{"id": 122, "class": "installation_service", "lang": "darija_arabic", "text": "كاين خدمة تركيب ولا خاصني نركبها بروحي؟"}
+{"id": 122, "class": "installation_service", "lang": "darija_arabizi", "text": "kayn khedmat tarkib walla khassni narkabha berrohi?"}
+{"id": 122, "class": "installation_service", "lang": "french", "text": "Il y a un service d'installation ou je dois la monter moi-même ?"}
+{"id": 123, "class": "price_negotiation", "lang": "darija_arabic", "text": "واش السعر قابل للمساومة ولا ثابت؟"}
+{"id": 123, "class": "price_negotiation", "lang": "darija_arabizi", "text": "wach ess3er qabel lelmosawama walla thabet?"}
+{"id": 123, "class": "price_negotiation", "lang": "french", "text": "Le prix est négociable ou fixe ?"}
+{"id": 124, "class": "trending_products", "lang": "darija_arabic", "text": "شنو الحوايج لي كاين عليها طلب بزاف دابا؟"}
+{"id": 124, "class": "trending_products", "lang": "darija_arabizi", "text": "chnou lhwayej li kayn 3liha talab bezzaf daba?"}
+{"id": 124, "class": "trending_products", "lang": "french", "text": "Quels sont les articles les plus demandés en ce moment ?"}
+{"id": 125, "class": "seasonal_products", "lang": "darija_arabic", "text": "عندكم حوايج تديرها خاص بالصيف؟"}
+{"id": 125, "class": "seasonal_products", "lang": "darija_arabizi", "text": "3andkoum hwayej tdirha khass bessif?"}
+{"id": 125, "class": "seasonal_products", "lang": "french", "text": "Vous avez des articles spécialement pour l'été ?"}
+{"id": 126, "class": "sample_request", "lang": "darija_arabic", "text": "نقدر نطلب عينة صغيرة من القماش قبل ما نشري بزاف؟"}
+{"id": 126, "class": "sample_request", "lang": "darija_arabizi", "text": "nqder natlob 3ayna sghira men l9mach qbal ma nachri bezzaf?"}
+{"id": 126, "class": "sample_request", "lang": "french", "text": "Je peux demander un échantillon de tissu avant d'acheter en grande quantité ?"}
+{"id": 127, "class": "loyalty_discount", "lang": "darija_arabic", "text": "راني نشري عندكم بزاف، كاين تخفيض للزبون القديم؟"}
+{"id": 127, "class": "loyalty_discount", "lang": "darija_arabizi", "text": "rani nachri 3andkom bezzaf, kayn takhfid lezzboun le9dim?"}
+{"id": 127, "class": "loyalty_discount", "lang": "french", "text": "J'achète souvent chez vous, il y a une réduction pour les clients fidèles ?"}
+{"id": 128, "class": "referral_program", "lang": "darija_arabic", "text": "إذا نصحت صاحبي بيكم ودار طلب، نستافد شي حاجة؟"}
+{"id": 128, "class": "referral_program", "lang": "darija_arabizi", "text": "ila nasse7t sa7bi bikom w dar talab, nastafed chi haja?"}
+{"id": 128, "class": "referral_program", "lang": "french", "text": "Si je recommande un ami et qu'il commande, j'ai un avantage ?"}
+{"id": 129, "class": "language_preference", "lang": "darija_arabic", "text": "نقدر نهدر معاكم بالفرنسية إذا العربية صعيبة عليا؟"}
+{"id": 129, "class": "language_preference", "lang": "darija_arabizi", "text": "nqder nahder m3akom belfaransiya ila l3arabiya sa3iba 3liya?"}
+{"id": 129, "class": "language_preference", "lang": "french", "text": "Je peux communiquer avec vous en français si l'arabe est difficile pour moi ?"}
+{"id": 130, "class": "out_of_country_shipping", "lang": "darija_arabic", "text": "واش توصلوا برا الجزائر ولا غير بالداخل؟"}
+{"id": 130, "class": "out_of_country_shipping", "lang": "darija_arabizi", "text": "wach twasslou barra ldzayer walla ghir beddakhel?"}
+{"id": 130, "class": "out_of_country_shipping", "lang": "french", "text": "Vous livrez à l'étranger ou seulement en Algérie ?"}
+{"id": "a-dz-s20", "text": "شحال التوصيل لتلمسان", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s21", "text": "شحال التوصيل لورقلة", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s22", "text": "شحال التوصيل لبجاية", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s23", "text": "شحال التوصيل لتلمسان لباب الدار", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s24", "text": "شحال التوصيل لتلمسان لبيرو", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s25", "text": "تقدر نحل الكولي كي يوصلني؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s26", "text": "شحال يوصلني الكولي في تلمسان؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s27", "text": "كي يوصلني الكولي نقدر نحلوا ونشوف واش كاين الداخل؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s28", "text": "كاين garantie باش نرجعو؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s30", "text": "كاين ضمان باش نرجعو؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s31", "text": "الا معجبنيش معليش ما نديهش", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s32", "text": "ما شركة النوصيل تخدموا معاها", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s33", "text": "ليفرور ماعيطليش?", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s34", "text": "شحال هادي", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s35", "text": "زقيت للفرور ما مرفدش عليا", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s36", "text": "مازال ما وصلنيش", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s37", "text": "حاجة شابة ياك?", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s38", "text": "اسكو تخدموا بالبطاقة الذهبية؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s39", "text": "نخلص كي يوصلني ياك", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s40", "text": "نخلص بالبطاقة الذهبية", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s41", "text": "نخلص بالبريد", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s42", "text": "تقدر نخلص بالبريد؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s43", "text": "نخلص بالبطاقة؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s44", "text": "شحال مدة التوصيل", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s45", "text": "المنتوج خرج ولا مزال؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s46", "text": "البريد راه خارج؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s47", "text": "حاب نكوموندي، كيفاه ندير؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s48", "text": "كيفاه نشري من عندكم؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s49", "text": "اعطيني السومة تاع هادي مع التوصيل", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s50", "text": "شحال يحسبلي التوصيل لوهران؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s51", "text": "التوصيل مجاني ولا بالدراهم؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s52", "text": "نقاط التوصيل وين جايين في العاصمة؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s53", "text": "ليفرور وقتاش يلحق عندي؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s54", "text": "شحال يقعد الكولي باش يوصل لقسنطينة؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s55", "text": "حاب نغير لادريس تاع التوصيل كيفاه ندير؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s56", "text": "نقدر نلغي الكوماند تاعي؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s57", "text": "رقم التيليفون تاع ليفرور تعيش؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s58", "text": "بعثتولي كولي غالط، كيفاه ندير باش نبدلو؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s59", "text": "وصلني المنتج مكسر، شكون يتحمل المسؤولية؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s60", "text": "اسكو نخلص الصرف سوا سوا ولا ليفرور يرجعلي؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s61", "text": "نقدر نخلص شوية بالذهبية وشوية كاش؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s62", "text": "كاين التوصيل للصحراء (أدرار / تمنراست)؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s63", "text": "كاين قياسات كبار ولا كاين غير هادو؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s64", "text": "وشنو هما الألوان لي مازالو متوفرين؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s65", "text": "السلعة أوريجينال ولا إميتاسيون؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s66", "text": "راني حاب نشري زوز، كاين تخفيض؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s67", "text": "اسكو السومة هادي فيها التوصيل ولا وحدو؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s68", "text": "كاين التوصيل للجنوب ولا غير الشمال؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s69", "text": "تخدموا مع يليدين ولا القاضي اكسبريس؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s70", "text": "نقدر نستلم الكولي من البيرو تاع شركة التوصيل؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s71", "text": "ليفرور وقتاش يجيني، بالصباح ولا بالليل؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s72", "text": "شحال يقعد الكولي باش يلحق لسطيف؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s73", "text": "بعثتولي ميساج قالولي الكولي وصل، نروح نجيبو؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s74", "text": "ليفرور قال لي مانيش في البلاصة، كيفاه ندير؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s75", "text": "رقم التتبع تاع الكولي تعيش؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s76", "text": "حاب نزيد حاجة وحدة اخرى مع الكوماند لي درتها؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s77", "text": "بدلت النمرو تاع التيليفون كيفاه نكونتاكتي ليفرور؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s78", "text": "اسكو يقدر صاحب خويا يستلم الكولي في بلاصتي؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s79", "text": "نقدر نقيس الصباط قبل ما نخلص ليفرور؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s80", "text": "الا جاني الضيعة صغيرة نقدر نرجعو ونبدل لاطاي؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s81", "text": "شكون يدفع حق التوصيل تاع الترجيح (الإرجاع)؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s82", "text": "نقدر نخلص عبر تطبيق BaridiMob؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s83", "text": "تلقاو الشيك ولا غير الكاش؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s84", "text": "القماش تاعها قطن 100% ولا فليسي؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s85", "text": "تقدر تبعثلي فوطو ريل تاع المنتج من الستوك؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s86", "text": "شحال سعر التوصيل لولاية وهران لباب الدار؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s87", "text": "شحال يحسبوا التوصيل لبشار؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s88", "text": "التوصيل مجاني إذا شريت زوج قطع؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s89", "text": "شحال نزيد فوق حق السلعة باش يلحقني للدار؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s90", "text": "تخدموا مع شركة التوصيل نينجا إكسبريس ولا يليدين؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s91", "text": "عندكم توصيل لجميع الولايات الـ 58؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s92", "text": "وين جاي المكتب تاعكم في عنابة باش نروح نديه؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s93", "text": "اسكو كاين التوصيل للبلديات والقرى البعيدة؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s94", "text": "وقتاش يخرج الكولي تاعي من الستوك؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s95", "text": "وصلني ميساج تاع ليفرور وما عيطليش، وش ندير؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s96", "text": "راني نستنى من الصباح وليفرور ما جاش، وقتاش يوصل؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s97", "text": "تقدروا تمدولي ميغكاتييون (Tracking number) نسويبي بيه؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s98", "text": "الكولي راهو مع ليفرور ولا مزال في المكتب؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s99", "text": "كم يوم ياخد التوصيل لولاية بجاية؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s100", "text": "يلحقني قبل نهاية الأسبوع ولا يفوت؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s101", "text": "شحال يلزم من نهار باش يوصلني في غرداية؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s102", "text": "نقدر نخلص بالفلوس كاش كي يوصل ليفرور؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s103", "text": "اسكو يقبل ليفرور تحويل عبر بايدي موب (BaridiMob)؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s104", "text": "نقدر ندفع جزء بالبطاقة والباقي يد بيد؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s105", "text": "لازم نخلص تسقيع (Avance) ولا حتال يوصلني؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s106", "text": "تقبلوا الدفع بالتجزئة ولا بالتقسيط؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s107", "text": "إذا ما عجبنيش المنتوج نقدر نرجعو ونسترجع درهمي؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s108", "text": "شحال مدة الضمان (Garantie) على هاد الجهاز؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s109", "text": "إذا جاني القياس مش قدي، كيفاه ندير باش نغيروا؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s110", "text": "تقدروا تفتحولي الكولي قدام ليفرور باش نتأكد؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s111", "text": "إذا كان معطوب، شكون يخلص حق التوصيل الثاني؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s112", "text": "حاب نلغي الطلبية تاعي، كاين إمكانية؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s113", "text": "بدلت رأيي وما حابش نديه، وش نعمل؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s114", "text": "نقدر نغير ولاية الاستلام من سطيف للجزائر العاصمة؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s115", "text": "غلطت في رقم الهاتف، كيفاه نصلحو قبل ما يخرج الكولي؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s116", "text": "كيفاه نأكد الطلب تاعي بعد ما سجلت في السيت؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s117", "text": "حاب نطلب 3 حبات، كيفاه نسجل الطلبية؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s118", "text": "راني حاب نكوموندي، اتصلوا بيا في الهاتف تعيشوا", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s119", "text": "شحال السعر الجملة إذا شريت 10 قطعات؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s120", "text": "كاين بروموسيون هاد الأيام ولا السعر ثابت؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s121", "text": "السعر المكتوب راهو مع احتساب الضريبة ولا لا؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s122", "text": "السلعة محلي ولا مستوردة من الخارج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s123", "text": "وشنو هي المواد المصنوع منها هاد المنتج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s124", "text": "عندكم ألوان أخرى غير الأسود والأبيض؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s125", "text": "تقدر تبعثلي فيديو يوضح كيفاه يخدم؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s126", "text": "اسكو يجي معاه الكابل والشاحن في العلبة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s127", "text": "ليفرور قال لي ارواح ديه من الرومبوان، علاه ما يجينيش للدار؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s128", "text": "نقدر نأجل التوصيل ليوم السبت الجاي؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s129", "text": "ليفرور ما عندوش الصرف، وش ندير؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s130", "text": "اسكو السلعة متوفرة حالياً في الستوك ولا ينلزم ننتظر؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s131", "text": "كيفاه نعرف باللي الطلبية تاعي اتسجلت رسمياً؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s132", "text": "كاين امكانية نخلص بالفرنك (Euros) ولا غير الدينار؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s133", "text": "إذا ما رفدتش على ليفرور، يولي يرجعلي مرة اخرى؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s134", "text": "الكولي وصل ناقص قطعة، شكون نكونتاكتي؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s135", "text": "شحال يزيد التوصيل إذا كان للبيرو تاع شركة التوصيل؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s136", "text": "شحال سعر التوصيل حتى لباب الدار في العاصمة؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s137", "text": "بشحال توصلوا لي منتجات لباب مدينة تلمسان؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s138", "text": "التوصيل مجاني إذا شريت كثر من 3000 دج؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s139", "text": "شحال نخلص مع ليفرور، السلعة وحدها ولا مع التوصيل؟", "lang": "ar-dz", "class": "shipping_cost"}
+{"id": "a-dz-s140", "text": "تخدموا مع شركة التوصيل أي إم أس (IMS)؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s141", "text": "توصلوا لكامل الولايات الجزائرية، حتى في الجنوب؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s142", "text": "وين بلاصة تخدمو فيها بالضبط باش نجوز عليكم؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s143", "text": "عندكم نقاط التقاط (Pickup) في العاصمة؟", "lang": "ar-dz", "class": "shipping_info"}
+{"id": "a-dz-s144", "text": "شكون راه عندو الكولي تاعي، ليفرور ولا المكتب؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s145", "text": "ليوم قالولي الكولي راح يوصل وموصلش، واش ندير؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s146", "text": "رقم التيليفون تاع الليفرور تعيش باش نصوني عليه؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s147", "text": "الكولي تاعي في حالة جيدة ولا مزال في البريد؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s148", "text": "شحال يقعد الكولي باش يوصلني لقسنطينة؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s149", "text": "يلحقني الطلب قبل نهار الجمعة ولا لا؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s150", "text": "مدة التوصيل للجزائر العاصمة راهي 24 ساعة؟", "lang": "ar-dz", "class": "shipping_duration"}
+{"id": "a-dz-s151", "text": "نقدر ندفع بالبريدي موب (BaridiMob) كي يلحق ليفرور؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s152", "text": "كاين امكانية نخلص بالبطاقة البنكية عند الاستلام؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s153", "text": "إذا ما عندكش الصرف، كيفاه نتصرف؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s154", "text": "نقدر نخلص نص دراهم ونص شيك؟", "lang": "ar-dz", "class": "payment_method"}
+{"id": "a-dz-s155", "text": "اسكو المنتج اللي وصلني هو نفسه تاع الصورة؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s156", "text": "إذا لقيت المنتوج فاسد، نقدر نبدلو؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s157", "text": "شكون يخلص التوصيل في حالة الإرجاع؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s158", "text": "نقدر نستعمل الكود تاعي باش ناكتيفي لا غارنتي؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s159", "text": "فات وقت التوصيل المحدد، واش يصرى؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s160", "text": "كيفاه ندير باش نعدل الطلب تاعي بعد ما سجلتو؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s161", "text": "نقدر نبدل المدينة من العاصمة لوهران؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s162", "text": "تغيرت لا سيزون ومزال عندي لا كوموند، كيفاه ندير؟", "lang": "ar-dz", "class": "order_management"}
+{"id": "a-dz-s163", "text": "راني نستنى ميساج باش نكمل الطلب، وين راه؟", "lang": "ar-dz", "class": "order_intent"}
+{"id": "a-dz-s164", "text": "شحال راهي السلعة اليوم، كاين تخفيض؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s165", "text": "السلعة متوفرة بكثرة ولا غير حبة ولا زوج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s166", "text": "تقدروا تبعثولي فيديو باش نتأكد من الجودة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s167", "text": "ليفرور ما حبش يستنى، قال لي هرب، واش ندير؟", "lang": "ar-dz", "class": "shipping_status"}
+{"id": "a-dz-s168", "text": "الكولي وصل في حالة جيدة لكن اللون غالب، كيفاه نبدل؟", "lang": "ar-dz", "class": "policy_question"}
+{"id": "a-dz-s136", "text": "شحال تعمل هادي بلا التوصيل؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s137", "text": "اسكو كاين كود برومو ولا تخفيض للمرة الأولى؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s138", "text": "شحال السعر تاع الحبة وشحال السعر تاع التريو؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s139", "text": "اعطيني السعر النهائى تعيش", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s140", "text": "علاه السومة غالية مقارنة بالسوق؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s141", "text": "كاين صولد هاد الأيام ولا خلصت التخفيضات؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s142", "text": "شحال طيحلي الحبة كي ندي 5 حبات بالجملة؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s143", "text": "السوم لي راهي مكتوبة في باج هي السومة الإجمالية؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s144", "text": "اسكو تنقصلي شوية ولا السومة فيكس؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s145", "text": "شحال القاطو / المنتوج يدير للحبة؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s146", "text": "اسكو السعر يشمل الأكسسوارات لي معاه؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s147", "text": "شحال يحسبلي السعر الإجمالي بالسلعة والتوصيل مع بعض؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s148", "text": "كاين عرض شري زوج وتحصل على الثالثة مجاناً؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s149", "text": "السعر لي في السيت هو نفسو لي يخلصو ليفرور؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s150", "text": "شحال السومة تاع أصلية وشحال تاع الإميتاسيون؟", "lang": "ar-dz", "class": "product_price"}
+{"id": "a-dz-s151", "text": "واش هي الألوان المتوفرة في هاد الموديل؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s152", "text": "كاين لاطاي S ولا يبداو غير من M؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s153", "text": "القياسات تاعكم دار (Standard) ولا يجيوا كبار؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s154", "text": "القماش يتكمش في الغسيل ولا لا؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s155", "text": "وشنو هي بلد صنع هاد السلعة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s156", "text": "تقدر تبعثلي فوطو من الواقع بلا فوتوشوب؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s157", "text": "السلعة صح كيف الصورة ولا تختلف؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s158", "text": "وشحال فيها من ميغابيكسل / ستوكاج / رام؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s159", "text": "اسكو مقاوم للمني والماء (Waterproof)؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s160", "text": "يجي معاه الكاتالوج ودليل الاستعمال بالعربية؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s161", "text": "القماش سخون يوالق الشتا ولا خفيف تاع الصيف؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s162", "text": "واش هما الأبعاد تاع هاد الطابلة (الطول والعرض)؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s163", "text": "المنتوج يمشى بالتريسيتي ولا بالبيل (البطارية)؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s164", "text": "اسكو المنتوج فيه ريحة ولا طبيعي 100%؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s165", "text": "كاين موديلاخرين غير هاد الستيل؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s166", "text": "اسكو كاين السيروم / الكريم متوفر حالياً ولا ريبتير (Out of stock)؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s167", "text": "الصباط جلد طبيعي ولا كوير أنثيتيك؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s168", "text": "ينفع للبشرة الحساسة ولا فيه مواد كيميائية؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s169", "text": "شحال الوزن الإجمالي تاع الباكي؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s170", "text": "تجي معاها البواطة الأصليّة وتغليف هدايا؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s171", "text": "شحال راهي لا بواط تاع الشامبوان تاعي؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s172", "text": "اسكو السلعة الأصلية ولا تقليد؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s173", "text": "المنتوج فيه ضمان لمدّة عام؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s174", "text": "شحال فيها من حبة في الباك؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s175", "text": "شحال فيها ميزان تاع الميزان؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s176", "text": "شحال الطاقة التخزين تاع هاد الهاتف؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s177", "text": "شحال مدة الضمان تاع هاد المنتوج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s178", "text": "اسكو الماركة تعجبك ولا راك تخمم في ماركة أخرى؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s179", "text": "واش هي لا كولور تاع المنتج لي راك حاب؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s180", "text": "شحال تقعد من وقت باش توصلني؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s181", "text": "شحال تحسب سعر التوصيل حتى لباب الدار؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s182", "text": "واش هي طريقة الدفع المتاحة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s183", "text": "واش هي المادة المصنوع منها هاد المنتوج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s184", "text": "شحال نخلص مع ليفرور؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s185", "text": "هل الضمان صالح في الجزائر؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s186", "text": "شحال وزن الباكاج تاعي؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s187", "text": "واش هي الأبعاد تاع السلعة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s188", "text": "كاين تمديد للضمان؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s189", "text": "شحال تقعد من يوم باش توصلني؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s190", "text": "شحال سعر التوصيل حتى لباب الدار؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s191", "text": "واش هي طريقة الدفع المتاحة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s192", "text": "واش هي المادة المصنوع منها هاد المنتوج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s193", "text": "شحال نخلص مع ليفرور؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s194", "text": "هل الضمان صالح في الجزائر؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s195", "text": "شحال وزن الباكاج تاعي؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s196", "text": "واش هي الأبعاد تاع السلعة؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s197", "text": "كاين تمديد للضمان؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s198", "text": "شحال يقعد الكولي باش يوصلني؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s199", "text": "شحال سعر التوصيل للولايات الأخرى؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s200", "text": "شحال الوزن الأقصى المسموح به في الباكاج؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s201", "text": "شحال يقعد الكولي في مركز التوزيع قبل الإرسال؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s202", "text": "شحال سعر التوصيل إذا كنت في تلمسان؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s203", "text": "شحال من يوم يقعد الكولي في تلمسان قبل ما يوصلني؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s204", "text": "هل يمكنني استلام الطرد من مكتب شركة التوصيل؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s205", "text": "هل يمكنني تغيير العنوان بعد إرسال الطلب؟", "lang": "ar-dz", "class": "product_info"}
+{"id": "a-dz-s206", "text": "شحال يقعد الكولي في مركز التوزيع قبل الإرسال؟", "lang": "ar-dz", "class": "product_info"}

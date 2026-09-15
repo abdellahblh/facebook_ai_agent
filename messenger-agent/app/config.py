@@ -22,14 +22,17 @@ class Settings:
 
     google_api_key: str = field(default_factory=lambda: os.getenv("GOOGLE_API_KEY", ""))
     gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite"))
-    pinecone_api_key: str = field(default_factory=lambda: os.getenv("PINECONE_API_KEY", ""))
-    pinecone_index: str = field(default_factory=lambda: os.getenv("PINECONE_INDEX", "facebook"))
+
 
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", ""))
     redis_url: str = field(default_factory=lambda: os.getenv("REDIS_URL", "redis://localhost:6379/0"))
     langsmith_api_key: str = field(default_factory=lambda: os.getenv("LANGSMITH_API_KEY", ""))
     langsmith_tracing: bool = field(default_factory=lambda: os.getenv("LANGSMITH_TRACING", "false").lower() == "true")
     langsmith_project: str = field(default_factory=lambda: os.getenv("LANGSMITH_PROJECT", "facebook_ai_agent"))
+    embedder_endpoint: str = field(
+        default_factory=lambda: os.getenv("EMBEDDER_ENDPOINT")
+        or os.getenv("VOYAGE_ENDPOINT", "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
+    )
 
     debounce_seconds: int = field(default_factory=lambda: int(os.getenv("DEBOUNCE_SECONDS", "10")))
     agent_response_cache_ttl_seconds: int = field(
@@ -44,12 +47,39 @@ class Settings:
     cache_lock_wait_seconds: float = field(
         default_factory=lambda: float(os.getenv("CACHE_LOCK_WAIT_SECONDS", "15"))
     )
-    cache_embedding_model: str = field(
-        default_factory=lambda: os.getenv("CACHE_EMBEDDING_MODEL", "")
+    embedder_api_key: str = field(
+        default_factory=lambda: os.getenv("EMBEDDER_API_KEY")
+        or os.getenv("VOYAGE_API_KEY", "")
     )
-    cache_embedding_dimensions: int = field(
-        default_factory=lambda: int(os.getenv("CACHE_EMBEDDING_DIMENSIONS", "0"))
+    embedder_model: str = field(
+        default_factory=lambda: os.getenv("EMBEDDER_MODEL")
+        or os.getenv("VOYAGE_EMBEDDING_MODEL", "qwen3.7-text-embedding")
     )
+    embedder_dimensions: int = field(
+        default_factory=lambda: int(
+            os.getenv("EMBEDDER_DIMENSIONS")
+            or os.getenv("VOYAGE_EMBEDDING_DIMENSIONS", "1024")
+        )
+    )
+    redis_guardrail_index: str = field(
+        default_factory=lambda: os.getenv("REDIS_GUARDRAIL_INDEX", "customer-support-guardrails")
+    )
+    faiss_semantic_threshold: float = field(
+        default_factory=lambda: float(os.getenv("FAISS_SEMANTIC_THRESHOLD", "0.90"))
+    )
+    faiss_guardrail_threshold: float = field(
+        default_factory=lambda: float(os.getenv("FAISS_GUARDRAIL_THRESHOLD", "0.70"))
+    )
+    faiss_cache_max_size: int = field(
+        default_factory=lambda: int(os.getenv("FAISS_CACHE_MAX_SIZE", "512"))
+    )
+    guardrail_dataset_path: str = field(
+        default_factory=lambda: os.getenv("GUARDRAIL_DATASET_PATH", "")
+    )
+    # Deprecated Redis-vector configuration retained so existing deployments
+    # can boot while moving to the process-local FAISS cache.
+    cache_embedding_model: str = field(default_factory=lambda: os.getenv("CACHE_EMBEDDING_MODEL", ""))
+    cache_embedding_dimensions: int = field(default_factory=lambda: int(os.getenv("CACHE_EMBEDDING_DIMENSIONS", "1024")))
     cache_semantic_threshold: float = field(
         default_factory=lambda: float(os.getenv("CACHE_SEMANTIC_THRESHOLD", "0.10"))
     )
@@ -110,6 +140,13 @@ class Settings:
     )
     graph_api_version: str = "v23.0"  # check the changelog when upgrading
     OPENAI_API_KEY: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
+    groq_api_key: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", ""))
+    guard_model: str = field(
+        default_factory=lambda: os.getenv("GUARD_MODEL", "openai/gpt-oss-safeguard-20b")
+    )
+    groq_base_url: str = field(
+        default_factory=lambda: os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
+    )
 
     # Webhook inbox queue (Redis Streams). The Chatwoot webhook enqueues, an
     # in-process consumer drains it and runs worker.process_event. Set
