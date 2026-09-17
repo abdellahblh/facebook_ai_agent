@@ -1,0 +1,86 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-and-test:
+    name: Code Quality & Security Tests
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/python-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install ruff mypy pip-audit pytest pytest-asyncio pytest-cov
+
+      - name: Run Syntax & Pre-compilation Verification
+        run: |
+          python -m compileall -q .
+
+      - name: Run Ruff (Linter & Formatter Check)
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Run MyPy (Type Checking)
+        run: |
+          mypy . --ignore-missing-imports
+
+      - name: Run Pip-Audit (Dependency Vulnerability Audit)
+        run: |
+          pip-audit
+
+      - name: Run Pytest (Unit & Integration Tests)
+        env:
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          ENVIRONMENT: test
+        run: |
+          pytest --cov=. --cov-report=term-missing
+
+  docker-build:
+    name: Docker Image Build Verification
+    needs: quality-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Container Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: agent-service:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

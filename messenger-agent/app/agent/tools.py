@@ -14,6 +14,7 @@ Definition of done: pytest tests/test_agent.py
 from __future__ import annotations
 
 import logging
+import struct
 from typing import TYPE_CHECKING
 
 import httpx
@@ -26,9 +27,12 @@ from app.nlp.arabizi import strip_darija_stopwords
 from app.agent.guardrail import EmbedderProvider
 from app.db import repo
 from app.config import get_settings
-REDIS_URL = get_settings().redis_url
 INDEX_NAME = "store-policies-jina"
 logger = logging.getLogger(__name__)
+
+
+def _pack_vector(vector: list[float]) -> bytes:
+    return struct.pack(f"{len(vector)}f", *vector)
 
 
 @tool
@@ -123,23 +127,45 @@ async def policy_search(question: str, config: RunnableConfig = None) -> str:
     data, but policy retrieval needs semantic search for natural-language
     questions.
     """
+    
     limit = 3
-    embedder = app.state.embedder
+    configurable = (config or {}).get("configurable", {})
+    embedder = configurable.get("embedder")
+    redis = configurable.get("redis")
 
-    query_vector = embedder.embed_query([question])
-    redis_client = app.state.redis
+    if not embedder or not redis:
+        from app.main import app
+        embedder = embedder or getattr(app.state, "embedder", None)
+        redis = redis or getattr(app.state, "redis", None)
+
+    if not embedder or not redis:
+        logger.error("policy_search failed: missing embedder or redis")
+        return "Policy search unavailable."
+
+    query_vector = await embedder.embed_query(question)
+
+    index_name = configurable.get("INDEX_NAME", INDEX_NAME)
     query = (
-        Query("(*)=>[KNN $limit @embedding $query_vector AS distance]")
+        Query(f'(*)=>[KNN $limit @embedding $query_vector AS distance]')
         .sort_by("distance")
         .return_fields("text", "source", "section_title", "distance")
         .paging(0, limit)
         .dialect(2)
     )
-    result = redis_client.ft(INDEX_NAME).search(
+    result = await redis.ft(index_name).search(
         query,
-        query_params={"query_vector": query_vector, "limit": limit},
+        query_params={"query_vector": _pack_vector(query_vector), "limit": limit},
     )
-    return [dict(document.__dict__) for document in result.docs]
+    logger.info(f"Policy search result: {result}")
+    if not result.docs:
+        return "No policy information found for that question."
+    lines = []
+    for doc in result.docs:
+        if float(doc.distance) < 0.10:
+            lines.append(f"[{doc.source}] {doc.text}")
+    if not lines:
+        return "No policy information found for that question."
+    return "\n".join(lines)
 
 
 @tool
@@ -164,14 +190,36 @@ async def handoff_to_human(reason: str, config: RunnableConfig = None) -> str:
         async with session_factory() as session:
             await repo.set_handoff(session, page_id, psid, True)
 
-    if channel == "chatwoot" and account_id and conversation_id and http_client:
+    if http_client and account_id and conversation_id:
         from app import chatwoot
-        await chatwoot.escalate_to_human(
-            http_client,
-            account_id,
-            conversation_id,
-            note=f"AI escalated conversation to human. Reason: {reason}",
+
+        if channel == "chatwoot":
+            await chatwoot.escalate_to_human(
+                http_client,
+                account_id,
+                conversation_id,
+                note=f"AI escalated conversation to human. Reason: {reason}",
+            )
+        else:
+            note_ok = await chatwoot.send_reply(
+                http_client,
+                account_id,
+                conversation_id,
+                f"AI escalated conversation to human. Reason: {reason}",
+                private=True,
+            )
+            if not note_ok:
+                logger.warning(
+                    "Failed to send handoff private note for conversation %s",
+                    conversation_id,
+                )
+    elif http_client:
+        logger.warning(
+            "handoff_to_human: missing account_id/conversation_id for channel %s — "
+            "cannot send private note to Chatwoot.",
+            channel,
         )
+
     return "Handoff activated."
 
 
@@ -189,7 +237,8 @@ def make_tools(
     conversation_id: str | None = None,
     http_client: httpx.AsyncClient | None = None,
     redis_client=None,
-    INDEX_NAME  =None,
+    INDEX_NAME=None,
+    embedder=None,
 ) -> list[BaseTool]:
     """Factory for tests and manual construction with bound fallback context."""
 
@@ -226,8 +275,9 @@ def make_tools(
         cfg = dict((config or {}).get("configurable", {}))
         cfg.setdefault("page_id", page_id)
         cfg.setdefault("session_factory", session_factory)
-        cfg.setdefault("pinecone_client", pinecone_client)
-        cfg.setdefault("pinecone_index", pinecone_index)
+        cfg.setdefault("redis", redis_)
+        cfg.setdefault("embedder", embedder)
+        cfg.setdefault("INDEX_NAME", INDEX_NAME)
         return await policy_search.ainvoke(
             {"question": question},
             config={"configurable": cfg},

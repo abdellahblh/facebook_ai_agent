@@ -88,40 +88,5 @@ async def acquire_user_lock(r: aioredis.Redis, psid: str) -> bool:
     token = await acquire_user_lock_token(r, psid)
     return token is not None
 
-_GREETING_RE_AR = re.compile(
-    r"^\s*سلام(?:\s+عليكم)?(?:\s+ورحمة\s+الله(?:\s+وبركاته)?)?\s*[!.؟?]*\s*$"
-)
-_GREETING_RE_EN = re.compile(
-    r"^\s*(hi+|hello+|hey+)\s*[!.?]*\s*$",
-    re.IGNORECASE,
-)
-
-GREETING_REPLIES = {
-    "ar": "وعليكم السلام، مرحبا بيك! واش نقدر نعاونك اليوم؟ 😊",
-    "en": "Hello! How can I help you today?",
-}
 
 
-async def try_handle_greeting(user_id: str, text: str) -> str | None:
-    """
-    Returns:
-        a canned greeting reply if this message is a fresh greeting,
-        ""   if it's a greeting but the user already got one recently (suppress — no reply sent),
-        None if it's not a greeting at all — caller should proceed to the LLM/agent as normal.
-    """
-    _GREETING_RE_AR = re.compile(
-    r"^\s*سلام(?:\s+عليكم)?(?:\s+ورحمة\s+الله(?:\s+وبركاته)?)?\s*[!.؟?]*\s*$"
-)
-    _GREETING_RE_EN = re.compile(
-    r"^\s*(hi+|hello+|hey+)\s*[!.?]*\s*$",
-    re.IGNORECASE,
-)
-
-    stripped = text.strip()
-
-    if _GREETING_RE_AR.match(stripped):
-        lang = "ar"
-    elif _GREETING_RE_EN.match(stripped):
-        lang = "en"
-    else:
-        return None  

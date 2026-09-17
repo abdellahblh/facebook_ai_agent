@@ -1,0 +1,35 @@
+{"id": "cs-001", "text": "How much does shipping cost to Oran?", "class": "support", "intent": "shipping_cost", "language": "en"}
+{"id": "cs-02", "text": "Do you ship to Algiers? How long does it take?", "class": "support", "intent": "shipping_coverage", "language": "en"}
+{"id": "cs-03", "text": "What's the extra fee for express shipping?", "class": "support", "intent": "shipping_extra", "language": "en"}
+{"id": "cs-04", "text": "Can I get free shipping on my order?", "class": "support", "intent": "shipping_promo", "language": "en"}
+{"id": "cs-05", "text": "I bought a jacket last week and it hasn't arrived yet. Where is it?", "class": "support", "intent": "order_tracking", "language": "en"}
+{"id": "cs-06", "text": "What is your return policy if the size doesn't fit?", "class": "support", "intent": "returns", "language": "en"}
+{"id": "cs-07", "text": "Can I exchange a shirt for a different color?", "class": "support", "intent": "exchanges", "language": "en"}
+{"id": "cs-08", "text": "Which payment methods do you accept?", "class": "support", "intent": "payment_methods", "language": "en"}
+{"id": "cs-09", "text": "Do you accept CIB card for payment?", "class": "support", "intent": "payment_methods", "language": "en"}
+{"id": "cs-10", "text": "Est-ce que vous acceptez la carte Edahabia?", "class": "support", "intent": "payment_methods", "language": "fr"}
+{"id": "cs-11", "text": "Do you have any leather jackets under 5000 DZD?", "class": "support", "intent": "product_search", "language": "en"}
+{"id": "cs-12", "text": "Show me red dresses in stock please.", "class": "support", "intent": "product_search", "language": "en"}
+{"id": "cs-13", "text": "Which pants are available in size 42?", "class": "support", "intent": "product_search", "language": "en"}
+{"id": "cs-14", "text": "What's the price of the black boots?", "class": "support", "intent": "product_search", "language": "en"}
+{"id": "cs-15", "text": "Do you have anything new in the men's collection?", "class": "support", "intent": "product_search", "language": "en"}
+{"id": "cs-16", "text": "What is the warranty on your products?", "class": "support", "intent": "warranty", "language": "en"}
+{"id": "cs-17", "text": "Can I cancel my order before it ships?", "class": "support", "intent": "cancellation", "language": "en"}
+{"id": "cs-18", "text": "Comment puis-je faire un retour pour une commande?", "class": "support", "intent": "returns", "language": "fr"}
+{"id": "cs-19", "text": "Combien coute la livraison vers Constantine?", "class": "support", "intent": "shipping_cost", "language": "fr"}
+{"id": "cs-20", "text": "Avez-vous des articles en solde?", "class": "support", "intent": "product_search", "language": "fr"}
+{"id": "cs-21", "text": "Wayn el commandi dyali fadel? salah chi makan?", "class": "support", "intent": "order_tracking", "language": "darja"}
+{"id": "cs-22", "text": "Chhal hedhi el tanga f bash tji?", "class": "support", "intent": "shipping_cost", "language": "darja"}
+{"id": "cs-23", "text": "I'm really angry, my order is late and nobody answers me. I want a refund now.", "class": "support", "intent": "refund_angry", "language": "en", "should_handoff": true}
+{"id": "cs-24", "text": "This is the second time I'm asking. Where is my package? I paid for express!", "class": "support", "intent": "order_tracking", "language": "en", "should_handoff": true}
+{"id": "cs-25", "text": "La commande numero 48291 jamais arrivee. Je veux parler a un responsable.", "class": "support", "intent": "refund_angry", "language": "fr", "should_handoff": true}
+{"id": "cs-26", "text": "I need to speak to a person about my refund please.", "class": "support", "intent": "handoff_request", "language": "en"}
+{"id": "cs-27", "text": "Can someone from your team call me back?", "class": "support", "intent": "handoff_request", "language": "en"}
+{"id": "cs-28", "text": "What are your business hours?", "class": "support", "intent": "general", "language": "en"}
+{"id": "cs-29", "text": "Do you ship outside Algeria?", "class": "support", "intent": "shipping_coverage", "language": "en"}
+{"id": "cs-30", "text": "Mumkin n3ref chno el fees dyal el warqa elnaka?", "class": "support", "intent": "shipping_extra", "language": "darja"}
+{"id": "cs-31", "text": "Is there a discount if I buy more than one item?", "class": "support", "intent": "shipping_promo", "language": "en"}
+{"id": "cs-32", "text": "Quel est le delai de livraison standard?", "class": "support", "intent": "shipping_coverage", "language": "fr"}
+{"id": "cs-33", "text": "Jak8ab tleffet el nakd f el oula? chi hall?", "class": "support", "intent": "payment_methods", "language": "darja"}
+{"id": "cs-34", "text": "I lost my receipt, can I still return the item?", "class": "support", "intent": "returns", "language": "en"}
+{"id": "cs-35", "text": "What's the difference between standard and express shipping?", "class": "support", "intent": "shipping_extra", "language": "en"}

@@ -19,3 +19,4 @@ class AgentState(TypedDict):
     # this flag instead of matching reply text, which is how a blocked input
     # used to slip through to the model.
     input_blocked: NotRequired[bool]
+    llm_calls: int

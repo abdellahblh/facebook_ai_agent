@@ -35,6 +35,7 @@ GUARDRAIL_INDEX_NAME = os.getenv(
 EMBEDDER_API_URL = os.getenv("EMBEDDER_ENDPOINT") or os.getenv("VOYAGE_ENDPOINT", "https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
 EMBEDDER_MODEL = os.getenv("EMBEDDER_MODEL") or os.getenv("VOYAGE_EMBEDDING_MODEL", "qwen3.7-text-embedding")
 VECTOR_DIMENSIONS = int(os.getenv("EMBEDDER_DIMENSIONS") or os.getenv("VOYAGE_EMBEDDING_DIMENSIONS", "1024"))
+TENANT_ID = os.getenv("TENANT_ID", "")
 
 
 async def create_embeddings(texts: list[str], batch_size: int = 20) -> list[list[float]]:
@@ -87,12 +88,14 @@ def create_index(redis_client: Redis, index_name: str, key_prefix: str) -> None:
             as_name="embedding",
         )
     )
-    schema_policy = (     
+    schema_policy = (
         TagField("$.source", as_name="source"),
         TagField("$.content_type", as_name="content_type"),
+        TagField("$.tenant", as_name="tenant"),
         TextField("$.section_title", as_name="section_title"),
-            VectorField(
-            "$.embedding",        
+        TextField("$.text", as_name="text"),
+        VectorField(
+            "$.embedding",
             "HNSW",
             {
                 "TYPE": "FLOAT32",
@@ -100,7 +103,7 @@ def create_index(redis_client: Redis, index_name: str, key_prefix: str) -> None:
                 "DISTANCE_METRIC": "COSINE",
             },
             as_name="embedding",
-        )
+        ),
     )
     try:
         redis_client.ft(index_name).create_index(
@@ -112,7 +115,7 @@ def create_index(redis_client: Redis, index_name: str, key_prefix: str) -> None:
             raise
 
 
-async def ingest_docs() -> int:
+async def ingest_docs(tenant_id: str = "") -> int:
     """Split, embed, and store the policy document in Redis."""
     markdown = DOCUMENT_PATH.read_text(encoding="utf-8")
     header_splits = MarkdownHeaderTextSplitter(
@@ -142,6 +145,7 @@ async def ingest_docs() -> int:
                 "source": chunk.metadata["source"],
                 "content_type": chunk.metadata["content_type"],
                 "section_title": chunk.metadata.get("section_title", "General"),
+                "tenant": tenant_id,
                 "embedding": vector,
             }
             pipeline.json().set(key, "$", document)
@@ -186,13 +190,14 @@ async def ingest_guardrail_examples() -> int:
     return len(records)
 
 
-async def search_policies(question: str, limit: int = 3) -> list[dict]:
-    """Search stored policy vectors using query embedding."""
+async def search_policies(question: str, limit: int = 3, tenant: str = "") -> list[dict]:
+    """Search stored policy vectors using query embedding, scoped to a tenant."""
     query_vectors = await create_embeddings([question])
     query_vector = query_vectors[0]
     redis_client = Redis.from_url(REDIS_URL, decode_responses=False, socket_timeout=60.0)
+    tenant_filter = f"(@tenant:{{{tenant or 'default'}}})" if tenant else ""
     query = (
-        Query("(*)=>[KNN $limit @embedding $query_vector AS distance]")
+        Query(f"({tenant_filter})=>[KNN $limit @embedding $query_vector AS distance]")
         .sort_by("distance")
         .return_fields("text", "source", "section_title", "distance")
         .paging(0, limit)
@@ -224,5 +229,5 @@ if __name__ == "__main__":
         count = asyncio.run(ingest_guardrail_examples())
         print(f"Stored {count} guardrail examples in Redis index '{GUARDRAIL_INDEX_NAME}'.")
     else:
-        count = asyncio.run(ingest_docs())
+        count = asyncio.run(ingest_docs(TENANT_ID))
         print(f"Stored {count} policy chunks in Redis index '{INDEX_NAME}'.")

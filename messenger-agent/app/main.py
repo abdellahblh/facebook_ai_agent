@@ -20,6 +20,7 @@ import redis.asyncio as aioredis
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from psycopg.rows import dict_row
 from psycopg_pool import AsyncConnectionPool
@@ -63,12 +64,8 @@ async def lifespan(app: FastAPI):
     app.state.redis = aioredis.from_url(
         settings.redis_url,
         decode_responses=False,
-        socket_timeout=10.0,           # Cloud latency can be 50-200ms, need buffer
-        socket_connect_timeout=5.0,    # Cloud connections take longer to establish
-        socket_keepalive=True,         # Prevent cloud provider from dropping idle connections
-        max_connections=10,            # Cloud providers often limit connections (10-50)
-        retry_on_timeout=True,
-        health_check_interval=30,      # Validate connections before use
+        socket_timeout=15.0,           
+        socket_connect_timeout=5.0,    
     )
     await app.state.redis.ping()
 
@@ -126,7 +123,23 @@ async def lifespan(app: FastAPI):
     await app.state.cache_manager.initialize()
 
 
-    app.state.llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
+    from app.agent.llm_server import LLMServer
+
+    fallback_llm = None
+    if settings.groq_api_key:
+        fallback_llm = ChatOpenAI(
+            model=settings.fallback_llm_model,
+            api_key=settings.groq_api_key,
+            base_url=settings.groq_base_url,
+            temperature=0,
+        )
+
+    app.state.llm = LLMServer(
+        ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0),
+        fallback=fallback_llm,
+        max_calls=settings.llm_max_calls,
+        cooldown_seconds=settings.llm_cooldown_seconds,
+    )
     app.state.http = httpx.AsyncClient(timeout=30)
 
     from app.agent.graph import build_graph
@@ -180,8 +193,7 @@ async def lifespan(app: FastAPI):
         ("redis", app.state.redis.aclose),
         ("engine", dispose_engine),
     ]
-    # Pinecone is optional: closing None would raise AttributeError and abort
-    # the whole shutdown before the remaining closers run.
+
 
     for name, closer in closers:
         try:
@@ -229,6 +241,8 @@ async def health(request: Request) -> dict:
         "agent_graph": getattr(state, "agent_graph", None) is not None,
         "http": getattr(state, "http", None) is not None,
         "guardrail": getattr(state, "inbound_guardrail", None) is not None,
+        "embedder": getattr(state, "embedder", None) is not None,
+        "cache_manager": getattr(state, "cache_manager", None) is not None,
     }
 
     settings = get_settings()

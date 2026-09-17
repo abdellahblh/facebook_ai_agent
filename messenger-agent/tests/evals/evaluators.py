@@ -96,7 +96,7 @@ _SENTENCE_END = re.compile(r"[.!?؟…]+")
 _THOUSANDS_SEP = re.compile(r"(?<=\d)[.,\s](?=\d{3}\b)")
 
 TOOL_ALIASES: dict[str, str] = {
-    "search_products": "product_lookup",   # the real tool name in tools.py
+    "search_products": "search_products",   # the real tool name in tools.py
     "find_products": "product_lookup",
     "policy_lookup": "policy_search",
 }

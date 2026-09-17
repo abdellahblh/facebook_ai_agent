@@ -22,6 +22,13 @@ class Settings:
 
     google_api_key: str = field(default_factory=lambda: os.getenv("GOOGLE_API_KEY", ""))
     gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite"))
+    fallback_llm_model: str = field(
+        default_factory=lambda: os.getenv("FALLBACK_LLM_MODEL", "llama-3.3-70b-versatile")
+    )
+    llm_max_calls: int = field(default_factory=lambda: int(os.getenv("LLM_MAX_CALLS", "15")))
+    llm_cooldown_seconds: float = field(
+        default_factory=lambda: float(os.getenv("LLM_COOLDOWN_SECONDS", "60"))
+    )
 
 
     database_url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", ""))
@@ -61,14 +68,14 @@ class Settings:
             or os.getenv("VOYAGE_EMBEDDING_DIMENSIONS", "1024")
         )
     )
-    redis_guardrail_index: str = field(
+    guardrail_index: str = field(
         default_factory=lambda: os.getenv("REDIS_GUARDRAIL_INDEX", "customer-support-guardrails")
     )
     faiss_semantic_threshold: float = field(
         default_factory=lambda: float(os.getenv("FAISS_SEMANTIC_THRESHOLD", "0.90"))
     )
-    faiss_guardrail_threshold: float = field(
-        default_factory=lambda: float(os.getenv("FAISS_GUARDRAIL_THRESHOLD", "0.70"))
+    guardrail_threshold: float = field(
+        default_factory=lambda: float(os.getenv("GUARDRAIL_THRESHOLD", "0.50"))
     )
     faiss_cache_max_size: int = field(
         default_factory=lambda: int(os.getenv("FAISS_CACHE_MAX_SIZE", "512"))

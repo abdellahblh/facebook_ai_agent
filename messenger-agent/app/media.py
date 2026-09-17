@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # support question. Refuse early rather than burning latency then failing.
 MAX_MEDIA_BYTES = 12 * 1024 * 1024
 
-DOWNLOAD_TIMEOUT = 20.0
+DOWNLOAD_TIMEOUT = 30.0
 MAX_REDIRECTS = 3
 
 TRANSCRIBE_PROMPT = (

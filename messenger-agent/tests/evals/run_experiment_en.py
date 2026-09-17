@@ -26,7 +26,6 @@ import inspect
 import os
 import pathlib
 import sys
-import time
 import uuid
 import warnings
 
@@ -41,7 +40,7 @@ from langfuse.langchain import CallbackHandler
 
 from tests.evals.evaluators import ALL_EVALUATORS, TOOL_ALIASES
 from app.config import get_settings
-settings = get_settings()
+from app.agent.llm_server import LLMServer
 langfuse = get_client()
 langfuse_handler = CallbackHandler()
 
@@ -53,36 +52,13 @@ RETRYABLE_EXCEPTIONS = (
     httpx.ReadTimeout,
     httpx.ConnectTimeout,
 )
-DATASET = "english-production-readiness-v1"
+DATASET = "algeria"
 TURN_SEP = " || "
 BLOCKED_REPLY = "Sma7lna, ma n9derch njawbek 3la had l'demande."
 RUN_TURN_STEPS = (
     "pii_input_middleware", "check_input", "ainvoke", "check_output", "pii_output_middleware",
 )
 CALLS_PER_TURN = 2.2
-
-
-class RateLimiter:
-    """Evenly spaces calls to stay under `rpm` per rolling minute. Shared
-    across EVERY Gemini-touching call — including the two guardrail checks,
-    which is why call_with_retry now wraps those too, not just the graph."""
-
-    def __init__(self, rpm: int):
-        self.min_interval = 60.0 / rpm
-        self._lock = asyncio.Lock()
-        self._next_slot = 0.0
-
-    async def acquire(self):
-        async with self._lock:
-            now = time.monotonic()
-            start = max(now, self._next_slot)
-            self._next_slot = start + self.min_interval
-            wait = start - now
-        if wait > 0:
-            await asyncio.sleep(wait)
-
-
-RATE_LIMITER = RateLimiter(rpm=15)
 
 
 @retry(
@@ -93,7 +69,6 @@ RATE_LIMITER = RateLimiter(rpm=15)
     before_sleep=lambda rs: print(f"Rate limited, retrying in {rs.next_action.sleep:.1f}s..."),
 )
 async def call_with_retry(coro_factory):
-    await RATE_LIMITER.acquire()
     return await coro_factory()
 
 
@@ -111,7 +86,7 @@ def _reply_text(content) -> str:
     return str(content)
 
 
-def make_target(graph, guardrails, pii_in, pii_out, *, page_id: str = "demo",
+def make_target(graph,topicguard, guardmodel, pii_in, pii_out, *, page_id: str = "demo",
                  max_input_chars: int = 8_000, recursion_limit: int = 15):
     """Task function for run_experiment(). Called once per dataset item with
     the item's input; must return a plain dict (the evaluators' `output`)."""
@@ -137,11 +112,13 @@ def make_target(graph, guardrails, pii_in, pii_out, *, page_id: str = "demo",
             if hasattr(pii_in, "mask"):
                 user_text = pii_in.mask(user_text)
 
-            # Guardrail checks now go through call_with_retry too, so they
-            # count against RATE_LIMITER just like the graph call does.
-            if not await call_with_retry(lambda: guardrails.check_input(user_text)):
-                answer, blocked_by = BLOCKED_REPLY, "input_rail"
-                continue
+            topicdecision = await topicguard.inspect(user_text)
+            if topicdecision.blocked:
+               decision = await guardmodel.check(user_text)
+               if not decision.is_safe:
+                   answer, blocked_by = BLOCKED_REPLY, "guardmodel"
+                   continue
+
 
             result = await call_with_retry(lambda: graph.ainvoke(
                 {"messages": [HumanMessage(content=user_text)]},
@@ -160,9 +137,6 @@ def make_target(graph, guardrails, pii_in, pii_out, *, page_id: str = "demo",
             seen = len(msgs)
             reply = _reply_text(msgs[-1].content)
 
-            if not await call_with_retry(lambda: guardrails.check_output(reply, user_text=user_text)):
-                answer, blocked_by = BLOCKED_REPLY, "output_rail"
-                continue
 
             if hasattr(pii_out, "mask"):
                 reply = pii_out.mask(reply)
@@ -202,7 +176,12 @@ async def main(args: argparse.Namespace) -> None:
     dataset = langfuse.get_dataset(DATASET)
     items = dataset.items
     if args.category:
-        items = [i for i in items if isinstance(i.metadata, dict) and i.metadata.get("category") == args.category]
+        items = [
+            i
+            for i in items
+            if isinstance(i.metadata, dict)
+            and i.metadata.get("category") == args.category
+        ]
     if args.limit:
         items = items[: args.limit]
     n = len(items)
@@ -212,7 +191,7 @@ async def main(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     est = round(n * CALLS_PER_TURN)
-    print(f"{n} examples selected  ->  ~{est} Gemini calls (+ up to {2 * n} if NeMo self-check rails are live)")
+    print(f"{n} examples selected  ->  ~{est} Gemini calls and topic control calls{n} (+ up to {n} if guardmodel activate")
     if args.dry_run:
         print("dry run: nothing executed.")
         return
@@ -222,10 +201,37 @@ async def main(args: argparse.Namespace) -> None:
 
     from app.agent import prompts
     from app.agent.graph import MAX_INPUT_CHARS, RECURSION_LIMIT, build_graph, run_turn
-    from app.agent.security import nemo_guardrails, pii_input_middleware, pii_output_middleware
+    from app.agent.guardrail import  pii_input_middleware, pii_output_middleware, RedisTopicControlGuard,LLMGuardModel, EmbedderProvider
     from app.agent.tools import make_tools
+    from app.agent.prompts import guardrail_prompt
+    import redis.asyncio as aioredis
     from app.config import get_settings
     from app.db import engine as db_engine
+    settings = get_settings()
+    embedder = EmbedderProvider(
+        api_key=settings.embedder_api_key,
+        model=settings.embedder_model,
+        dimensions=settings.embedder_dimensions,
+    )
+    redis = aioredis.from_url(
+        settings.redis_url,
+        decode_responses=False,
+        socket_timeout=15.0,           
+        socket_connect_timeout=5.0,   
+    )
+    topicguard = RedisTopicControlGuard(
+        redis_client=redis,
+        index_name=settings.guardrail_index,
+        threshold=settings.guardrail_threshold,
+        embedder=embedder,
+
+    )
+    guardmodel = LLMGuardModel(
+            api_key=settings.groq_api_key,
+            base_url=settings.groq_base_url,
+            model=settings.guard_model,
+            system_prompt=guardrail_prompt,
+        )
 
     drift = check_drift(run_turn)
     if drift:
@@ -241,15 +247,18 @@ async def main(args: argparse.Namespace) -> None:
 
     print(f"Seeding database for page_id='{args.page_id}'...")
     try:
-        nemo_guardrails.initialize()
 
-        llm = ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0)
+        llm = LLMServer(
+            ChatGoogleGenerativeAI(model=settings.gemini_model, temperature=0),
+            max_calls=settings.llm_max_calls,
+            cooldown_seconds=settings.llm_cooldown_seconds,
+        )
         tools = make_tools("eval-psid", args.page_id, db_engine.SessionFactory)
         system_prompt = _resolve_system_prompt(prompts, args.business_name)
         graph = build_graph(llm, tools, system_prompt, checkpointer=MemorySaver())
 
         target = make_target(
-            graph, nemo_guardrails, pii_input_middleware, pii_output_middleware,
+            graph, topicguard,guardmodel, pii_input_middleware, pii_output_middleware,
             page_id=args.page_id, max_input_chars=MAX_INPUT_CHARS, recursion_limit=RECURSION_LIMIT,
         )
 
@@ -268,10 +277,9 @@ async def main(args: argparse.Namespace) -> None:
             max_concurrency=2,
             metadata={
                 "dataset": DATASET,
-                "category": args.category or "all",
+                "category": args.category if args.category or "all" else "None",
                 "model": settings.gemini_model,
                 "prompt_version": os.getenv("PROMPT_VERSION", "unversioned"),
-                "guardrails_loaded": bool(getattr(nemo_guardrails, "rails", None)),
                 "page_id": args.page_id,
             },
         )

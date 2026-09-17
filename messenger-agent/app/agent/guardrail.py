@@ -179,14 +179,14 @@ class RedisTopicControlGuard:
 class FaissTopicControlGuard:
     """In-memory FAISS guard that checks inbound messages against on-topic support examples.
 
-    Blocks messages if the similarity score is below the threshold (default 0.70).
+    Blocks messages if the similarity score is below the threshold (default 0.50).
     """
 
     def __init__(
         self,
         examples: list[dict],
         vectors: list[Sequence[float]],
-        threshold: float = 0.70,
+        threshold: float = 0.50,
         embedder: EmbeddingProvider = None,
     ) -> None:
         if not examples or len(examples) != len(vectors):
@@ -200,7 +200,7 @@ class FaissTopicControlGuard:
 
     @classmethod
     async def from_jsonl(
-        cls, path: Path, embedder: EmbeddingProvider, threshold: float = 0.70
+        cls, path: Path, embedder: EmbeddingProvider, threshold: float = 0.50
     ) -> "FaissTopicControlGuard":
         examples: list[dict] = []
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -255,37 +255,36 @@ class LLM_GUARD_OPENAI_API:
         model: str,
         system_prompt: str = "",
         temp: Optional[float] = 0.1,
-        max_tokens: Optional[int] = 150,
+        max_tokens: Optional[int] = 250,
     ) -> None:
         self.api_key = api_key
         self.base_url = str(base_url).rstrip("/")
         self.model = model
         self.system_prompt = system_prompt
         self.temp = temp if temp is not None else 0.1
-        self.max_tokens = max_tokens if max_tokens is not None else 150
+        self.max_tokens = max_tokens if max_tokens is not None else 250
         self.client = AsyncOpenAI(
             api_key=self.api_key,
             base_url=self.base_url,
         )
 
-    async def generate(self, user_message: str) -> GuardDecision:
+    async def check(self, user_message: str) -> GuardDecision:
         user_content = (
             f"Content to classify: {user_message}\nAnswer (JSON only):"
         )
-        response = await self.client.chat.completions.create(
+        response = await self.client.chat.completions.parse(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.system_prompt},
                 {"role": "user", "content": user_content},
             ],
             temperature=self.temp,
-            response_format={"type": "json_object"},
+            response_format=GuardDecision,
             max_tokens=self.max_tokens,
         )
-        raw_text = response.choices[0].message.content or "{}"
+        results = response.choices[0].message.parse
         try:
-            data = json.loads(raw_text)
-            return GuardDecision.model_validate(data)
+            return results
         except Exception:
             logger.warning("Failed to parse guardmodel JSON response: %s", raw_text)
             # If "violation": 1 appears anywhere in raw_text, mark as violation

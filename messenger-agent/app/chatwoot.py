@@ -37,10 +37,13 @@ from urllib.parse import urlsplit, urlunsplit
 import httpx
 from fastapi import APIRouter, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
-
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from app.config import get_settings
 from app.schemas import InboundMessage
 from app.util.retry import with_retry_send
+
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -290,11 +293,14 @@ def to_inbound(event: ChatwootEvent) -> InboundMessage:
         mid=str(event.id) if event.id is not None else None,
     )
 
-
+def get_client_id(request: Request) -> str:
+    return request.headers.get("X-Client-ID", "anonymous")
+limiter = Limiter(key_func=get_client_id)
 # ── Inbound endpoint ─────────────────────────────────────────────────────────
 # response_model=None: returns either a dict or a raw Response, which FastAPI
 # cannot express as one response model.
 @router.post("/webhook/{webhook_secret}", response_model=None)
+@limiter.limit("15/minute")
 async def chatwoot_webhook(webhook_secret: str, request: Request) -> Response | dict:
     """Configure in Chatwoot: Settings -> Integrations -> Webhooks ->
     https://your.host/webhook/<CHATWOOT_WEBHOOK_SECRET>   (no trailing slash)
@@ -401,32 +407,47 @@ def _conversation_url(account_id: int | str | None, conversation_id: int | str) 
     return f"{base}/api/v1/accounts/{resolved}/conversations/{conversation_id}"
 
 
-async def send_reply(client: httpx.AsyncClient, account_id: int | str | None, conversation_id: int | str, text:str,private: bool =False) -> bool:
-    async def _post():
+async def send_reply(
+    client: httpx.AsyncClient,
+    account_id: int | str | None,
+    conversation_id: int | str,
+    text: str,
+    private: bool = False,
+) -> bool:
+    """Post a message or private note into a Chatwoot conversation.
+
+    `private=True` writes an internal note — agents see it, the customer never does.
+    """
+    url = f"{_conversation_url(account_id, conversation_id)}/messages"
+    note_kind = "private note" if private else "reply"
+
+    async def _post() -> None:
+        logger.debug("Chatwoot %s POST %s", note_kind, url)
         response = await client.post(
-            f"{_conversation_url(account_id, conversation_id)}/messages",
+            url,
             headers=_api_headers(),
-            json={"content": text, "message_type": "outgoing", "private": private},
+            json={
+                "content": text,
+                "message_type": "outgoing",
+                "private": private,
+            },
             timeout=20.0,
         )
         response.raise_for_status()
-        return response
 
     try:
         await with_retry_send(_post, label="chatwoot_send")
+        logger.info("Chatwoot %s sent to conversation %s.", note_kind, conversation_id)
         return True
     except Exception:
-        logger.exception("send_reply failed")
-        return False
-
-    if response.status_code >= 300:
-        logger.error(
-            "Chatwoot send rejected (%s) for conversation %s: %s — a 401/403 "
-            "here means CHATWOOT_API_TOKEN is wrong or lacks agent access.",
-            response.status_code, conversation_id, response.text[:400],
+        logger.exception(
+            "Failed to send %s to Chatwoot conversation %s (account %s). "
+            "Check CHATWOOT_API_TOKEN and that the conversation exists.",
+            note_kind,
+            conversation_id,
+            account_id,
         )
         return False
-    return True
 
 
 async def send_typing(
@@ -456,6 +477,7 @@ async def escalate_to_human(
     conversation_id: int | str,
     assignee_id: int | None = None,
     team_id: int | None = None,
+
     note: str | None = "Handoff requested. Bot pausing.",
 ) -> bool:
     """Hand the conversation to a person.
@@ -516,8 +538,20 @@ async def escalate_to_human(
         logger.exception("Chatwoot toggle_status failed.")
 
     # 3. A PRIVATE note explaining why. Agents see it; the customer never does.
-    if note:
-        await send_reply(client, account_id, conversation_id, note, private=True)
+    if note and client:
+        sent = await send_reply(
+            client,
+            account_id,
+            conversation_id,
+            note,
+            private=True,
+        )
+        if not sent:
+            logger.warning(
+                "Private handoff note failed for conversation %s — "
+                "the assignment may still have succeeded; check the logs for the root cause.",
+                conversation_id,
+            )
 
     if ok:
         logger.info("Escalated conversation %s to a human.", conversation_id)

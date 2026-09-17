@@ -268,7 +268,7 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                 decision.example_id,
             )
             guard = app.state.guard_model
-            result = await guard.generate(merged_text)
+            result = await guard.check(merged_text)
             if not result.is_safe:       
                 reply_text = INPUT_GUARDRAIL_REPLY
                 if session_factory:
@@ -331,6 +331,8 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                         "channel": inbound.channel,
                         "account_id": inbound.account_id,
                         "conversation_id": inbound.conversation_id,
+                        "redis": redis,
+                        "embedder": app.state.embedder,
                     },
                 )
                 if not generated or not generated.strip():
@@ -353,8 +355,8 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                     "channel": inbound.channel,
                     "account_id": inbound.account_id,
                     "conversation_id": inbound.conversation_id,
-                    "redis_client": redis_client,
-                    "index_name": INDEX_NAME,
+                    "redis": redis,
+                    "embedder": app.state.embedder
                 },
             )
         else:
@@ -387,6 +389,22 @@ async def process_event(inbound: InboundMessage, dedupe: bool = False) -> None:
                 await _send_text(http_client, inbound, ERROR_REPLY)
             except Exception:
                 logger.exception("Could not even send the error reply to %s.", inbound.psid)
+            if inbound.channel == "chatwoot" and inbound.account_id and inbound.conversation_id:
+                from app import chatwoot
+
+                note_ok = await chatwoot.send_reply(
+                    http_client,
+                    inbound.account_id,
+                    inbound.conversation_id,
+                    f"Bot error processing message: {type(err).__name__}. "
+                    f"A human teammate will review. Reason: {str(err)[:200]}",
+                    private=True,
+                )
+                if not note_ok:
+                    logger.warning(
+                        "Failed to send error private note for conversation %s",
+                        inbound.conversation_id,
+                    )
     finally:
         if redis and lock_token:
             await redis_ops.release_user_lock(redis, convo_key, lock_token)

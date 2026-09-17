@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import logging
 import uuid
-
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, trim_messages
 from langchain_core.tools import BaseTool
@@ -65,6 +64,7 @@ def build_graph(llm: BaseChatModel, tools: list[BaseTool], system_prompt: str, c
             if not has_tools and (msg.content is None or str(msg.content).strip() == ""):
                 msg = msg.model_copy(update={"content": " "})
             sanitized_messages.append(msg)
+        state["llm_calls"] = state.get("llm_calls", 0) + 1
 
         messages = [SystemMessage(system_prompt)] + sanitized_messages
         response = await with_retry(
