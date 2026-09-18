@@ -4,7 +4,6 @@ from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import InMemorySaver
 
-from app.agent import security as sec
 from app.agent.graph import (
     BLOCKED_INPUT_RECORD,
     INPUT_BLOCKED_REPLY,
@@ -77,20 +76,6 @@ async def test_system_prompt_prepended(scripted_llm_factory):
     assert "GUARDRAILS" in first_call_messages[0].content
 
 
-async def _rail(monkeypatch, *, input_safe=True, output_safe=True):
-    """Force the NeMo rails to a locked outcome without loading the rails."""
-    async def safe(*_a, **_k):
-        return True
-
-    async def blocked(*_a, **_k):
-        return False
-
-    monkeypatch.setattr(
-        sec.nemo_guardrails, "check_input", safe if input_safe else blocked
-    )
-    monkeypatch.setattr(
-        sec.nemo_guardrails, "check_output", safe if output_safe else blocked
-    )
 
 
 async def _history(graph, psid: str) -> str:
@@ -101,7 +86,6 @@ async def _history(graph, psid: str) -> str:
 async def test_blocked_input_never_enters_memory(scripted_llm_factory, monkeypatch):
     """A blocked user message must not survive in the checkpointer: that is the
     agent's memory, and a later turn would replay the raw text to the LLM."""
-    await _rail(monkeypatch, input_safe=False)
     llm = scripted_llm_factory([AIMessage(content="you shouldn't know this.")])
     graph = build_graph(llm, [product_lookup], "You are a test bot.", InMemorySaver())
 
@@ -113,7 +97,6 @@ async def test_blocked_input_never_enters_memory(scripted_llm_factory, monkeypat
     assert BLOCKED_INPUT_RECORD in history
 
     # next SAFE turn: the blocked text must never reach the model's context
-    await _rail(monkeypatch, input_safe=True)
     await run_turn(graph, "what is the price?", psid="NOPE_IN")
     llm_seen = " ".join(str(m.content) for call in llm.calls for m in call)
     assert "SECRET HARMFUL 123" not in llm_seen
@@ -128,7 +111,6 @@ async def test_blocked_output_never_enters_memory(scripted_llm_factory, monkeypa
     )
     graph = build_graph(llm, [product_lookup], "You are a test bot.", InMemorySaver())
 
-    await _rail(monkeypatch, input_safe=True, output_safe=False)
     answer = await run_turn(graph, "hello", psid="NOPE_OUT")
     assert answer == OUTPUT_BLOCKED_REPLY
 
@@ -137,7 +119,6 @@ async def test_blocked_output_never_enters_memory(scripted_llm_factory, monkeypa
     assert OUTPUT_BLOCKED_REPLY in history
 
     # next SAFE turn: the blocked reply must not be replayed to the model
-    await _rail(monkeypatch, input_safe=True, output_safe=True)
     await run_turn(graph, "next question", psid="NOPE_OUT")
     llm_seen = " ".join(str(m.content) for call in llm.calls for m in call)
     assert "UNSAFE OUTPUT SECRET" not in llm_seen

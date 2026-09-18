@@ -1,0 +1,26 @@
+# .coderabbit.yaml
+version: "2"
+language: "en-US"
+tone_instructions: "Be concise, direct, and actionable. Avoid unnecessary fluff."
+
+reviews: "auto"              # Automatically review new PRs
+profile: "chill"             # Options: "chill" (broad feedback) or "assertive" (strict standards)
+
+request_changes_workflow: false # Do not block PR merges automatically
+high_level_summary: true      # Generate a summary at the top of the PR
+poem: false                   # Disable the summary poem (enabled by default)
+
+# Exclude auto-generated or non-code files
+path_filters:
+  - "!**/dist/**"
+  - "!**/build/**"
+  - "!**/*.min.js"
+  - "!**/package-lock.json"
+
+# Auto-review triggers and customization
+auto_review:
+  enabled: true
+  drafts: false              # Skip reviewing draft PRs
+
+chat:
+  auto_reply: true           # Reply when tagged in PR comments (@coderabbitai)
